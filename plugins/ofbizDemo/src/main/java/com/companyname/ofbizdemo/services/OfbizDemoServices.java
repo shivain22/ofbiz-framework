@@ -1,4 +1,4 @@
-//package com.companyname.ofbizdemo.services;
+package com.companyname.ofbizdemo.services;
 //import java.util.Map;
 //
 //import org.apache.ofbiz.base.util.Debug;
@@ -8,7 +8,7 @@
 //import org.apache.ofbiz.service.DispatchContext;
 //import org.apache.ofbiz.service.ServiceUtil;
 //
-//public class OfbizDemoServices {
+public class OfbizDemoServices {
 //
 //    public static final String module = OfbizDemoServices.class.getName();
 //
@@ -33,4 +33,4 @@
 //        }
 //        return result;
 //    }
-//}
+}
