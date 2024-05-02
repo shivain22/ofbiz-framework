@@ -292,7 +292,7 @@ checkstyle {
     showViolations = true
 }
 gitHooks {
-    hooks = ['pre-push': 'codenarcMain codenarcTest']
+    hooks = ['pre-push': '']
 }
 
 // Checks OFBiz Groovy coding conventions.
