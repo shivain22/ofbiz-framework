@@ -31,6 +31,6 @@ under the License.
     <load-component component-location="humanres"/>
     <load-component component-location="order"/>
     <load-component component-location="marketing"/>
-<!-- common component used by most other components last because it uses info from most components-->
+    <!-- common component used by most other components last because it uses info from most components-->
     <load-component component-location="commonext"/>
 </component-loader>
