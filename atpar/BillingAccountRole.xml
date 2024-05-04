@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <BillingAccountRole billingAccountId="9010" partyId="DemoCustCompany" roleTypeId="BILL_TO_CUSTOMER" fromDate="2001-05-13 00:00:00.0" lastUpdatedStamp="2024-05-04 17:59:18.675" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:18.675" createdTxStamp="2024-05-04 17:57:00.219"/>
+</entity-engine-xml>

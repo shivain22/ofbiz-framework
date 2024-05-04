@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <BenefitType benefitTypeId="HEALTH" hasTable="N" description="Health" lastUpdatedStamp="2024-05-04 17:55:37.452" lastUpdatedTxStamp="2024-05-04 17:55:36.448" createdStamp="2024-05-04 17:55:37.452" createdTxStamp="2024-05-04 17:55:36.448"/>
+    <BenefitType benefitTypeId="SICK_LEAVE" hasTable="N" description="Sick Leave" lastUpdatedStamp="2024-05-04 17:55:37.485" lastUpdatedTxStamp="2024-05-04 17:55:36.448" createdStamp="2024-05-04 17:55:37.485" createdTxStamp="2024-05-04 17:55:36.448"/>
+    <BenefitType benefitTypeId="VACATION" hasTable="N" description="Vacation" lastUpdatedStamp="2024-05-04 17:55:37.476" lastUpdatedTxStamp="2024-05-04 17:55:36.448" createdStamp="2024-05-04 17:55:37.476" createdTxStamp="2024-05-04 17:55:36.448"/>
+</entity-engine-xml>

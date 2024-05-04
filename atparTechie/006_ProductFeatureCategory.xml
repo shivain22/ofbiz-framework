@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <ProductFeatureCategory productFeatureCategoryId="IMAGE" description="Image" lastUpdatedStamp="2024-05-04 17:54:59.944" lastUpdatedTxStamp="2024-05-04 17:54:52.755" createdStamp="2024-05-04 17:54:59.944" createdTxStamp="2024-05-04 17:54:52.755"/>
+    <ProductFeatureCategory productFeatureCategoryId="TEXT" description="Text" lastUpdatedStamp="2024-05-04 17:54:59.955" lastUpdatedTxStamp="2024-05-04 17:54:52.755" createdStamp="2024-05-04 17:54:59.955" createdTxStamp="2024-05-04 17:54:52.755"/>
+    <ProductFeatureCategory productFeatureCategoryId="SCAN_TYPE" description="Scanning Type" lastUpdatedStamp="2024-05-04 17:58:13.29" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:13.29" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="8000" description="License Features" lastUpdatedStamp="2024-05-04 17:58:20.819" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:20.819" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="9000" description="Widget Features" lastUpdatedStamp="2024-05-04 17:58:20.911" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:20.911" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="2000" description="Gift Card Features" lastUpdatedStamp="2024-05-04 17:58:57.887" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:57.887" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="1000" description="Hazmat Features" lastUpdatedStamp="2024-05-04 17:59:04.223" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:04.223" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="1001" description="Model Year Features" lastUpdatedStamp="2024-05-04 17:59:04.248" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:04.248" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="1002" description="Equipment Class Features" lastUpdatedStamp="2024-05-04 17:59:04.473" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:04.473" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductFeatureCategory productFeatureCategoryId="3000" description="Taste" lastUpdatedStamp="2024-05-04 18:00:07.966" lastUpdatedTxStamp="2024-05-04 17:59:58.414" createdStamp="2024-05-04 18:00:07.966" createdTxStamp="2024-05-04 17:59:58.414"/>
+    <ProductFeatureCategory productFeatureCategoryId="2100" description="Account Features" lastUpdatedStamp="2024-05-04 18:00:50.554" lastUpdatedTxStamp="2024-05-04 18:00:49.626" createdStamp="2024-05-04 18:00:50.554" createdTxStamp="2024-05-04 18:00:49.626"/>
+</entity-engine-xml>

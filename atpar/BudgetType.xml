@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <BudgetType budgetTypeId="CAPITAL_BUDGET" hasTable="N" description="Capital" lastUpdatedStamp="2024-05-04 17:55:25.207" lastUpdatedTxStamp="2024-05-04 17:55:24.665" createdStamp="2024-05-04 17:55:25.207" createdTxStamp="2024-05-04 17:55:24.665"/>
+    <BudgetType budgetTypeId="OPERATING_BUDGET" hasTable="N" description="Operating" lastUpdatedStamp="2024-05-04 17:55:25.216" lastUpdatedTxStamp="2024-05-04 17:55:24.665" createdStamp="2024-05-04 17:55:25.216" createdTxStamp="2024-05-04 17:55:24.665"/>
+</entity-engine-xml>
