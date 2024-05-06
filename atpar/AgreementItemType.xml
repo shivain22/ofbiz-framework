@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <AgreementItemType agreementItemTypeId="AGREEMENT_COMMISSION" hasTable="N" description="Commission Rate" lastUpdatedStamp="2024-05-04 17:55:48.872" lastUpdatedTxStamp="2024-05-04 17:55:48.821" createdStamp="2024-05-04 17:55:48.872" createdTxStamp="2024-05-04 17:55:48.821"/>
+    <AgreementItemType agreementItemTypeId="AGREEMENT_EXHIBIT" hasTable="N" description="Exhibit" lastUpdatedStamp="2024-05-04 17:55:48.841" lastUpdatedTxStamp="2024-05-04 17:55:48.821" createdStamp="2024-05-04 17:55:48.841" createdTxStamp="2024-05-04 17:55:48.821"/>
+    <AgreementItemType agreementItemTypeId="AGREEMENT_PRICING_PR" hasTable="N" description="Pricing" lastUpdatedStamp="2024-05-04 17:55:48.851" lastUpdatedTxStamp="2024-05-04 17:55:48.821" createdStamp="2024-05-04 17:55:48.851" createdTxStamp="2024-05-04 17:55:48.821"/>
+    <AgreementItemType agreementItemTypeId="AGREEMENT_SECTION" hasTable="N" description="Section" lastUpdatedStamp="2024-05-04 17:55:48.861" lastUpdatedTxStamp="2024-05-04 17:55:48.821" createdStamp="2024-05-04 17:55:48.861" createdTxStamp="2024-05-04 17:55:48.821"/>
+    <AgreementItemType agreementItemTypeId="SUBAGREEMENT" hasTable="N" description="Sub-Agreement" lastUpdatedStamp="2024-05-04 17:55:48.83" lastUpdatedTxStamp="2024-05-04 17:55:48.821" createdStamp="2024-05-04 17:55:48.83" createdTxStamp="2024-05-04 17:55:48.821"/>
+</entity-engine-xml>

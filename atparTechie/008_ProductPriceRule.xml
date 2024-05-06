@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <ProductPriceRule productPriceRuleId="PR4FC" ruleName="PR4FC" description="PriceRule 4 French Customer" isSale="Y" fromDate="2001-01-01 12:00:00.0" lastUpdatedStamp="2024-05-04 17:56:25.437" lastUpdatedTxStamp="2024-05-04 17:56:24.462" createdStamp="2024-05-04 17:56:25.437" createdTxStamp="2024-05-04 17:56:24.462"/>
+    <ProductPriceRule productPriceRuleId="PR4PC" ruleName="PR4PC" description="PriceRule 4 Party Classification" isSale="Y" fromDate="2001-01-01 12:00:00.0" lastUpdatedStamp="2024-05-04 17:56:25.497" lastUpdatedTxStamp="2024-05-04 17:56:24.462" createdStamp="2024-05-04 17:56:25.497" createdTxStamp="2024-05-04 17:56:24.462"/>
+    <ProductPriceRule productPriceRuleId="PR4P" ruleName="PR4P" description="PriceRule 4 Product" isSale="Y" fromDate="2001-01-01 12:00:00.0" lastUpdatedStamp="2024-05-04 17:56:25.543" lastUpdatedTxStamp="2024-05-04 17:56:24.462" createdStamp="2024-05-04 17:56:25.543" createdTxStamp="2024-05-04 17:56:24.462"/>
+    <ProductPriceRule productPriceRuleId="PR4C" ruleName="PR4C" description="PriceRule 4 Category" isSale="Y" fromDate="2001-01-01 12:00:00.0" lastUpdatedStamp="2024-05-04 17:56:25.597" lastUpdatedTxStamp="2024-05-04 17:56:24.462" createdStamp="2024-05-04 17:56:25.597" createdTxStamp="2024-05-04 17:56:24.462"/>
+    <ProductPriceRule productPriceRuleId="9000" ruleName="Test Rule 1" isSale="Y" lastUpdatedStamp="2024-05-04 17:58:41.68" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:41.68" createdTxStamp="2024-05-04 17:57:00.219"/>
+    <ProductPriceRule productPriceRuleId="9001" ruleName="Test Rule 2" isSale="Y" lastUpdatedStamp="2024-05-04 17:58:41.713" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:41.713" createdTxStamp="2024-05-04 17:57:00.219"/>
+</entity-engine-xml>

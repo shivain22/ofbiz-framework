@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <BillingAccount billingAccountId="9010" accountLimit="10000.00" accountCurrencyUomId="USD" contactMechId="9010" fromDate="2001-05-13 00:00:00.0" description="Demo Customer Company Billing Account" lastUpdatedStamp="2024-05-04 17:59:18.663" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:18.663" createdTxStamp="2024-05-04 17:57:00.219"/>
+</entity-engine-xml>

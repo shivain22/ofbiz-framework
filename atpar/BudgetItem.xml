@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <BudgetItem budgetId="DemoBudget001" budgetItemSeqId="00001" budgetItemTypeId="REQUIREMENT_BUDGET_A" amount="500.00" purpose="Demo item 1 for Demo budget 001" justification="For Demo budget 001" lastUpdatedStamp="2024-05-04 17:56:55.554" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.554" createdTxStamp="2024-05-04 17:56:34.985"/>
+    <BudgetItem budgetId="DemoBudget002" budgetItemSeqId="00001" budgetItemTypeId="REQUIREMENT_BUDGET_A" amount="1000.00" purpose="Demo item 1 for Demo budget 002" justification="For Demo budget 002" lastUpdatedStamp="2024-05-04 17:56:55.566" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.566" createdTxStamp="2024-05-04 17:56:34.985"/>
+    <BudgetItem budgetId="DemoBudget002" budgetItemSeqId="00002" budgetItemTypeId="REQUIREMENT_BUDGET_A" amount="1500.00" purpose="Demo item 2 for Demo budget 002" justification="For Demo budget 002" lastUpdatedStamp="2024-05-04 17:56:55.577" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.577" createdTxStamp="2024-05-04 17:56:34.985"/>
+</entity-engine-xml>
