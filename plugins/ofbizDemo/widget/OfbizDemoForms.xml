@@ -6,7 +6,7 @@
         <!-- We have this utility in OFBiz to render form based on service definition.
              Service attributes will automatically lookedup and will be shown on form
         -->
-        <auto-fields-service service-name="createOfbizDemoByJavaService"/>
+        <auto-fields-service service-name="createOfbizDemo"/>
         <field name="ofbizDemoTypeId" title="${uiLabelMap.CommonType}">
             <drop-down allow-empty="false" current-description="">
                 <!---We have made this drop down options dynamic(Values from db) using this -->

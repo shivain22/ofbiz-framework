@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <AgreementProductAppl agreementId="8000" agreementItemSeqId="0001" productId="WG-9943" lastUpdatedStamp="2024-05-04 17:56:52.966" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:52.966" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <AgreementProductAppl agreementId="9000" agreementItemSeqId="0001" productId="WG-9943" lastUpdatedStamp="2024-05-04 17:59:18.344" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:18.344" createdTxStamp="2024-05-04 17:57:00.219"/>
-    <AgreementProductAppl agreementId="AGR_SALES" agreementItemSeqId="00001" productId="GZ-1000" price="10.000" lastUpdatedStamp="2024-05-04 17:59:24.223" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:59:24.223" createdTxStamp="2024-05-04 17:57:00.219"/>
-    <AgreementProductAppl agreementId="DS-1000-PURCH" agreementItemSeqId="00001" productId="DS-1000" price="8.000" lastUpdatedStamp="2024-05-04 17:58:12.392" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:12.392" createdTxStamp="2024-05-04 17:57:00.219"/>
-    <AgreementProductAppl agreementId="DS-1000-SALES" agreementItemSeqId="00001" productId="DS-1000" price="12.000" lastUpdatedStamp="2024-05-04 17:58:12.342" lastUpdatedTxStamp="2024-05-04 17:57:00.219" createdStamp="2024-05-04 17:58:12.342" createdTxStamp="2024-05-04 17:57:00.219"/>
-</entity-engine-xml>

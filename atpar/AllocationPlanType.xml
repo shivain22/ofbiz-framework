@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <AllocationPlanType planTypeId="SALES_ORD_ALLOCATION" description="Sales Order Allocation Plan" hasTable="N" lastUpdatedStamp="2024-05-04 17:55:44.695" lastUpdatedTxStamp="2024-05-04 17:55:38.463" createdStamp="2024-05-04 17:55:44.695" createdTxStamp="2024-05-04 17:55:38.463"/>
-</entity-engine-xml>

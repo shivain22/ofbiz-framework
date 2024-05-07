@@ -95,7 +95,8 @@ under the License.
         </tr>
         <tr>
         <td class="label">
-      <label>${uiLabelMap.WebtoolsPreConfiguredSet}:</label></td>
+      <label>${uiLabelMap.WebtoolsPreConfiguredSet}:<label>
+      </td>
       <td>
       <select name="preConfiguredSetName">
         <option value="">${uiLabelMap.CommonNone}</option>

@@ -16,7 +16,7 @@
    width="250"
    height="117"
    viewBox="0 0 250 117"
-   sodipodi:docname="ofbiz_logo.svg">
+   sodipodi:docname="ofbiz.svg">
   <metadata
      id="metadata3443">
     <rdf:RDF>
@@ -24,7 +24,7 @@
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+           rdf:resource="https://purl.org/dc/dcmitype/StillImage" />
         <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>

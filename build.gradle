@@ -225,6 +225,8 @@ dependencies {
     getDirectoryInActiveComponentsIfExists('lib').each { libDir ->
         implementation fileTree(dir: libDir, include: '**/*.jar')
     }
+
+
 }
 
 def excludedJavaSources = [

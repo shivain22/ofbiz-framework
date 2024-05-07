@@ -47,5 +47,6 @@ under the License.
         server="default-server"
         location="webapp/firstdata"
         base-permission="OFBTOOLS,FDSECURITY"
-        mount-point="/firstdata"/>
+        mount-point="/firstdata"
+            app-bar-display="false" />
 </ofbiz-component>

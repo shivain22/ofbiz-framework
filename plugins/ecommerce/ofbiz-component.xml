@@ -57,7 +57,7 @@ under the License.
         server="default-server"
         location="webapp/ecommerce"
         mount-point="/ecommerce"
-        app-bar-display="false"
+        app-bar-display="true"
         use-autologin-cookie="true"/>
     <webapp name="ecomseo"
         title="SEO enhanced eCommerce"
