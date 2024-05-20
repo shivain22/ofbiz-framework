@@ -471,7 +471,7 @@ under the License.
                 <entity-one entity-name="PartyNameView" value-field="currentOrganization">
                     <field-map field-name="partyId" from-field="organizationPartyId"/>
                 </entity-one>
-                <set field="logoImageUrl" value="/images/ofbiz_logo.png"/>
+                <set field="logoImageUrl" value=""/>
                 <!--<set field="defaultFontFamily" value="Arial"/>-->
             </actions>
             <widgets>
@@ -493,7 +493,7 @@ under the License.
         <section>
             <actions>
                 <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
-                <set field="logoImageUrl" value="/images/ofbiz_logo.png" global="true"/>
+                <set field="logoImageUrl" value="" global="true"/>
                 <property-to-field resource="fop.properties" field="defaultFontFamily" property="fop.font.family" default="NotoSans"/>
             </actions>
             <widgets>
@@ -526,7 +526,7 @@ under the License.
     <screen name="FoError">
         <section>
             <actions>
-                <set field="logoImageUrl" value="/images/ofbiz_logo.png"/>
+                <set field="logoImageUrl" value=""/>
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">

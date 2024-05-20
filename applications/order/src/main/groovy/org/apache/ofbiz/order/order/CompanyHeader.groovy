@@ -154,16 +154,16 @@ if (partyGroup) {
                     dataResource.getString('objectInfo'), '')
             if (logoFile.exists()) {
                 Writable logoFileBase64 = logoFile.bytes.encodeBase64()
-                logoImageUrl = 'data:' + dataResource.mimeTypeId + ';base64,' + logoFileBase64
+                logoImageUrl = ''
             }
         }
     }
 
     if (!logoImageUrl) {
         if (partyContent) {
-            logoImageUrl = '/content/control/stream?contentId=' + partyContent.contentId
+            logoImageUrl =''
         } else {
-            logoImageUrl = partyGroup?.logoImageUrl
+            logoImageUrl = ''
         }
     }
 }

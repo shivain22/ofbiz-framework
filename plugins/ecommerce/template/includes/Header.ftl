@@ -36,11 +36,14 @@ $(document).ready(function() {
     <div class="col">
       <a class="navbar-brand" href="<@ofbizUrl>main</@ofbizUrl>">
           <#if sessionAttributes.overrideLogo??>
-            <img src="<@ofbizContentUrl>${sessionAttributes.overrideLogo}</@ofbizContentUrl>" alt="Logo"/>
+<#--            src=  <@ofbizContentUrl>${sessionAttributes.overrideLogo}</@ofbizContentUrl>-->
+            <img src="" alt="Logo"/>
           <#elseif catalogHeaderLogo??>
-            <img src="<@ofbizContentUrl>${catalogHeaderLogo}</@ofbizContentUrl>" alt="Logo"/>
+<#--             src= <@ofbizContentUrl>${catalogHeaderLogo}</@ofbizContentUrl>-->
+            <img src="" alt="Logo"/>
           <#elseif layoutSettings.VT_HDR_IMAGE_URL?has_content>
-            <img src="<@ofbizContentUrl>${layoutSettings.VT_HDR_IMAGE_URL}</@ofbizContentUrl>" alt="Logo"/>
+<#--           src=   <@ofbizContentUrl>${layoutSettings.VT_HDR_IMAGE_URL}</@ofbizContentUrl>-->
+            <img src="" alt="Logo"/>
           </#if>
         </a>
     </div>

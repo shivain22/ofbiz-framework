@@ -33,18 +33,18 @@ under the License.
         <meta name="csrf-token" content="<@csrfTokenAjax/>"/>
     </#if>
     <title>${layoutSettings.companyName}: <#if (titleProperty)?has_content>${uiLabelMap[titleProperty]}<#else>${title!}</#if></title>
-    <#if layoutSettings.shortcutIcon?has_content>
-      <#assign shortcutIcon = layoutSettings.shortcutIcon/>
-    <#elseif layoutSettings.VT_SHORTCUT_ICON?has_content>
-      <#assign shortcutIcon = layoutSettings.VT_SHORTCUT_ICON   />
-    </#if>
-    <#if shortcutIcon?has_content>
-        <link rel="shortcut icon" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+".ico"}</@ofbizContentUrl>" type="image/x-icon">
-        <link rel="icon" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+".png"}</@ofbizContentUrl>" type="image/png">
-        <link rel="icon" sizes="32x32" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+"-32.png"}</@ofbizContentUrl>" type="image/png">
-        <link rel="icon" sizes="64x64" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+"-64.png"}</@ofbizContentUrl>" type="image/png">
-        <link rel="icon" sizes="96x96" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+"-96.png"}</@ofbizContentUrl>" type="image/png">
-    </#if>
+<#--    <#if layoutSettings.shortcutIcon?has_content>-->
+<#--      <#assign shortcutIcon = layoutSettings.shortcutIcon/>-->
+<#--    <#elseif layoutSettings.VT_SHORTCUT_ICON?has_content>-->
+<#--      <#assign shortcutIcon = layoutSettings.VT_SHORTCUT_ICON   />-->
+<#--    </#if>-->
+<#--    <#if shortcutIcon?has_content>-->
+<#--        <link rel="shortcut icon" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+".ico"}</@ofbizContentUrl>" type="image/x-icon">-->
+<#--        <link rel="icon" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+".png"}</@ofbizContentUrl>" type="image/png">-->
+<#--        <link rel="icon" sizes="32x32" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+"-32.png"}</@ofbizContentUrl>" type="image/png">-->
+<#--        <link rel="icon" sizes="64x64" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+"-64.png"}</@ofbizContentUrl>" type="image/png">-->
+<#--        <link rel="icon" sizes="96x96" href="<@ofbizContentUrl>${StringUtil.wrapString(shortcutIcon)+"-96.png"}</@ofbizContentUrl>" type="image/png">-->
+<#--    </#if>-->
     <#if layoutSettings.VT_HDR_JAVASCRIPT?has_content>
         <#list layoutSettings.VT_HDR_JAVASCRIPT as javaScript>
             <script src="<@ofbizContentUrl>${StringUtil.wrapString(javaScript)}</@ofbizContentUrl>" type="application/javascript"></script>
