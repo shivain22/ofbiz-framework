@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <ContactListType contactListTypeId="ANNOUNCEMENT" description="Announcement" lastUpdatedStamp="2024-05-04 17:55:45.111" lastUpdatedTxStamp="2024-05-04 17:55:44.95" createdStamp="2024-05-04 17:55:45.111" createdTxStamp="2024-05-04 17:55:44.95"/>
-    <ContactListType contactListTypeId="MARKETING" description="Marketing" lastUpdatedStamp="2024-05-04 17:55:45.095" lastUpdatedTxStamp="2024-05-04 17:55:44.95" createdStamp="2024-05-04 17:55:45.095" createdTxStamp="2024-05-04 17:55:44.95"/>
-    <ContactListType contactListTypeId="NEWSLETTER" description="Newsletter" lastUpdatedStamp="2024-05-04 17:55:45.104" lastUpdatedTxStamp="2024-05-04 17:55:44.95" createdStamp="2024-05-04 17:55:45.104" createdTxStamp="2024-05-04 17:55:44.95"/>
-</entity-engine-xml>

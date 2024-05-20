@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <ContentAttribute contentId="ASK" attrName="publishOperation" attrValue="HAS_USER_ROLE" lastUpdatedStamp="2024-05-04 17:56:21.072" lastUpdatedTxStamp="2024-05-04 17:56:10.276" createdStamp="2024-05-04 17:56:21.072" createdTxStamp="2024-05-04 17:56:10.276"/>
-    <ContentAttribute contentId="CNTGIZMOS" attrName="publishOperation" attrValue="HAS_USER_ROLE" lastUpdatedStamp="2024-05-04 17:59:50.17" lastUpdatedTxStamp="2024-05-04 17:59:49.736" createdStamp="2024-05-04 17:59:50.17" createdTxStamp="2024-05-04 17:59:49.736"/>
-    <ContentAttribute contentId="CNTWIDGETS" attrName="publishOperation" attrValue="HAS_USER_ROLE" lastUpdatedStamp="2024-05-04 17:59:50.92" lastUpdatedTxStamp="2024-05-04 17:59:49.736" createdStamp="2024-05-04 17:59:50.92" createdTxStamp="2024-05-04 17:59:49.736"/>
-    <ContentAttribute contentId="GIZMOS" attrName="publishOperation" attrValue="HAS_USER_ROLE" lastUpdatedStamp="2024-05-04 17:56:21.323" lastUpdatedTxStamp="2024-05-04 17:56:10.276" createdStamp="2024-05-04 17:56:21.323" createdTxStamp="2024-05-04 17:56:10.276"/>
-    <ContentAttribute contentId="POLICY" attrName="publishOperation" attrValue="HAS_USER_ROLE" lastUpdatedStamp="2024-05-04 17:59:51.827" lastUpdatedTxStamp="2024-05-04 17:59:49.736" createdStamp="2024-05-04 17:59:51.827" createdTxStamp="2024-05-04 17:59:49.736"/>
-    <ContentAttribute contentId="WIDGETS" attrName="publishOperation" attrValue="HAS_USER_ROLE" lastUpdatedStamp="2024-05-04 17:56:21.601" lastUpdatedTxStamp="2024-05-04 17:56:10.276" createdStamp="2024-05-04 17:56:21.601" createdTxStamp="2024-05-04 17:56:10.276"/>
-</entity-engine-xml>

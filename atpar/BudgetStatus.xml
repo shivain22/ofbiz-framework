@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <BudgetStatus budgetId="DemoBudget001" statusId="BG_CREATED" statusDate="2009-01-09 00:00:00.0" lastUpdatedStamp="2024-05-04 17:56:55.423" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.423" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <BudgetStatus budgetId="DemoBudget001" statusId="BG_REVIEWED" statusDate="2009-01-10 00:00:00.0" lastUpdatedStamp="2024-05-04 17:56:55.45" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.45" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <BudgetStatus budgetId="DemoBudget002" statusId="BG_APPROVED" statusDate="2009-01-11 00:00:00.0" lastUpdatedStamp="2024-05-04 17:56:55.495" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.495" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <BudgetStatus budgetId="DemoBudget002" statusId="BG_CREATED" statusDate="2009-01-09 00:00:00.0" lastUpdatedStamp="2024-05-04 17:56:55.46" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.46" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <BudgetStatus budgetId="DemoBudget002" statusId="BG_REVIEWED" statusDate="2009-01-10 00:00:00.0" lastUpdatedStamp="2024-05-04 17:56:55.485" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.485" createdTxStamp="2024-05-04 17:56:34.985"/>
-</entity-engine-xml>

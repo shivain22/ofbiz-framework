@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <BudgetReviewResultType budgetReviewResultTypeId="BGR_ACCEPTED" description="Accepted" lastUpdatedStamp="2024-05-04 17:55:34.446" lastUpdatedTxStamp="2024-05-04 17:55:24.665" createdStamp="2024-05-04 17:55:34.446" createdTxStamp="2024-05-04 17:55:24.665"/>
-    <BudgetReviewResultType budgetReviewResultTypeId="BGR_REJECTED" description="Rejected" lastUpdatedStamp="2024-05-04 17:55:34.46" lastUpdatedTxStamp="2024-05-04 17:55:24.665" createdStamp="2024-05-04 17:55:34.46" createdTxStamp="2024-05-04 17:55:24.665"/>
-</entity-engine-xml>

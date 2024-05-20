@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <BudgetRole budgetId="DemoBudget001" partyId="ACCOUNTING" roleTypeId="INTERNAL_ORGANIZATIO" lastUpdatedStamp="2024-05-04 17:56:55.505" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.505" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <BudgetRole budgetId="DemoBudget002" partyId="MARKETING" roleTypeId="INTERNAL_ORGANIZATIO" lastUpdatedStamp="2024-05-04 17:56:55.544" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.544" createdTxStamp="2024-05-04 17:56:34.985"/>
-    <BudgetRole budgetId="DemoBudget002" partyId="accountingadmin" roleTypeId="ACCOUNTANT" lastUpdatedStamp="2024-05-04 17:56:55.522" lastUpdatedTxStamp="2024-05-04 17:56:34.985" createdStamp="2024-05-04 17:56:55.522" createdTxStamp="2024-05-04 17:56:34.985"/>
-</entity-engine-xml>

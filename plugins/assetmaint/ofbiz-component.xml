@@ -55,6 +55,6 @@
         location="webapp/ismgr"
         base-permission="OFBTOOLS,ASSETMAINT"
         mount-point="/ismgr"
-        app-bar-display="true"/>
+        app-bar-display="false"/>
 
 </ofbiz-component>

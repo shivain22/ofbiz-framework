@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-engine-xml>
-    <BudgetItemType budgetItemTypeId="REQUIREMENT_BUDGET_A" hasTable="Y" description="Requirement" lastUpdatedStamp="2024-05-04 17:55:25.188" lastUpdatedTxStamp="2024-05-04 17:55:24.665" createdStamp="2024-05-04 17:55:25.188" createdTxStamp="2024-05-04 17:55:24.665"/>
-</entity-engine-xml>
