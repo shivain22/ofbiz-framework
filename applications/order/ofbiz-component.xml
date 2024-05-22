@@ -64,6 +64,7 @@ under the License.
         app-shortcut-screen="component://order/widget/ordermgr/CommonScreens.xml#ShortcutApp"
         location="webapp/ordermgr"
         base-permission="OFBTOOLS,ORDERMGR"
+            app-bar-display="false"
         mount-point="/ordermgr"/>
 </ofbiz-component>
 

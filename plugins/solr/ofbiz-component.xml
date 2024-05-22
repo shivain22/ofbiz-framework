@@ -41,6 +41,6 @@ under the License.
         mount-point="/solr"
         base-permission="OFBTOOLS,CONTENTMGR"
         menu-name="secondary"
-        app-bar-display="true" />
+            app-bar-display="false" />
 
 </ofbiz-component>

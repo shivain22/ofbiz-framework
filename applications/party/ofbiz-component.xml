@@ -48,5 +48,6 @@ under the License.
         location="webapp/partymgr"
         base-permission="OFBTOOLS,PARTYMGR"
         app-shortcut-screen="component://party/widget/partymgr/CommonScreens.xml#ShortcutApp"
+            app-bar-display="false"
         mount-point="/partymgr"/>
 </ofbiz-component>

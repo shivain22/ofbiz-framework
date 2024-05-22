@@ -37,6 +37,7 @@ under the License.
     <webapp name="ofbizsetup"
         title="Setup"
         server="default-server"
+            app-bar-display="false"
         location="webapp/ofbizsetup"
         base-permission="OFBTOOLS,SETUP"
         mount-point="/ofbizsetup"/>

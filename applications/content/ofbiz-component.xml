@@ -52,6 +52,7 @@ under the License.
         location="webapp/content"
         base-permission="OFBTOOLS,CONTENTMGR"
         app-shortcut-screen="component://content/widget/CommonScreens.xml#ShortcutApp"
+            app-bar-display="false"
         mount-point="/content"/>
     
     <webapp name="contentimages"

@@ -40,5 +40,5 @@ under the License.
         base-permission="OFBTOOLS,HUMANRES"
         mount-point="/humanres"
         app-shortcut-screen="component://humanres/widget/CommonScreens.xml#ShortcutApp"
-        app-bar-display="true"/>
+            app-bar-display="false"/>
 </ofbiz-component>

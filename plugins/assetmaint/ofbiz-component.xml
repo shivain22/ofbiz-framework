@@ -46,7 +46,7 @@
         location="webapp/assetmaint"
         base-permission="OFBTOOLS,ASSETMAINT"
         mount-point="/assetmaint"
-        app-bar-display="true"/>
+        app-bar-display="false"/>
 
     <webapp name="ismgr"
         title="IS Mgr"

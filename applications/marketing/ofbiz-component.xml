@@ -42,6 +42,7 @@ under the License.
         location="webapp/marketing"
         base-permission="OFBTOOLS,MARKETING"
         app-shortcut-screen="component://marketing/widget/CommonScreens.xml#ShortcutApp"
+            app-bar-display="false"
         mount-point="/marketing"/>
     <webapp name="SalesForceAutomation"
         title="SFA"
@@ -49,6 +50,7 @@ under the License.
         server="default-server"
         location="webapp/sfa"
         base-permission="OFBTOOLS,SFA"
+            app-bar-display="false"
         app-shortcut-screen="component://marketing/widget/sfa/CommonScreens.xml#ShortcutApp"
         mount-point="/sfa"/>
 </ofbiz-component>

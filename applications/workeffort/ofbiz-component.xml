@@ -45,6 +45,7 @@ under the License.
         location="webapp/workeffort"
         base-permission="OFBTOOLS,WORKEFFORTMGR"
         app-shortcut-screen="component://workeffort/widget/CommonScreens.xml#ShortcutApp"
+             app-bar-display="false"
         mount-point="/workeffort"/>
 
      <webapp name="ical"
@@ -52,5 +53,6 @@ under the License.
         app-bar-display="false"
         server="default-server"
         location="webapp/ical"
+
         mount-point="/iCalendar"/>
 </ofbiz-component>

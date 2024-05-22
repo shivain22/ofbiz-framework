@@ -34,7 +34,7 @@
     <webapp name="myportal"
         title="MyPortal"
         position="18"
-        app-bar-display="true"
+            app-bar-display="false"
         base-permission="MYPORTALBASE"
         server="default-server"
         location="webapp/myportal"

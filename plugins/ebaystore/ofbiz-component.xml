@@ -45,5 +45,5 @@ under the License.
         location="webapp/ebaystore"
         base-permission="EBAYSTORE"
         mount-point="/ebaystore"
-        app-bar-display="true"/>
+            app-bar-display="false"/>
 </ofbiz-component>

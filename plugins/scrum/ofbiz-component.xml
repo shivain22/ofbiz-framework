@@ -49,7 +49,7 @@ under the License.
         server="default-server"
         position="21"
         location="webapp/scrum"
-        app-bar-display="true"
+            app-bar-display="false"
         base-permission="SCRUM"
         mount-point="/scrum"/>
         

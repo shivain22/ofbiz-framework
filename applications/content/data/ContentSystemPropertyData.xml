@@ -39,7 +39,7 @@ under the License.
      description="buffer size of streams"/>
 
    <SystemProperty systemResourceId="content" systemPropertyId="baseUrl" 
-    systemPropertyValue="https://localhost:8443"
+    systemPropertyValue="http://localhost:8089"
     description="base uri for content"/>
 
     <SystemProperty systemResourceId="content" systemPropertyId="disable.ftl.template.cache" 

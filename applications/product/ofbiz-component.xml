@@ -83,6 +83,7 @@ under the License.
         location="webapp/catalog"
         base-permission="OFBTOOLS,CATALOG"
         app-shortcut-screen="component://product/widget/catalog/CatalogScreens.xml#ShortcutApp"
+            app-bar-display="false"
         mount-point="/catalog"/>
     <webapp name="facility"
         title="Facility"
@@ -91,6 +92,7 @@ under the License.
         server="default-server"
         location="webapp/facility"
         base-permission="OFBTOOLS,FACILITY"
+            app-bar-display="false"
         app-shortcut-screen="component://product/widget/facility/FacilityScreens.xml#ShortcutApp"
         mount-point="/facility"/>
 </ofbiz-component>
