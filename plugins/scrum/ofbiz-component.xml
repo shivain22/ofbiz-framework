@@ -49,7 +49,7 @@ under the License.
         server="default-server"
         position="21"
         location="webapp/scrum"
-            app-bar-display="false"
+            app-bar-display="true"
         base-permission="SCRUM"
         mount-point="/scrum"/>
         
@@ -57,7 +57,7 @@ under the License.
         title="Scrumdemo"
         server="default-server"
         location="webapp/demotest"
-        app-bar-display="false"
+        app-bar-display="true"
         base-permission=""
         mount-point="/scrumdemo" />
 </ofbiz-component>

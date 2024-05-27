@@ -37,7 +37,7 @@ under the License.
     <webapp name="ofbizsetup"
         title="Setup"
         server="default-server"
-            app-bar-display="false"
+            app-bar-display="true"
         location="webapp/ofbizsetup"
         base-permission="OFBTOOLS,SETUP"
         mount-point="/ofbizsetup"/>
@@ -47,6 +47,6 @@ under the License.
         server="default-server"
         location="webapp/ordermgr-js"
         mount-point="/ordermgr-js"
-        app-bar-display="false"/>
+        app-bar-display="true"/>
     
 </ofbiz-component>

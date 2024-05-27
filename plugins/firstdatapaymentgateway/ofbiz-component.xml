@@ -48,5 +48,5 @@ under the License.
         location="webapp/firstdata"
         base-permission="OFBTOOLS,FDSECURITY"
         mount-point="/firstdata"
-            app-bar-display="false" />
+            app-bar-display="true" />
 </ofbiz-component>

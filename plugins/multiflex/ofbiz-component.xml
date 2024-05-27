@@ -34,5 +34,5 @@ under the License.
         server="default-server"
         location="webapp/multiflex"
         mount-point="/multiflex"
-        app-bar-display="false"/>
+        app-bar-display="true"/>
 </ofbiz-component>

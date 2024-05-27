@@ -43,5 +43,5 @@ under the License.
         location="webapp/content"
         base-permission="OFBTOOLS,CONTENTMGR"
         mount-point="/content"
-            app-bar-display="false"/>
+            app-bar-display="true"/>
 </ofbiz-component>

@@ -46,5 +46,5 @@ under the License.
             server="default-server"
             location="webapp/passport"
             mount-point="/passport"
-            app-bar-display="false" />
+            app-bar-display="true" />
 </ofbiz-component>

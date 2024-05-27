@@ -27,7 +27,7 @@ under the License.
         title="ExampleExt"
         position="27"
         menu-name="secondary"
-            app-bar-display="false"
+            app-bar-display="true"
         server="default-server"
         location="webapp/exampleext"
         base-permission="OFBTOOLS,EXAMPLE"

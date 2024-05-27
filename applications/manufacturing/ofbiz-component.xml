@@ -51,7 +51,7 @@ under the License.
         location="webapp/manufacturing"
         base-permission="OFBTOOLS,MANUFACTURING"
         app-shortcut-screen="component://manufacturing/widget/manufacturing/CommonScreens.xml#ShortcutApp"
-            app-bar-display="false"
+            app-bar-display="true"
         mount-point="/manufacturing"/>
 
 </ofbiz-component>

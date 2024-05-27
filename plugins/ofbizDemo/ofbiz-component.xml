@@ -47,7 +47,7 @@ under the License.
     <webapp name="ofbizDemo"
         title="OfbizDemo"
         server="default-server"
-            app-bar-display="false"
+            app-bar-display="true"
         location="webapp/ofbizDemo"
         base-permission="OFBTOOLS,OFBIZDEMO"
         mount-point="/ofbizDemo"/>

@@ -49,5 +49,5 @@ under the License.
         location="webapp/bi"
         base-permission="OFBTOOLS,BI"
         mount-point="/bi"
-            app-bar-display="false"/>
+            app-bar-display="true"/>
 </ofbiz-component>

@@ -249,6 +249,6 @@ under the License.
                 server="default-server"
                 location="webapp/ROOT"
                 mount-point="/"
-                app-bar-display="false"/>
+                app-bar-display="true"/>
     -->
 </ofbiz-component>

@@ -52,7 +52,7 @@ under the License.
         title="Example"
         position="26"
         menu-name="secondary"
-            app-bar-display="false"
+            app-bar-display="true"
         server="default-server"
         location="webapp/example"
         base-permission="OFBTOOLS,EXAMPLE"

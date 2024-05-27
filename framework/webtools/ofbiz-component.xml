@@ -33,6 +33,6 @@ under the License.
         server="default-server"
         location="webapp/webtools"
         base-permission="OFBTOOLS,WEBTOOLS"
-            app-bar-display="false"
+            app-bar-display="true"
         mount-point="/webtools"/>
 </ofbiz-component>

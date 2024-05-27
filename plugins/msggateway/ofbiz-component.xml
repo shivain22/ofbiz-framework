@@ -43,5 +43,5 @@ under the License.
            location="webapp/msggateway"
         base-permission="OFBTOOLS,MSGGATEWAY"
         mount-point="/msggateway"
-        app-bar-display="false"/>
+        app-bar-display="true"/>
 </ofbiz-component>

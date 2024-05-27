@@ -51,7 +51,7 @@ https://cwiki.apache.org/confluence/display/OFBIZ/Using+BIRT+with+OFBiz
         server="default-server"
         position="5"
         location="webapp/accounting"
-            app-bar-display="false"
+            app-bar-display="true"
         base-permission="OFBTOOLS,ACCOUNTING"
         mount-point="/accounting"/>
     <webapp name="facility"
@@ -60,7 +60,7 @@ https://cwiki.apache.org/confluence/display/OFBIZ/Using+BIRT+with+OFBiz
         description="FacilityComponentDescription"
         server="default-server"
         location="webapp/facility"
-            app-bar-display="false"
+            app-bar-display="true"
         base-permission="OFBTOOLS,FACILITY"
         mount-point="/facility"/>
     <webapp name="order"
@@ -68,7 +68,7 @@ https://cwiki.apache.org/confluence/display/OFBIZ/Using+BIRT+with+OFBiz
         position="4"
         description="OrderComponentDescription"
         server="default-server"
-            app-bar-display="false"
+            app-bar-display="true"
         location="webapp/ordermgr"
         base-permission="OFBTOOLS,ORDERMGR"
         mount-point="/ordermgr"/>
@@ -81,7 +81,7 @@ https://cwiki.apache.org/confluence/display/OFBIZ/Using+BIRT+with+OFBiz
         base-permission="OFBTOOLS,WEBTOOLS"
         mount-point="/birt"
         menu-name="secondary"
-            app-bar-display="false"/>
+            app-bar-display="true"/>
 
     <container name="birt-container" loaders="main" class="org.apache.ofbiz.birt.container.BirtContainer"/>
 
