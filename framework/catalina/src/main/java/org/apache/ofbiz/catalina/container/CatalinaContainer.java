@@ -121,7 +121,13 @@ public class CatalinaContainer implements Container {
         // clustering, valves and connectors setup
         Property clusterProps = prepareTomcatClustering(host, engineConfig);
         prepareTomcatEngineValves(engineConfig).forEach(valve -> ((StandardEngine)engine).addValve(valve));
-        prepareTomcatConnectors(configuration).forEach(connector -> tomcat.getService().addConnector(connector));
+        prepareTomcatConnectors(configuration).forEach(connector ->
+                {
+                    if(connector.getPort()==8080){
+                        connector.setPort(8089);
+                    }
+                tomcat.getService().addConnector(connector);
+                });
 
         loadWebapps(tomcat, configuration, clusterProps);
     }
