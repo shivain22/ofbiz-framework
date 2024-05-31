@@ -37,7 +37,15 @@
         <security https="true" auth="true"/>
         <response name="success" type="view" value="showMessage"/>
     </request-map>
-
+    <request-map uri="editpartygroup"><security https="true" auth="true"/><response name="success" type="view" value="EditPartyGroup"/></request-map>
+    <request-map uri="createPartyGroup">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="createPartyGroup"/>
+        <response name="success" type="request-redirect" value="viewprofile">
+            <redirect-parameter name="partyId"/>
+        </response>
+        <response name="error" type="view" value="EditPartyGroup"/>
+    </request-map>
     <!-- party requests -->
     <request-map uri="updatePartyGroup">
         <security https="true" auth="true"/>

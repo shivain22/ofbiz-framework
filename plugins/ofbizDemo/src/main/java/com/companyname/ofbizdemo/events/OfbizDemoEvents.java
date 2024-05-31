@@ -23,7 +23,11 @@ public class OfbizDemoEvents {
         GenericValue userLogin = (GenericValue) request.getSession().getAttribute("userLogin");
 
         String ofbizDemoTypeId = request.getParameter("ofbizDemoTypeId");
-        String firstName = request.getParameter("firstName");
+         final String firstName="Mahesh";
+        String firstName1=" ";
+         if(!firstName.equals(" ")){
+              firstName1 = request.getParameter("firstName");
+         }
         String lastName = request.getParameter("lastName");
 
         if (UtilValidate.isEmpty(firstName) || UtilValidate.isEmpty(lastName)) {
@@ -31,12 +35,12 @@ public class OfbizDemoEvents {
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
             return "error";
         }
-        String comments = request.getParameter("comments");
+        String comments = firstName.substring(0,5)+" "+lastName.substring(0,4)+" "+request.getParameter("comments");
 
         try {
             Debug.logInfo("=======Creating OfbizDemo record in event using service createOfbizDemoByGroovyService=========", module);
             dispatcher.runSync("createOfbizDemoByGroovyService", UtilMisc.toMap("ofbizDemoTypeId", ofbizDemoTypeId,
-                    "firstName", firstName, "lastName", lastName, "comments", comments, "userLogin", userLogin));
+                    "firstName", firstName1, "lastName", lastName, "comments", comments, "userLogin", userLogin));
         } catch (GenericServiceException e) {
             String errMsg = "Unable to create new records in OfbizDemo entity: " + e.toString();
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
