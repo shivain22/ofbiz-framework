@@ -30,6 +30,14 @@ under the License.
         </description>
     </service>
 
+    <service name="creatAtparTechieByEvents" default-entity-name="atparTechie" engine="java"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieEvent" auth="true">
+        <description>Create an Ofbiz Demo record using a service in Java</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <override name="comments" optional="true"/>
+    </service>
+
     <service name="createAtparTechieByService" default-entity-name="atparTechie" engine="java"
              location="com.companyname.atparOfbizApp.services.AtparOfbizAppServices" invoke="createAtparTechie" auth="true">
         <description>Create an Atpar Techie record</description>
@@ -43,5 +51,18 @@ under the License.
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
         <override name="comments" optional="true"/>
     </service>
-
+    <service name="createAtparTechieUpload" default-entity-name="atparTechieUpload" engine="entity-auto" invoke="create" auth="true">
+        <description>Create an Atpar Techie record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <override name="comments" optional="true"/>
+    </service>
+    <service name="createAtparTechieUploadByEvents" default-entity-name="atparTechieUpload" engine="java"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieUploadEvent" auth="true">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="false" />
+        <attribute name="uploadFile" type="String" mode="IN" optional="false"/>
+    </service>
 </services>

@@ -25,10 +25,105 @@ under the License.
         <!-- We have this utility in OFBiz to render form based on service definition.
              Service attributes will automatically lookedup and will be shown on form
         -->
-        <auto-fields-service service-name="createAtparTechie"/>
-        <field name="atparTechiesUploadId" title="${uiLabelMap.CommonType}">
-            <file size="25"></file>
+<!--        <field name="upoadFile">-->
+<!--            <file size="25"></file>-->
+<!--        </field>-->
+        <field name="atparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><text/></field>
+        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}"><text/></field>
+        <field name="lastName" title="${uiLabelMap.AtparTechielastName}"><text/></field>
+        <field name="role" title="${uiLabelMap.AtparTechieRole}"><text/></field>
+        <field name="comments" title="${uiLabelMap.AtparTechieComments}"><text/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+    <form name="AddAtparTechieUpload"  type="upload" target="createAtparTechieUpload">
+        <auto-fields-service service-name="createAtparTechieUpload"/>
+        <field  name="upload_file" title="${uiLabelMap.upload_file}">
+            <file size="25"/>
         </field>
         <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
     </form>
+
+    
+<!--    Atpar Edit product form -->
+    <form name="EditProduct" type="single" target="createProductAndRole" default-map-name="product">
+        <actions>
+            <set field="supportDiscontinuationDate" from-field="supportDiscontinuationDate"/>
+            <set field="statusId" value="${groovy: if(supportDiscontinuationDate == null) return 'PRODUCT_ACTIVE' else return 'PRODUCT_CLOSED'}"/>
+        </actions>
+        <alt-target use-when="product!=null" target="updateProduct"/>
+        <field name="partyCompany"><hidden/></field>
+        <field name="partyId" title="${uiLabelMap.AtparCompanyAndProductOwner}" tooltip="${uiLabelMap.AtparCompanyNameShow} -- ${uiLabelMap.AtparProductName}" event="onchange" action="javascript:document.EditProduct.partyCompany.value=this.options[this.selectedIndex].text;" parameter-name="partyId" use-when="companyCurrent==null">
+            <drop-down allow-empty="false" >
+                <option key="" description="-select one-"/>
+                <list-options list-name="AtparRolesPersonAndCompanyList" description="${groupName}[${partyIdFrom}] -- ${lastName} ${firstName} ${middleName}" key-name="partyId"/>
+            </drop-down>
+        </field>
+<!--        <field name="partyId" title="${uiLabelMap.AtparCompanyAndProductOwner}" tooltip="${uiLabelMap.AtparCompanyNameShow} - ${uiLabelMap.AtparProductName}" event="onchange" action="javascript:document.EditProduct.partyCompany.value=this.options[this.selectedIndex].text;" parameter-name="partyId" use-when="companyCurrent!=null">-->
+<!--            <drop-down allow-empty="false" current-description="${companyCurrentList[0].groupName}[${companyCurrentList[0].partyIdFrom}] - ${companyCurrentList[0].lastName} ${companyCurrentList[0].firstName} ${companyCurrentList[0].middleName}" >-->
+<!--                <option key="${companyCurrentList[0].groupName}[${companyCurrentList[0].partyIdFrom}] - ${companyCurrentList[0].lastName} ${companyCurrentList[0].firstName} ${companyCurrentList[0].middleName}(${companyCurrentList[0].partyId})" description="${companyCurrentList[0].groupName}[${companyCurrentList[0].partyIdFrom}] - ${companyCurrentList[0].lastName} ${companyCurrentList[0].firstName} ${companyCurrentList[0].middleName}"/>-->
+<!--                <option key="" description=""/>-->
+<!--                <list-options list-name="AtparRolesPersonAndCompanyList" description="${groupName}[${partyIdFrom}] - ${lastName} ${firstName} ${middleName}" key-name="partyId"/>-->
+<!--            </drop-down>-->
+<!--        </field>-->
+        <field name="statusId" title="${uiLabelMap.CommonStatus}" use-when="product!=null">
+            <drop-down>
+                <entity-options entity-name="StatusItem">
+                    <entity-constraint name="statusTypeId" value="PRODUCT_STATUS"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="productId"><text/></field>
+        <field name="internalName" title="${uiLabelMap.AtparProductName}" required-field="true"><text/></field>
+        <field name="longDescription" title="${uiLabelMap.CommonDescription}"><textarea/></field>
+        <field name="productTypeId"><hidden value="GOOD"/></field>
+        <field name="primaryProductCategoryId"><hidden value="BEST-SELL-1"/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" use-when="product==null" widget-style="smallSubmit"><submit button-type="button"/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}" position="1" use-when="product!=null"  widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
+                                                                                                                                                                                if (confirm('Are you sure to close this product ?.')){ 
+                                                                                                                                                                                    document.ViewEditProdBacklog.disable();
+                                                                                                                                                                                    document.EditProduct.action = 'updateProduct';
+                                                                                                                                                                                    document.EditProduct.submit(); 
+                                                                                                                                                                                }
+                                                                                                                                                                                else
+                                                                                                                                                                              document.EditProduct.action = 'EditProduct?statusId=PRODUCT_ACTIVE';
+                                                                                                                                                                                }"><submit button-type="button"/></field>
+    </form>
+<!--Atpar View Product-->
+
+    <form name="ViewProduct" type="single" target="ViewProduct" default-map-name="product">
+        <actions>
+            <entity-and entity-name="ProductRole" list="productComRole">
+                <field-map field-name="productId" from-field="parameters.productId"/>
+                <field-map field-name="roleTypeId" value="PRODUCT_OWNER_COMP"/>
+                <field-map field-name="thruDate" value=""/>
+            </entity-and>
+            <entity-and entity-name="ProductRole" list="productRole">
+                <field-map field-name="productId" from-field="parameters.productId"/>
+                <field-map field-name="roleTypeId" value="PRODUCT_OWNER"/>
+                <field-map field-name="thruDate" value=""/>
+            </entity-and>
+<!--            <entity-and entity-name="AtparPersonAndCompany" list="parties">-->
+<!--                <field-map field-name="partyIdFrom" from-field="productComRole[0].partyId"/>-->
+<!--                <field-map field-name="partyId" from-field="productRole[0].partyId"/>-->
+<!--            </entity-and>-->
+            <set field="supportDiscontinuationDate" from-field="product.supportDiscontinuationDate"/>
+            <set field="statusMap.statusId" value="${groovy: if(supportDiscontinuationDate == null) return 'PRODUCT_ACTIVE' else return 'PRODUCT_CLOSED'}"/>
+        </actions>
+        <field name="productOwerId" title="${uiLabelMap.AtparCompanyAndProductOwner}">
+            <hyperlink description="${parties[0].groupName} -- ${parties[0].lastName} ${parties[0].firstName} ${parties[0].middleName}" target="viewprofile">
+                <parameter param-name="partyId" from-field="productRole[0].partyId"/>
+            </hyperlink>
+        </field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}" use-when="product!=null" map-name="statusMap">
+            <display-entity entity-name="StatusItem"/>
+        </field>
+        <field name="internalName" title="${uiLabelMap.AtparProductName}"><display description="${product.internalName} [${product.productId}]"/></field>
+        <field name="longDescription" title="${uiLabelMap.CommonDescription}"><display /></field>
+        <field name="productTypeId"><hidden value="GOOD"/></field>
+
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" use-when="product==null" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+
+
+
 </forms>

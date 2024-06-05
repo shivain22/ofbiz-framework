@@ -27,21 +27,21 @@ under the License.
     <description>None</description>
     <version>1.0</version>
     <entity entity-name="atparTechieUpload" package-name="org.apache.ofbiz.atparofbizapp" title="Atpar Techie Upload Entity">
-        <field name="atparTechiesUploadId" type="id"><description>primary sequenced ID</description></field>
-        <field name="upoadFile" type="file"></field>
-        <prim-key field="atparTechiesUploadId"/>
+        <field name="atparTechieUploadId" type="id"><description>primary sequenced ID</description></field>
+        <field name="uploadFile" type="name"></field>
+        <prim-key field="atparTechieUploadId"/>
     </entity>
 
     <entity entity-name="atparTechie" package-name="org.apache.ofbiz.atparofbizapp" title="Atpar Techie Entity">
         <field name="atparTechieId" type="id"><description>primary sequenced ID</description></field>
-        <field name="atparTechiesUploadId" type="id"></field>
+        <field name="atparTechieUploadId" type="id" ></field>
         <field name="firstName" type="name"></field>
         <field name="lastName" type="name"></field>
         <field name="role" type="name"></field>
         <field name="comments" type="comment"></field>
         <prim-key field="atparTechieId"/>
         <relation type="one" fk-name="ODEM_OD_TYPE_ID" rel-entity-name="atparTechieUpload">
-            <key-map field-name="atparTechiesUploadId"/>
+            <key-map field-name="atparTechieUploadId"/>
         </relation>
     </entity>
 </entitymodel>

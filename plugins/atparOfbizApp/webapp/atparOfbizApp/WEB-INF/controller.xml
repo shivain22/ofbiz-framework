@@ -46,6 +46,22 @@ under the License.
         <event type="service" invoke="createAtparTechie"/>
         <response name="success" type="view" value="main"/>
     </request-map>
+    <request-map uri="createAtparTechieUpload">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createAtparTechieUploadByEvents"/>
+        <response name="success" type="view" value="main"/>
+    </request-map>
+
+    <request-map uri="createProductAndRole">
+        <security https="true" auth="true"/>
+        <event type="simple" invoke="createProductAndRole" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
+        <response name="success" type="request-redirect" value="main">
+<!--            <redirect-parameter name="productId"/>-->
+        </response>
+        <response name="error" type="request-redirect" value="EditProduct"/>
+    </request-map>
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#main"/>
+    <view-map name="EditProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#EditProduct"/>
+    <view-map name="ViewProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#ViewProduct"/>
 </site-conf>

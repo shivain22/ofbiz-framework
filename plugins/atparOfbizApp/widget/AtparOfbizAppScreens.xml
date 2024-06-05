@@ -35,9 +35,57 @@ under the License.
                         <screenlet title="Add Atpar Techie">
                             <include-form name="AddAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
+                        <screenlet title="Add Atpar Techie Upload">
+                            <include-form name="AddAtparTechieUpload" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
+                        <screenlet title="Atpar Edit Product">
+                            <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
                     </decorator-section>
                 </decorator-screen>
 
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditProduct">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditProduct"/>
+                <set field="tabButtonItem" value="edit"/>
+                <set field="helpAnchor" value="_product_ui"/>
+                <entity-one entity-name="Product" value-field="product"/>
+                <set field="permissionMap.productId" from-field="parameters.productId"/>
+<!--                <script location="component://scrum/groovyScripts/ListScrumRolesPersonAndCompany.groovy"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+<!--                            <condition>-->
+<!--                                <or>-->
+<!--                                    <if-has-permission permission="SCRUM" action="_ADMIN"/>-->
+<!--                                </or>-->
+<!--                            </condition>-->
+                            <widgets>
+                                <screenlet title="${uiLabelMap.AtparEditProduct}">
+                                    <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                                </screenlet>
+                            </widgets>
+<!--                            <fail-widgets>-->
+<!--                                <section>-->
+<!--&lt;!&ndash;                                    <condition>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <if-service-permission service-name="scrumPermissionCheck" main-action="VIEW" resource-description="PRODUCT" context-map="permissionMap"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </condition>&ndash;&gt;-->
+<!--                                    <widgets>-->
+<!--                                        <screenlet title="${uiLabelMap.ScrumEditProduct}">-->
+<!--                                            <include-form name="EditProductByProductOwner" location="component://scrum/widget/scrumForms.xml"/>-->
+<!--                                        </screenlet>-->
+<!--                                    </widgets>-->
+<!--                                </section>-->
+<!--                            </fail-widgets>-->
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
             </widgets>
         </section>
     </screen>
