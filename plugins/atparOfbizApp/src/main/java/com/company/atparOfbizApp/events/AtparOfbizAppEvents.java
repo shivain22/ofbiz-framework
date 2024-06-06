@@ -38,6 +38,7 @@ public class AtparOfbizAppEvents {
         GenericValue userLogin = (GenericValue) context.get("userLogin");
         ByteBuffer  fileBytes =  (ByteBuffer ) context.get("upload_file");
         String filename = ( String) context.get("uploadFile");
+        String productId = ( String) context.get("productId");
         String filePath = filename;
 
         byte[] bytefile =fileBytes.array();
@@ -52,10 +53,12 @@ public class AtparOfbizAppEvents {
 
         String fileName=filename;
         // Specify the file path where the file will be saved
-        String destination = "C:/Users/chara/AppData/Local/Temp";
+        String destination = System.getProperty("java.io.tmpdir");
 
-        Path path = Paths.get(destination+"/"+fileName) ;
+        Path path = Paths.get(destination + productId + File.separator + fileName);
+
         try {
+            Files.createDirectories(path.getParent());
             Files.createFile(path);
         } catch (IOException e) {
             System.err.println("already exists: " + e.getMessage());
@@ -64,14 +67,42 @@ public class AtparOfbizAppEvents {
 
         // Convert byte array to File
         try {
-            File filepath = new File(destination+"/"+fileName);
+            File filepath = new File(destination + productId + File.separator + fileName);
             FileOutputStream fos = new FileOutputStream(filepath);
             fos.write(bytefile);
             fos.close();
-            System.out.println("File saved successfully at: " + destination+"/"+fileName);
+            System.out.println("File saved successfully at: " + destination + productId + File.separator + fileName);
         } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyMap();
+        }
+        String [] fileNames={"small.png","medium.png","large.png","detail.png","original.png"};
+//         destination = "C:/Users/chara/shivain22/ofbiz-framework/themes/common-theme/webapp/images/products";
+         destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"products";
+
+        for(String fileNameIn :fileNames){
+
+             path = Paths.get(destination + File.separator + productId + File.separator + fileNameIn) ;
+
+            try {
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
+            } catch (IOException e) {
+                System.err.println("already exists: " + e.getMessage());
+            }
+
+
+            // Convert byte array to File
+            try {
+                File filepath = new File(destination + File.separator + productId + File.separator + fileNameIn);
+                FileOutputStream fos = new FileOutputStream(filepath);
+                fos.write(bytefile);
+                fos.close();
+                System.out.println("File saved successfully at: " + destination + File.separator + productId + File.separator + fileNameIn);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return Collections.emptyMap();
+            }
         }
 
         try {
@@ -96,7 +127,7 @@ public class AtparOfbizAppEvents {
             AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
             g2d.setComposite(alphaChannel);
             g2d.setColor(Color.BLACK);
-            g2d.setFont(new Font("Arial", Font.BOLD, 256));
+            g2d.setFont(new Font("Arial", Font.BOLD, 24));
             FontMetrics fontMetrics = g2d.getFontMetrics();
             Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
 

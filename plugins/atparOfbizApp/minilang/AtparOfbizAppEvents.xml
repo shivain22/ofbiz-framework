@@ -45,10 +45,17 @@
                     <call-service service-name="createProduct" in-map-name="product">
                         <result-to-field result-name="productId"/>
                     </call-service>
+
                     <set field="productCategoryMember.productId" from-field="parameters.productId"/>
                     <set field="productCategoryMember.productCategoryId" from-field="parameters.primaryProductCategoryId"/>
                     <call-service service-name="addProductToCategory" in-map-name="productCategoryMember">
 <!--                        <result-to-field result-name="productId"/>-->
+                    </call-service>
+                    <set field="atparTechieUpload.productId" from-field="parameters.productId"/>
+                    <set field="atparTechieUpload.uploadFile" from-field="parameters.uploadFile"/>
+                    <set field="atparTechieUpload.upload_file" from-field="parameters.upload_file" type="java.nio.ByteBuffer"/>
+                    <call-service service-name="createAtparTechieUploadByEvents" in-map-name="atparTechieUpload">
+                        <!--                        <result-to-field result-name="productId"/>-->
                     </call-service>
                     <!-- create ProductRole -->
                     <set field="partyId" from-field="parameters.partyId"/>

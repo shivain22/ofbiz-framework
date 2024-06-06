@@ -64,5 +64,6 @@ under the License.
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
         <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="false" />
         <attribute name="uploadFile" type="String" mode="IN" optional="false"/>
+        <attribute name="productId" type="String" mode="IN" optional="false"/>
     </service>
 </services>

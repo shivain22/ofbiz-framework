@@ -45,19 +45,19 @@ under the License.
 
     
 <!--    Atpar Edit product form -->
-    <form name="EditProduct" type="single" target="createProductAndRole" default-map-name="product">
+    <form name="EditProduct" type="upload" target="createProductAndRole" default-map-name="product">
         <actions>
             <set field="supportDiscontinuationDate" from-field="supportDiscontinuationDate"/>
             <set field="statusId" value="${groovy: if(supportDiscontinuationDate == null) return 'PRODUCT_ACTIVE' else return 'PRODUCT_CLOSED'}"/>
         </actions>
         <alt-target use-when="product!=null" target="updateProduct"/>
         <field name="partyCompany"><hidden/></field>
-        <field name="partyId" title="${uiLabelMap.AtparCompanyAndProductOwner}" tooltip="${uiLabelMap.AtparCompanyNameShow} -- ${uiLabelMap.AtparProductName}" event="onchange" action="javascript:document.EditProduct.partyCompany.value=this.options[this.selectedIndex].text;" parameter-name="partyId" use-when="companyCurrent==null">
-            <drop-down allow-empty="false" >
-                <option key="" description="-select one-"/>
-                <list-options list-name="AtparRolesPersonAndCompanyList" description="${groupName}[${partyIdFrom}] -- ${lastName} ${firstName} ${middleName}" key-name="partyId"/>
-            </drop-down>
-        </field>
+<!--        <field name="partyId" title="${uiLabelMap.AtparCompanyAndProductOwner}" tooltip="${uiLabelMap.AtparCompanyNameShow} &#45;&#45; ${uiLabelMap.AtparProductName}" event="onchange" action="javascript:document.EditProduct.partyCompany.value=this.options[this.selectedIndex].text;" parameter-name="partyId" use-when="companyCurrent==null">-->
+<!--            <drop-down allow-empty="false" >-->
+<!--                <option key="" description="-select one-"/>-->
+<!--                <list-options list-name="AtparRolesPersonAndCompanyList" description="${groupName}[${partyIdFrom}] &#45;&#45; ${lastName} ${firstName} ${middleName}" key-name="partyId"/>-->
+<!--            </drop-down>-->
+<!--        </field>-->
 <!--        <field name="partyId" title="${uiLabelMap.AtparCompanyAndProductOwner}" tooltip="${uiLabelMap.AtparCompanyNameShow} - ${uiLabelMap.AtparProductName}" event="onchange" action="javascript:document.EditProduct.partyCompany.value=this.options[this.selectedIndex].text;" parameter-name="partyId" use-when="companyCurrent!=null">-->
 <!--            <drop-down allow-empty="false" current-description="${companyCurrentList[0].groupName}[${companyCurrentList[0].partyIdFrom}] - ${companyCurrentList[0].lastName} ${companyCurrentList[0].firstName} ${companyCurrentList[0].middleName}" >-->
 <!--                <option key="${companyCurrentList[0].groupName}[${companyCurrentList[0].partyIdFrom}] - ${companyCurrentList[0].lastName} ${companyCurrentList[0].firstName} ${companyCurrentList[0].middleName}(${companyCurrentList[0].partyId})" description="${companyCurrentList[0].groupName}[${companyCurrentList[0].partyIdFrom}] - ${companyCurrentList[0].lastName} ${companyCurrentList[0].firstName} ${companyCurrentList[0].middleName}"/>-->
@@ -72,6 +72,8 @@ under the License.
                 </entity-options>
             </drop-down>
         </field>
+        <field name="uploadFile" title="${uiLabelMap.FileName}"><text/></field>
+        <field name="upload_file" title="${uiLabelMap.UploadFile}"><file size="25"/></field>
         <field name="productId"><text/></field>
         <field name="internalName" title="${uiLabelMap.AtparProductName}" required-field="true"><text/></field>
         <field name="longDescription" title="${uiLabelMap.CommonDescription}"><textarea/></field>

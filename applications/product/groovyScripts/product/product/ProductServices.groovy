@@ -64,6 +64,13 @@ def createProduct() {
     newEntity.isVariant = newEntity.isVariant ?: "N"
     newEntity.isVirtual = newEntity.isVirtual ?: "N"
     newEntity.billOfMaterialLevel = newEntity.billOfMaterialLevel ?: 0l
+
+
+    newEntity.smallImageUrl="/images/products/"+newEntity.productId+"/small.png"
+    newEntity.mediumImageUrl="/images/products/"+newEntity.productId+"/medium.png"
+    newEntity.largeImageUrl="/images/products/"+newEntity.productId+"/large.png"
+    newEntity.detailImageUrl="/images/products/"+newEntity.productId+"/detail.png"
+    newEntity.originalImageUrl="/images/products/"+newEntity.productId+"/original.png"
     newEntity.create()
 
 /*
@@ -391,6 +398,11 @@ def createProductReview() {
     if (!newEntity.postedDateTime) {
         newEntity.postedDateTime = UtilDateTime.nowTimestamp()
     }
+    newEntity.smallImageUrl="/images/products/"+newEntity.productId+"/small.png"
+    newEntity.mediumImageUrl="/images/products/"+newEntity.productId+"/medium.png"
+    newEntity.largeImageUrl="/images/products/"+newEntity.productId+"/large.png"
+    newEntity.detailImageUrl="/images/products/"+newEntity.productId+"/detail.png"
+    newEntity.originalImageUrl="/images/products/"+newEntity.productId+"/original.png"
     newEntity.create()
 
     String productId = newEntity.productId

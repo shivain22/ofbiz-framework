@@ -50,43 +50,63 @@ under the License.
     <screen name="EditProduct">
         <section>
             <actions>
-                <set field="titleProperty" value="PageTitleEditProduct"/>
-                <set field="tabButtonItem" value="edit"/>
-                <set field="helpAnchor" value="_product_ui"/>
-                <entity-one entity-name="Product" value-field="product"/>
-                <set field="permissionMap.productId" from-field="parameters.productId"/>
-<!--                <script location="component://scrum/groovyScripts/ListScrumRolesPersonAndCompany.groovy"/>-->
+                <set field="headerItem" value="EditProduct"/><!-- this highlights the selected menu-item with name "main" -->
             </actions>
             <widgets>
                 <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
-                        <section>
-<!--                            <condition>-->
-<!--                                <or>-->
-<!--                                    <if-has-permission permission="SCRUM" action="_ADMIN"/>-->
-<!--                                </or>-->
-<!--                            </condition>-->
-                            <widgets>
-                                <screenlet title="${uiLabelMap.AtparEditProduct}">
-                                    <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
-                                </screenlet>
-                            </widgets>
-<!--                            <fail-widgets>-->
-<!--                                <section>-->
-<!--&lt;!&ndash;                                    <condition>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <if-service-permission service-name="scrumPermissionCheck" main-action="VIEW" resource-description="PRODUCT" context-map="permissionMap"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </condition>&ndash;&gt;-->
-<!--                                    <widgets>-->
-<!--                                        <screenlet title="${uiLabelMap.ScrumEditProduct}">-->
-<!--                                            <include-form name="EditProductByProductOwner" location="component://scrum/widget/scrumForms.xml"/>-->
-<!--                                        </screenlet>-->
-<!--                                    </widgets>-->
-<!--                                </section>-->
-<!--                            </fail-widgets>-->
-                        </section>
+                        <label text="AtarApplication"/>
+                    </decorator-section>
+                    <decorator-section name="body" >
+                        <screenlet title="Atpar Edit Product">
+                            <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
                     </decorator-section>
                 </decorator-screen>
+
             </widgets>
         </section>
     </screen>
+<!--    <screen name="EditProduct">-->
+<!--        <section>-->
+<!--            <actions>-->
+<!--                <set field="titleProperty" value="PageTitleEditProduct"/>-->
+<!--                <set field="tabButtonItem" value="edit"/>-->
+<!--                <set field="helpAnchor" value="_product_ui"/>-->
+<!--                <entity-one entity-name="Product" value-field="product"/>-->
+<!--                <set field="permissionMap.productId" from-field="parameters.productId"/>-->
+<!--&lt;!&ndash;                <script location="component://scrum/groovyScripts/ListScrumRolesPersonAndCompany.groovy"/>&ndash;&gt;-->
+<!--            </actions>-->
+<!--            <widgets>-->
+<!--                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">-->
+<!--                    <decorator-section name="body">-->
+<!--                        <section>-->
+<!--&lt;!&ndash;                            <condition>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <or>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <if-has-permission permission="SCRUM" action="_ADMIN"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </or>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </condition>&ndash;&gt;-->
+<!--                            <widgets>-->
+<!--                                <screenlet title="${uiLabelMap.AtparEditProduct}">-->
+<!--                                    <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>-->
+<!--                                </screenlet>-->
+<!--                            </widgets>-->
+<!--&lt;!&ndash;                            <fail-widgets>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <section>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                    <condition>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                        <if-service-permission service-name="scrumPermissionCheck" main-action="VIEW" resource-description="PRODUCT" context-map="permissionMap"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                    </condition>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <widgets>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <screenlet title="${uiLabelMap.ScrumEditProduct}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <include-form name="EditProductByProductOwner" location="component://scrum/widget/scrumForms.xml"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </screenlet>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </widgets>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </section>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </fail-widgets>&ndash;&gt;-->
+<!--                        </section>-->
+<!--                    </decorator-section>-->
+<!--                </decorator-screen>-->
+<!--            </widgets>-->
+<!--        </section>-->
+<!--    </screen>-->
 </screens>
