@@ -1496,6 +1496,7 @@ under the License.
         location="component://product/groovyScripts/product/imagemanagement/ImageManagementServices.groovy" invoke="updateStatusImageManagement" auth="true">
         <attribute name="contentId" mode="IN" type="String" optional="false"/>
         <attribute name="checkStatusId" mode="IN" type="String" optional="true"/>
+        <attribute name="productContentTypeId" mode="IN" type="String" optional="true"/>
     </service>
 
     <service name="addRejectedReasonImageManagement" engine="groovy"

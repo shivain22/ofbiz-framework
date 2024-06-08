@@ -606,6 +606,8 @@ if (product) {
     accessoryProducts = runService('getAssociatedProducts', [productId : productId, type : "PRODUCT_ACCESSORY", checkViewAllow : true, prodCatalogId : currentCatalogId])
     context.accessoryProducts = accessoryProducts.assocProducts
 
+
+
     // get the DIGITAL_DOWNLOAD related Content records to show the contentName/description
     downloadProductContentAndInfoList = from("ProductContentAndInfo").where("productId", productId, "productContentTypeId", "DIGITAL_DOWNLOAD").cache(true).queryList()
     context.downloadProductContentAndInfoList = downloadProductContentAndInfoList
@@ -615,7 +617,7 @@ if (product) {
 
     //get product image from image management
     productImageList = []
-    productContentAndInfoImageManamentList = from("ProductContentAndInfo").where("productId", productId, "productContentTypeId", "DIGITAL_DOWNLOAD", "statusId", "IM_APPROVED", "drIsPublic", "Y").orderBy("sequenceNum").filterByDate().queryList()
+    productContentAndInfoImageManamentList = from("ProductContentAndInfo").where("productId", productId, "statusId", "IM_APPROVED", "drIsPublic", "Y").orderBy("sequenceNum").filterByDate().queryList()
     if(productContentAndInfoImageManamentList) {
         productContentAndInfoImageManamentList.each { productContentAndInfoImageManament ->
             contentAssocThumb = from("ContentAssoc").where("contentId", productContentAndInfoImageManament.contentId, "contentAssocTypeId", "IMAGE_THUMBNAIL").queryFirst()

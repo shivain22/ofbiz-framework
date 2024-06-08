@@ -96,7 +96,7 @@ under the License.
                                 
                                 <!--<entity-one entity-name="Product" value-field="product"/>-->
                                 <!--<script location="component://product/groovyScripts/catalog/imagemanagement/SeoLocales.groovy"/>-->
-                                <script location="component://product/groovyScripts/catalog/imagemanagement/ImageGallery.groovy"/>
+                                <script  location="component://product/groovyScripts/catalog/imagemanagement/ImageGallery.groovy"/>
                             </actions>
                             <widgets>
                                 <decorator-screen name="ImageManagementDecorator" location="${parameters.mainDecoratorLocation}">

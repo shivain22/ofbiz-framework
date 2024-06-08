@@ -39,9 +39,16 @@ def uploadProductImages() {
         addAdditionalViewForProductMap.productId = parameters.productId
         addAdditionalViewForProductMap.imageResize = parameters.imageResize
         addAdditionalViewForProductMap.uploadedFile = parameters.additionalImageOne
-        addAdditionalViewForProductMap.productContentTypeId = "DIGITAL_DOWNLOAD"
+
         addAdditionalViewForProductMap._uploadedFile_fileName = parameters._additionalImageOne_fileName
         addAdditionalViewForProductMap._uploadedFile_contentType = parameters._additionalImageOne_contentType
+        imageContentTypes =["image/png","image/png","image/gif","image/jpg","image/jpeg","image/tiff"]
+        if((String)addAdditionalViewForProductMap._uploadedFile_contentType in imageContentTypes){
+            addAdditionalViewForProductMap.productContentTypeId = "IMAGE"
+        }else{
+            addAdditionalViewForProductMap.productContentTypeId = "DIGITAL_DOWNLOAD"
+        }
+
         serviceResult = run service: "addMultipleuploadForProduct", with: addAdditionalViewForProductMap
         if (!ServiceUtil.isSuccess(serviceResult)) {
             return error(serviceResult.errorMessage)
@@ -284,6 +291,7 @@ def updateStatusImageManagement() {
     Map result = success()
     Timestamp nowTimestamp = UtilDateTime.nowTimestamp()
     String checkStatusVal = parameters.checkStatusId
+    String productContentTypeId=parameters.productContentTypeId
     List statusId = StringUtil.split(checkStatusVal, "/")
     if (statusId) {
         parameters.checkStatusId = statusId.get(0)
@@ -321,7 +329,7 @@ def updateStatusImageManagement() {
                     content.statusId = "IM_APPROVED"
                     content.store()
 
-                    GenericValue productContent = from("ProductContent").where(contentId: parameters.contentId, productContentTypeId: "DIGITAL_DOWNLOAD")
+                    GenericValue productContent = from("ProductContent").where(contentId: parameters.contentId, productContentTypeId: parameters.productContentTypeId)
                         .queryFirst()
                     productContent.purchaseFromDate = nowTimestamp
                     productContent.store()
@@ -333,7 +341,7 @@ def updateStatusImageManagement() {
                         content.statusId = "IM_APPROVED"
                         content.store()
 
-                        GenericValue productContent = from("ProductContent").where(contentId: parameters.contentId, productContentTypeId: "DIGITAL_DOWNLOAD")
+                        GenericValue productContent = from("ProductContent").where(contentId: parameters.contentId, productContentTypeId: parameters.productContentTypeId)
                             .queryFirst()
                         productContent.purchaseFromDate = nowTimestamp
                         productContent.store()
@@ -351,7 +359,7 @@ def updateStatusImageManagement() {
                 content.statusId = "IM_APPROVED"
                 content.store()
 
-                GenericValue productContent = from("ProductContent").where(contentId: parameters.contentId, productContentTypeId: "DIGITAL_DOWNLOAD").queryFirst()
+                GenericValue productContent = from("ProductContent").where(contentId: parameters.contentId, productContentTypeId: parameters.productContentTypeId).queryFirst()
                 productContent.purchaseFromDate = nowTimestamp
                 productContent.store()
 

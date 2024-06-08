@@ -84,6 +84,11 @@ public class ImageManagementServices {
         ByteBuffer imageData = (ByteBuffer) context.get("uploadedFile");
         String uploadFileName = (String) context.get("_uploadedFile_fileName");
         String imageResize = (String) context.get("imageResize");
+        if(imageResize==null){
+            if(productContentTypeId.equals("IMAGE")){
+                imageResize="100x75";
+            }
+        }
         Locale locale = (Locale) context.get("locale");
 
         if (UtilValidate.isNotEmpty(uploadFileName)) {
@@ -132,6 +137,26 @@ public class ImageManagementServices {
                 fileContentType = "image/png";
             }
 
+            String [] uploadContentType=fileContentType.split("/");
+            String uploadContentType1=uploadContentType[0];
+            String uploadContentType2=uploadContentType[1];
+            String uploadFileContentType="";
+            if(uploadContentType1.equals("image")){
+                uploadFileContentType="Image";
+            }else if(uploadContentType1.equals("application")){
+              if(uploadContentType2.equals("pdf")) {
+                  uploadFileContentType="PDF";
+              }
+               else if(uploadContentType2.equals("csv")) {
+                    uploadFileContentType="CSV";
+                }
+               else{
+                  uploadFileContentType="Text";
+              }
+            }else{
+                uploadFileContentType="Text";
+            }
+
             // Create folder product id.
             String targetDirectory = imageServerPath + "/" + productId;
             File targetDir = new File(targetDirectory);
@@ -161,7 +186,7 @@ public class ImageManagementServices {
                     Path tempFile = Files.createTempFile(null, null);
                     Files.write(tempFile, imageData.array(), StandardOpenOption.APPEND);
                     // Check if a webshell is not uploaded
-                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "PDF", delegator)) {
+                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), uploadFileContentType, delegator)) {
                         String errorMessage = UtilProperties.getMessage("SecurityUiLabels", "SupportedImageFormats", locale);
                         return ServiceUtil.returnError(errorMessage);
                     }
@@ -190,7 +215,7 @@ public class ImageManagementServices {
                     Path tempFile = Files.createTempFile(null, null);
                     Files.write(tempFile, imageData.array(), StandardOpenOption.APPEND);
                     // Check if a webshell is not uploaded
-                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "PDF", delegator)) {
+                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "uploadFileContentType", delegator)) {
                         String errorMessage = UtilProperties.getMessage("SecurityUiLabels", "SupportedImageFormats", locale);
                         return ServiceUtil.returnError(errorMessage);
                     }
@@ -224,7 +249,7 @@ public class ImageManagementServices {
                 }
             }
 
-            Map<String, Object> contentThumbnail = createContentThumbnail(dctx, context, userLogin, imageData, productId, imageName);
+            Map<String, Object> contentThumbnail = createContentThumbnail(dctx, context, userLogin, imageData, productId, imageName , uploadFileContentType);
             String filenameToUseThumb = (String) contentThumbnail.get("filenameToUseThumb");
             String contentIdThumb = (String) contentThumbnail.get("contentIdThumb");
 
@@ -286,6 +311,7 @@ public class ImageManagementServices {
                 autoApproveCtx.put("contentId", contentId);
                 autoApproveCtx.put("userLogin", userLogin);
                 autoApproveCtx.put("checkStatusId", "IM_APPROVED");
+                autoApproveCtx.put("productContentTypeId", productContentTypeId);
                 try {
                     Map<String, Object> serviceResult = dispatcher.runSync("updateStatusImageManagement", autoApproveCtx);
                     if (ServiceUtil.isError(serviceResult)) {
@@ -526,7 +552,7 @@ public class ImageManagementServices {
     }
 
     public static Map<String, Object> createContentThumbnail(DispatchContext dctx, Map<String, ? extends Object> context,
-            GenericValue userLogin, ByteBuffer imageData, String productId, String imageName) throws ImageReadException {
+            GenericValue userLogin, ByteBuffer imageData, String productId, String imageName, String uploadFileContentType) throws ImageReadException {
         Map<String, Object> result = new HashMap<>();
         LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
@@ -581,7 +607,7 @@ public class ImageManagementServices {
             Path tempFile = Files.createTempFile(null, null);
             Files.write(tempFile, imageData.array(), StandardOpenOption.APPEND);
             // Check if a webshell is not uploaded
-            if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "PDF", delegator)) {
+            if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), uploadFileContentType, delegator)) {
                 String errorMessage = UtilProperties.getMessage("SecurityUiLabels", "SupportedImageFormats", locale);
                 return ServiceUtil.returnError(errorMessage);
             }
@@ -834,7 +860,7 @@ public class ImageManagementServices {
 
         try {
             GenericValue productContent = EntityQuery.use(delegator).from("ProductContentAndInfo").where("productId", productId, "contentId",
-                    contentId, "productContentTypeId", "PDF").queryFirst();
+                    contentId, "productContentTypeId", "Image").queryFirst();
             String dataResourceName = (String) productContent.get("drDataResourceName");
             String mimeType = filenameToUse.substring(filenameToUse.lastIndexOf('.'));
 
