@@ -120,6 +120,7 @@ public class AtparOfbizAppEvents {
         }
     }
 
+
     static File addTextWatermark(String text, File sourceImageFile, File destinationFile) {
         try {
             BufferedImage sourceImage = ImageIO.read(sourceImageFile);
@@ -157,4 +158,48 @@ public class AtparOfbizAppEvents {
         }
         return file;
     }
+
+    public static Map<String, Object> updateUploadsizeEvent(DispatchContext dctx, Map<String, ?> context) {
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+        GenericValue userLogin = (GenericValue) context.get("userLogin");
+        ByteBuffer fileBytes = (ByteBuffer) context.get("uploadedFile");
+        String filename = (String) context.get("_uploadedFile_fileName");
+        String fileContentType = (String) context.get("_uploadedFile_contentType");
+        String filePath = filename;
+
+        byte[] bytefile = fileBytes.array();
+        File file2 = new File(filePath);
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            File file1 = bytesToFile(bytefile, filePath);
+            file2 = addTextWatermark("@par", file1, file2);
+            ByteBuffer resizedImage = resizeImage(file2, 140, 140);
+            resultMap.put("uploadedFile", resizedImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+    private static ByteBuffer resizeImage(File inputFile, int width, int height) throws IOException {
+        BufferedImage originalImage = ImageIO.read(inputFile);
+        BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, width, height, null);
+        g.dispose();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, getFileExtension(inputFile.getName()), baos);
+        byte[] imageBytes = baos.toByteArray();
+
+        return ByteBuffer.wrap(imageBytes);
+    }
+
+    private static String getFileExtension(String fileName) {
+        if (fileName == null) {
+            return null;
+        }
+        String[] parts = fileName.split("\\.");
+        return parts.length > 1 ? parts[parts.length - 1] : "";
+    }
+
 }

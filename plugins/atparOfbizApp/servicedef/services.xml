@@ -67,6 +67,15 @@ under the License.
         <attribute name="_upload_file_contentType" type="String" mode="IN" optional="false" />
         <attribute name="productId" type="String" mode="IN" optional="false"/>
     </service>
+    <service name="updateUploadsizeEvent" engine="java"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="updateUploadsizeEvent" auth="true">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute mode="INOUT" name="uploadedFile" type="java.nio.ByteBuffer" optional="false" />
+        <attribute name="_uploadedFile_fileName" type="String" mode="IN" optional="false" />
+        <attribute name="_uploadedFile_contentType" type="String" mode="IN" optional="false" />
+    </service>
     <service name="multipleUploadProductGallery" engine="groovy"
              location="component://product/groovyScripts/product/imagemanagement/ImageManagementServices.groovy" invoke="uploadProductImages" auth="true">
         <description>Multiple upload Images For Product</description>

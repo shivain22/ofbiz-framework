@@ -35,16 +35,22 @@ def uploadProductImages() {
     Map serviceResult = [:]
     result.productId = parameters.productId
     Map addAdditionalViewForProductMap = parameters
+    Map editUploadIMageFile =parameters
+    Map <String,Object> resizedImageUpload = [:]
     if (parameters._additionalImageOne_fileName) {
         addAdditionalViewForProductMap.productId = parameters.productId
         addAdditionalViewForProductMap.imageResize = parameters.imageResize
         addAdditionalViewForProductMap.uploadedFile = parameters.additionalImageOne
-
         addAdditionalViewForProductMap._uploadedFile_fileName = parameters._additionalImageOne_fileName
         addAdditionalViewForProductMap._uploadedFile_contentType = parameters._additionalImageOne_contentType
         imageContentTypes =["image/png","image/png","image/gif","image/jpg","image/jpeg","image/tiff"]
         if((String)addAdditionalViewForProductMap._uploadedFile_contentType in imageContentTypes){
             addAdditionalViewForProductMap.productContentTypeId = "IMAGE"
+            editUploadIMageFile.uploadedFile=parameters.additionalImageOne
+            editUploadIMageFile._uploadedFile_fileName=parameters._additionalImageOne_fileName
+            editUploadIMageFile._uploadedFile_contentType=parameters._additionalImageOne_contentType
+            resizedImageUpload = run service: "updateUploadsizeEvent", with: editUploadIMageFile
+            addAdditionalViewForProductMap.uploadedFile=resizedImageUpload.uploadedFile
         }else{
             addAdditionalViewForProductMap.productContentTypeId = "DIGITAL_DOWNLOAD"
         }

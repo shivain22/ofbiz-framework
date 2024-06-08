@@ -84,11 +84,11 @@ public class ImageManagementServices {
         ByteBuffer imageData = (ByteBuffer) context.get("uploadedFile");
         String uploadFileName = (String) context.get("_uploadedFile_fileName");
         String imageResize = (String) context.get("imageResize");
-//        if(imageResize==null){
-//            if(productContentTypeId.equals("IMAGE")){
-//                imageResize="100x75";
-//            }
-//        }
+        if(imageResize==null){
+            if(productContentTypeId.equals("IMAGE")){
+                imageResize="small";
+            }
+        }
         Locale locale = (Locale) context.get("locale");
 
         if (UtilValidate.isNotEmpty(uploadFileName)) {
