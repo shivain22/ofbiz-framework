@@ -37,7 +37,7 @@ under the License.
       </tr>
       <tr>
         <td class="label"/>
-        <td><input type="file" size="20" name="additionalImageOne"accept=".png,.gif,.jpg,.jpeg,.tiff,.tif"/></td>
+        <td><input type="file" size="20" name="additionalImageOne"accept=".png,.gif,.jpg,.jpeg,.tiff,.tif,.pdf"/></td>
       </tr>
       <tr>
         <td class="label"/>

@@ -274,7 +274,7 @@ under the License.
             <entity-condition entity-name="ProductContentAndInfo" list="productContentAndInfoList">
                 <condition-list combine="and">
                     <condition-expr field-name="productId" from-field="parameters.productId"/>
-                    <condition-expr field-name="productContentTypeId" value="IMAGE"/>
+                    <condition-expr field-name="productContentTypeId" value="DIGITAL_DOWNLOAD"/>
                     <condition-list combine="or">
                          <condition-expr field-name="statusId" value="IM_APPROVED"/>
                          <condition-expr field-name="statusId" value="IM_PENDING"/>

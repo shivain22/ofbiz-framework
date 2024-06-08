@@ -28,7 +28,7 @@ import org.apache.ofbiz.entity.condition.*
 import org.apache.ofbiz.entity.util.*
 
 productImageList = []
-productContentAndInfoImageManamentList = from("ProductContentAndInfo").where("productId", productId, "productContentTypeId", "IMAGE", "statusId", "IM_APPROVED").orderBy("sequenceNum").queryList()
+productContentAndInfoImageManamentList = from("ProductContentAndInfo").where("productId", productId, "productContentTypeId", "DIGITAL_DOWNLOAD", "statusId", "IM_APPROVED").orderBy("sequenceNum").queryList()
 if(productContentAndInfoImageManamentList) {
     productContentAndInfoImageManamentList.each { productContentAndInfoImageManament ->
         contentAssocThumb = from("ContentAssoc").where("contentId", productContentAndInfoImageManament.contentId, "contentAssocTypeId", "IMAGE_THUMBNAIL").queryFirst()

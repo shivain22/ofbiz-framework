@@ -61,9 +61,11 @@ under the License.
                         <screenlet title="Atpar Edit Product">
                             <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
+                        <screenlet title="Atpar Edit Product Content">
+                            <include-form name="EditProductContent" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
                     </decorator-section>
                 </decorator-screen>
-
             </widgets>
         </section>
     </screen>

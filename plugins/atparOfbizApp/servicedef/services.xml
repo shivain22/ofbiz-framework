@@ -55,15 +55,53 @@ under the License.
         <description>Create an Atpar Techie record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
-        <override name="comments" optional="true"/>
+        <override name="comments" optional="true" />
     </service>
-    <service name="createAtparTechieUploadByEvents" default-entity-name="atparTechieUpload" engine="java"
+    <service name="createAtparTechieUploadByEvents" engine="java"
              location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieUploadEvent" auth="true">
         <description>Create an Atpar Techie Upload record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
         <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="false" />
-        <attribute name="uploadFile" type="String" mode="IN" optional="false"/>
+        <attribute name="_upload_file_fileName" type="String" mode="IN" optional="false" />
+        <attribute name="_upload_file_contentType" type="String" mode="IN" optional="false" />
         <attribute name="productId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="multipleUploadProductGallery" engine="groovy"
+             location="component://product/groovyScripts/product/imagemanagement/ImageManagementServices.groovy" invoke="uploadProductImages" auth="true">
+        <description>Multiple upload Images For Product</description>
+        <permission-service service-name="genericContentPermission" main-action="CREATE"/>
+        <attribute name="productId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="imageResize" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageOne" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageOne_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageOne_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageTwo" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageTwo_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageTwo_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageThree" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageThree_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageThree_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageFour" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageFour_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageFour_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageFive" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageFive_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageFive_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageSix" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageSix_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageSix_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageSeven" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageSeven_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageSeven_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageEight" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageEight_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageEight_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageNine" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageNine_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageNine_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="additionalImageTen" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="_additionalImageTen_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_additionalImageTen_contentType" type="String" mode="IN" optional="true"/>
     </service>
 </services>

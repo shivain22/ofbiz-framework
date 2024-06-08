@@ -884,11 +884,16 @@ ${variantInfoJavaScript!}
     <#-- Digital Download Files Associated with this Product -->
     <#if downloadProductContentAndInfoList?has_content>
       <div id="download-files">
-        <div>${uiLabelMap.OrderDownloadFilesTitle}:</div>
-        <#list downloadProductContentAndInfoList as downloadProductContentAndInfo>
-          <div>${downloadProductContentAndInfo.contentName!}<#if downloadProductContentAndInfo.description?has_content>
-            - ${downloadProductContentAndInfo.description}</#if></div>
-        </#list>
+          <div>${uiLabelMap.OrderDownloadFilesTitle}:</div>
+          <#list downloadProductContentAndInfoList as downloadProductContentAndInfo>
+              <div>
+                  <a href="/images/products/management/${downloadProductContentAndInfo.productId}/${downloadProductContentAndInfo.contentName}"
+                     target="_blank"
+                     >
+                      ${downloadProductContentAndInfo.contentName}<#if downloadProductContentAndInfo.description?has_content> - ${downloadProductContentAndInfo.description}</#if>
+                  </a>
+              </div>
+          </#list>
       </div>
     </#if>
 

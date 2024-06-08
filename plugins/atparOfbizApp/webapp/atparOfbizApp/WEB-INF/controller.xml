@@ -61,6 +61,16 @@ under the License.
         </response>
         <response name="error" type="request-redirect" value="EditProduct"/>
     </request-map>
+
+    <request-map uri="createProductContent">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="multipleUploadProductImages" />
+        <response name="success" type="request-redirect" value="EditProduct">
+            <!--            <redirect-parameter name="productId"/>-->
+        </response>
+        <response name="error" type="request-redirect" value="EditProduct"/>
+    </request-map>
+
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#main"/>
     <view-map name="EditProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#EditProduct"/>

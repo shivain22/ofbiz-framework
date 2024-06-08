@@ -45,7 +45,7 @@ under the License.
 
     
 <!--    Atpar Edit product form -->
-    <form name="EditProduct" type="upload" target="createProductAndRole" default-map-name="product">
+    <form name="EditProduct"  type="upload" target="createProductAndRole" default-map-name="product" >
         <actions>
             <set field="supportDiscontinuationDate" from-field="supportDiscontinuationDate"/>
             <set field="statusId" value="${groovy: if(supportDiscontinuationDate == null) return 'PRODUCT_ACTIVE' else return 'PRODUCT_CLOSED'}"/>
@@ -72,15 +72,26 @@ under the License.
                 </entity-options>
             </drop-down>
         </field>
-        <field name="uploadFile" title="${uiLabelMap.FileName}"><text/></field>
-        <field name="upload_file" title="${uiLabelMap.UploadFile}"><file size="25"/></field>
         <field name="productId"><text/></field>
         <field name="internalName" title="${uiLabelMap.AtparProductName}" required-field="true"><text/></field>
         <field name="longDescription" title="${uiLabelMap.CommonDescription}"><textarea/></field>
-        <field name="productTypeId"><hidden value="GOOD"/></field>
+        <field name="productTypeId" title="${uiLabelMap.ProductProductType}">
+            <drop-down no-current-selected-key="GOOD">
+                <entity-options entity-name="ProductType"> <!-- [${productTypeId}] -->
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
         <field name="primaryProductCategoryId"><hidden value="BEST-SELL-1"/></field>
-        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" use-when="product==null" widget-style="smallSubmit"><submit button-type="button"/></field>
+        <field name="upload_file"  title="${uiLabelMap.ThumbnailImage}" ><file size="25"/></field>
+<!--        <field name="uploadFile"  title="${uiLabelMap.FileName}"><text/></field>-->
+        <field name="_uploadFile_fileName" ><hidden/></field>
+        <field name="_uploadFile_contentType"  ><hidden/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" use-when="product==null" widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
+                                                                                                                                                                                 var fileName = document.getElementsByName('upload_file')[0].files[0].name; "><submit button-type="button"/></field>
         <field name="submitButton" title="${uiLabelMap.CommonUpdate}" position="1" use-when="product!=null"  widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
+                                                                                                                                                                                 var fileName = document.getElementsByName('upload_file')[0].files[0].name;
+                                                                                                                                                                                 document.getElementsByName('fileName')[0].value = fileName;
                                                                                                                                                                                 if (confirm('Are you sure to close this product ?.')){ 
                                                                                                                                                                                     document.ViewEditProdBacklog.disable();
                                                                                                                                                                                     document.EditProduct.action = 'updateProduct';
@@ -90,7 +101,17 @@ under the License.
                                                                                                                                                                               document.EditProduct.action = 'EditProduct?statusId=PRODUCT_ACTIVE';
                                                                                                                                                                                 }"><submit button-type="button"/></field>
     </form>
-<!--Atpar View Product-->
+
+    <form name="EditProductContent"  type="upload" target="createProductContent" default-map-name="productContent" >
+        <field name="productId" title="${uiLabelMap.ProductProductId}" ><text/></field>
+        <field name="additionalImageOne"  title="${uiLabelMap.UploadFile}"><file size="25"/> </field>
+        <field name="_additionalImageOne_fileName" ><hidden/></field>
+        <field name="_additionalImageOne_contentType" ><hidden/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" ><submit button-type="button"/></field>
+    </form>
+
+
+    <!--Atpar View Product-->
 
     <form name="ViewProduct" type="single" target="ViewProduct" default-map-name="product">
         <actions>

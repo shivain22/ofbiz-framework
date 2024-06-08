@@ -37,7 +37,8 @@ public class AtparOfbizAppEvents {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
         ByteBuffer  fileBytes =  (ByteBuffer ) context.get("upload_file");
-        String filename = ( String) context.get("uploadFile");
+        String filename = ( String) context.get("_upload_file_fileName");
+        String fileContentType = (String) context.get("_upload_file_contentType");
         String productId = ( String) context.get("productId");
         String filePath = filename;
 
@@ -46,7 +47,7 @@ public class AtparOfbizAppEvents {
         try {
             File file1 = bytesToFile(bytefile, filePath);
             file2=addTextWatermark("atpar",file1,file2);
-            bytefile = Files.readAllBytes(file2.toPath());
+            bytefile = Files.readAllBytes(file1.toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,6 +77,7 @@ public class AtparOfbizAppEvents {
             e.printStackTrace();
             return Collections.emptyMap();
         }
+
         String [] fileNames={"small.png","medium.png","large.png","detail.png","original.png"};
 //         destination = "C:/Users/chara/shivain22/ofbiz-framework/themes/common-theme/webapp/images/products";
          destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"products";

@@ -28,7 +28,7 @@ under the License.
     <version>1.0</version>
     <entity entity-name="atparTechieUpload" package-name="org.apache.ofbiz.atparofbizapp" title="Atpar Techie Upload Entity">
         <field name="atparTechieUploadId" type="id"><description>primary sequenced ID</description></field>
-        <field name="uploadFile" type="name"></field>
+        <field name="uploadFile" type="name" ></field>
         <prim-key field="atparTechieUploadId"/>
     </entity>
 

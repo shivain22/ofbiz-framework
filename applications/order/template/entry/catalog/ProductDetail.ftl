@@ -615,11 +615,19 @@ ${variantInfoJavaScript!}
   <#if downloadProductContentAndInfoList?has_content>
     <div id="download-files">
       <div>${uiLabelMap.OrderDownloadFilesTitle}:</div>
-      <#list downloadProductContentAndInfoList as downloadProductContentAndInfo>
-        <div>${downloadProductContentAndInfo.contentName}<#if downloadProductContentAndInfo.description?has_content> - ${downloadProductContentAndInfo.description}</#if></div>
-      </#list>
+        <#list downloadProductContentAndInfoList as downloadProductContentAndInfo>
+          <div>
+            <a href="${downloadProductContentAndInfo.contentUrl}"
+               target="_blank"
+               href="${downloadProductContentAndInfo.contentUrl?replace('.*\\.pdf$', downloadProductContentAndInfo.contentUrl)}">
+               ${downloadProductContentAndInfo.contentName}<#if downloadProductContentAndInfo.description?has_content> - ${downloadProductContentAndInfo.description}</#if>
+            </a>
+          </div>
+        </#list>
     </div>
   </#if>
+
+
 
   <#-- Long description of product -->
   <div id="long-description">

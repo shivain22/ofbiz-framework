@@ -52,7 +52,8 @@
 <!--                        <result-to-field result-name="productId"/>-->
                     </call-service>
                     <set field="atparTechieUpload.productId" from-field="parameters.productId"/>
-                    <set field="atparTechieUpload.uploadFile" from-field="parameters.uploadFile"/>
+                    <set field="atparTechieUpload._upload_file_fileName" from-field="parameters._upload_file_fileName"/>
+                    <set field="atparTechieUpload._upload_file_contentType" from-field="parameters._upload_file_contentType"/>
                     <set field="atparTechieUpload.upload_file" from-field="parameters.upload_file" type="java.nio.ByteBuffer"/>
                     <call-service service-name="createAtparTechieUploadByEvents" in-map-name="atparTechieUpload">
                         <!--                        <result-to-field result-name="productId"/>-->
@@ -77,5 +78,18 @@
 <!--            </else>-->
 <!--        </if>-->
     </simple-method>
-
+    <simple-method method-name="createProductContent" short-description="">
+        <now-timestamp field="nowTimestamp"/>
+        <entity-one entity-name="UserLogin" value-field="sysUserLogin">
+            <field-map field-name="userLoginId" value="system"/>
+        </entity-one>
+<!--        <if-not-empty field="parameters._additionalImageOne_fileName">-->
+            <set field="productContent.productId" from-field="parameters.productId"/>
+            <set field="productContent._additionalImageOne_fileName" from-field="parameters._additionalImageOne_fileName"/>
+            <set field="productContent._additionalImageOne_contentType" from-field="parameters._additionalImageOne_contentType"/>
+            <call-service service-name="multipleUploadProductImages" in-map-name="productContent">
+<!--                                        <result-to-field result-name="productId"/>-->
+            </call-service>
+<!--        </if-not-empty>-->
+    </simple-method >
 </simple-methods>

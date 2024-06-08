@@ -161,11 +161,11 @@ public class ImageManagementServices {
                     Path tempFile = Files.createTempFile(null, null);
                     Files.write(tempFile, imageData.array(), StandardOpenOption.APPEND);
                     // Check if a webshell is not uploaded
-                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "Image", delegator)) {
+                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "PDF", delegator)) {
                         String errorMessage = UtilProperties.getMessage("SecurityUiLabels", "SupportedImageFormats", locale);
                         return ServiceUtil.returnError(errorMessage);
                     }
-                    Files.delete(tempFile);
+//                    Files.delete(tempFile);
                     // Create image file original to folder product id.
                     RandomAccessFile out = new RandomAccessFile(file, "rw");
                     out.write(imageData.array());
@@ -190,11 +190,11 @@ public class ImageManagementServices {
                     Path tempFile = Files.createTempFile(null, null);
                     Files.write(tempFile, imageData.array(), StandardOpenOption.APPEND);
                     // Check if a webshell is not uploaded
-                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "Image", delegator)) {
+                    if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "PDF", delegator)) {
                         String errorMessage = UtilProperties.getMessage("SecurityUiLabels", "SupportedImageFormats", locale);
                         return ServiceUtil.returnError(errorMessage);
                     }
-                    Files.delete(tempFile);
+//                    Files.delete(tempFile);
                     RandomAccessFile outFile = new RandomAccessFile(fileOriginal, "rw");
                     outFile.write(imageData.array());
                     outFile.close();
@@ -581,11 +581,11 @@ public class ImageManagementServices {
             Path tempFile = Files.createTempFile(null, null);
             Files.write(tempFile, imageData.array(), StandardOpenOption.APPEND);
             // Check if a webshell is not uploaded
-            if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "Image", delegator)) {
+            if (!org.apache.ofbiz.security.SecuredUpload.isValidFile(tempFile.toString(), "PDF", delegator)) {
                 String errorMessage = UtilProperties.getMessage("SecurityUiLabels", "SupportedImageFormats", locale);
                 return ServiceUtil.returnError(errorMessage);
             }
-            Files.delete(tempFile);
+//            Files.delete(tempFile);
             RandomAccessFile outFileThumb = new RandomAccessFile(fileOriginalThumb, "rw");
             outFileThumb.write(imageData.array());
             outFileThumb.close();
@@ -834,7 +834,7 @@ public class ImageManagementServices {
 
         try {
             GenericValue productContent = EntityQuery.use(delegator).from("ProductContentAndInfo").where("productId", productId, "contentId",
-                    contentId, "productContentTypeId", "IMAGE").queryFirst();
+                    contentId, "productContentTypeId", "PDF").queryFirst();
             String dataResourceName = (String) productContent.get("drDataResourceName");
             String mimeType = filenameToUse.substring(filenameToUse.lastIndexOf('.'));
 
