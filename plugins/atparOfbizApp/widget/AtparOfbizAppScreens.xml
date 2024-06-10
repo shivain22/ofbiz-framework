@@ -58,12 +58,15 @@ under the License.
                         <label text="AtarApplication"/>
                     </decorator-section>
                     <decorator-section name="body" >
-                        <screenlet title="Atpar Edit Product">
+                        <screenlet title="Add Atpar Product">
                             <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
-                        <screenlet title="Atpar Edit Product Content">
+                        <screenlet title="Edit Atpar Product Content">
                             <include-form name="EditProductContent" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
+<!--                        <screenlet>-->
+<!--                            <include-menu name="ProductSubTabBar" location="component://product/widget/catalog/CatalogMenus.xml"/>-->
+<!--                        </screenlet>-->
                     </decorator-section>
                 </decorator-screen>
             </widgets>

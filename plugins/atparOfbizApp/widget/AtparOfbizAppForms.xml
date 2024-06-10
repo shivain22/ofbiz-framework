@@ -87,7 +87,7 @@ under the License.
 <!--        <field name="uploadFile"  title="${uiLabelMap.FileName}"><text/></field>-->
         <field name="_uploadFile_fileName" ><hidden/></field>
         <field name="_uploadFile_contentType"  ><hidden/></field>
-        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" use-when="product==null" widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}" use-when="product==null" widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
                                                                                                                                                                                  var fileName = document.getElementsByName('upload_file')[0].files[0].name; "><submit button-type="button"/></field>
         <field name="submitButton" title="${uiLabelMap.CommonUpdate}" position="1" use-when="product!=null"  widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
                                                                                                                                                                                  var fileName = document.getElementsByName('upload_file')[0].files[0].name;
@@ -108,6 +108,18 @@ under the License.
         <field name="_additionalImageOne_fileName" ><hidden/></field>
         <field name="_additionalImageOne_contentType" ><hidden/></field>
         <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" ><submit button-type="button"/></field>
+    </form>
+
+    <form name="productEcommercePage" type="single">
+        <field name="productId" title="${uiLabelMap.ProductProductId}">
+            <text/>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" event="onClick" action="javascript:
+                var productId = document.forms['productEcommercePage'].elements['productId'].value;
+                window.location.href = 'ecommerce/control/main/' + productId;
+            ">
+            <submit button-type="button" />
+        </field>
     </form>
 
 

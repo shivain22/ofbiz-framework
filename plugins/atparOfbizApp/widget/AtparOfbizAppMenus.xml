@@ -22,5 +22,21 @@ under the License.
     <menu name="MainAppBar" title="${uiLabelMap.AtparOfbizAppApplication}" extends="CommonAppBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
         <menu-item name="main" title="${uiLabelMap.CommonMain}"><link target="main"/></menu-item>
         <menu-item name="EditProduct" title="${uiLabelMap.EditProduct}"><link target="EditProduct"/></menu-item>
+        <menu-item name="EditProduct" title="${uiLabelMap.EditProduct}"><link target="EditProduct"/></menu-item>
     </menu>
+<!--    <menu name="ProductSubTabBar" menu-container-style="button-bar button-style-2" default-selected-style="selected">-->
+<!--    <menu-item name="ProductProductPage" title="${uiLabelMap.ProductProductPage}">-->
+<!--        <condition>-->
+<!--            <not>-->
+<!--                <or>-->
+<!--                    <if-empty field="product"/>-->
+<!--                    <if-compare field="isEcommercePresent" operator="equals" value="false"/>&lt;!&ndash; FIXME this is only temporary a more elaborate solution would be preferred, see OFBIZ-9241 &ndash;&gt;-->
+<!--                </or>-->
+<!--            </not>-->
+<!--        </condition>-->
+<!--        <link target="/ecommerce/control/product" url-mode="inter-app">-->
+<!--            <parameter param-name="product_id" from-field="productId"/>-->
+<!--        </link>-->
+<!--    </menu-item>-->
+<!--    </menu>-->
 </menus>

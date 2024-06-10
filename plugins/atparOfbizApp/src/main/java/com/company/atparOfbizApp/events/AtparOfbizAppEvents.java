@@ -165,11 +165,38 @@ public class AtparOfbizAppEvents {
         ByteBuffer fileBytes = (ByteBuffer) context.get("uploadedFile");
         String filename = (String) context.get("_uploadedFile_fileName");
         String fileContentType = (String) context.get("_uploadedFile_contentType");
+        String productId = ( String) context.get("productId");
         String filePath = filename;
 
         byte[] bytefile = fileBytes.array();
         File file2 = new File(filePath);
         Map<String, Object> resultMap = new HashMap<>();
+
+        String destination = System.getProperty("java.io.tmpdir");
+
+        Path path = Paths.get(destination + productId + File.separator + "gallery" + File.separator + filename);
+
+        try {
+            Files.createDirectories(path.getParent());
+            Files.createFile(path);
+        } catch (IOException e) {
+            System.err.println("already exists: " + e.getMessage());
+        }
+
+
+        // Convert byte array to File
+        try {
+            File filepath = new File(destination + productId + File.separator + "gallery" + File.separator + filename);
+            FileOutputStream fos = new FileOutputStream(filepath);
+            fos.write(bytefile);
+            fos.close();
+            System.out.println("File saved successfully at: " + destination + productId + File.separator + "gallery" + File.separator + filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyMap();
+        }
+
+
         try {
             File file1 = bytesToFile(bytefile, filePath);
             file2 = addTextWatermark("@par", file1, file2);

@@ -49,6 +49,7 @@ def uploadProductImages() {
             editUploadIMageFile.uploadedFile=parameters.additionalImageOne
             editUploadIMageFile._uploadedFile_fileName=parameters._additionalImageOne_fileName
             editUploadIMageFile._uploadedFile_contentType=parameters._additionalImageOne_contentType
+            editUploadIMageFile.productId=parameters.productId
             resizedImageUpload = run service: "updateUploadsizeEvent", with: editUploadIMageFile
             addAdditionalViewForProductMap.uploadedFile=resizedImageUpload.uploadedFile
         }else{
