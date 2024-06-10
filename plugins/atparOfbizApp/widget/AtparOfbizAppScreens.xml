@@ -72,6 +72,32 @@ under the License.
             </widgets>
         </section>
     </screen>
+    <screen name="FindAtparTechie">
+        <section>
+            <actions>
+                <set field="headerItem" value="findAtparTechie"/>
+                <set field="titleProperty" value="PageTitleFindAtparTechie"/>
+                <set field="AtparTechieCtx" from-field="parameters"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <label text="AtarApplication"/>
+                    </decorator-section>
+                    <decorator-section name="body" >
+                        <screenlet title="Find Atpar Techie">
+                            <include-form name="FindAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
+                        <screenlet title="List Atpar Techie">
+                            <include-form name="ListAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
+
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
 <!--    <screen name="EditProduct">-->
 <!--        <section>-->
 <!--            <actions>-->

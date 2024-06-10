@@ -122,6 +122,35 @@ under the License.
         </field>
     </form>
 
+    <form name="FindAtparTechie" type="single" target="FindAtparTechie" default-entity-name="atparTechie">
+        <field name="noConditionFind"><hidden value="Y"/> <!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="atparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><text-find/></field>
+        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}"><text-find/></field>
+        <field name="lastName" title="${uiLabelMap.AtparTechielastName}"><text-find/></field>
+        <field name="role" title="${uiLabelMap.AtparTechieRole}"><text-find/></field>
+        <field name="comment" title="${uiLabelMap.AtparTechieComments}"><text-find/></field>
+
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button" image-location="/images/icons/magnifier.png"/></field>
+    </form>
+    <form name="ListAtparTechie" type="list" list-name="listIt" paginate-target="FindAtparTechie" default-entity-name="atparTechie" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <!-- Preparing search results for user query by using OFBiz stock service to perform find operations on a single entity or view entity -->
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="AtparTechieCtx"/>
+                <field-map field-name="entityName" value="atparTechie"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <field name="AtparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><display/></field>
+        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}"><display/></field>
+        <field name="lastName" title="${uiLabelMap.AtparTechielastName}" sort-field="true"><display/></field>
+        <field name="role" title="${uiLabelMap.AtparTechieRole}" sort-field="true"><display/></field>
+        <field name="Comment" title="${uiLabelMap.AtparTechieComments}"><display/></field>
+    </form>
+
 
     <!--Atpar View Product-->
 
