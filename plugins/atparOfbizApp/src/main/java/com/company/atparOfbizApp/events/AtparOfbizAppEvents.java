@@ -43,17 +43,7 @@ public class AtparOfbizAppEvents {
         String filePath = filename;
 
         byte[] bytefile =fileBytes.array();
-        File file2=new File(filePath);
-        try {
-            File file1 = bytesToFile(bytefile, filePath);
-            file2=addTextWatermark("atpar",file1,file2);
-            bytefile = Files.readAllBytes(file1.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         String fileName=filename;
-        // Specify the file path where the file will be saved
         String destination = System.getProperty("java.io.tmpdir");
 
         Path path = Paths.get(destination + productId + File.separator + fileName);
@@ -77,6 +67,20 @@ public class AtparOfbizAppEvents {
             e.printStackTrace();
             return Collections.emptyMap();
         }
+
+        File file2=new File(filePath);
+        try {
+            File file1 = bytesToFile(bytefile, filePath);
+            file2=addTextWatermark("atpar",file1,file2);
+            ByteBuffer resizedImage = resizeImage(file2, 140, 140);
+            bytefile = resizedImage.array();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        // Specify the file path where the file will be saved
+
 
         String [] fileNames={"small.png","medium.png","large.png","detail.png","original.png"};
 //         destination = "C:/Users/chara/shivain22/ofbiz-framework/themes/common-theme/webapp/images/products";
