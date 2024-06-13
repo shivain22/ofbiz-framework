@@ -28,20 +28,32 @@ under the License.
     <version>1.0</version>
     <entity entity-name="atparTechieUpload" package-name="org.apache.ofbiz.atparofbizapp" title="Atpar Techie Upload Entity">
         <field name="atparTechieUploadId" type="id"><description>primary sequenced ID</description></field>
-        <field name="uploadFile" type="name" ></field>
+        <field name="uploadFile" type="name"/>
         <prim-key field="atparTechieUploadId"/>
     </entity>
 
     <entity entity-name="atparTechie" package-name="org.apache.ofbiz.atparofbizapp" title="Atpar Techie Entity">
         <field name="atparTechieId" type="id"><description>primary sequenced ID</description></field>
-        <field name="atparTechieUploadId" type="id" ></field>
-        <field name="firstName" type="name"></field>
-        <field name="lastName" type="name"></field>
-        <field name="role" type="name"></field>
-        <field name="comments" type="comment"></field>
+        <field name="atparTechieUploadId" type="id"/>
+        <field name="firstName" type="name"/>
+        <field name="lastName" type="name"/>
+        <field name="role" type="name"/>
+        <field name="comments" type="comment"/>
         <prim-key field="atparTechieId"/>
         <relation type="one" fk-name="ODEM_OD_TYPE_ID" rel-entity-name="atparTechieUpload">
             <key-map field-name="atparTechieUploadId"/>
         </relation>
+    </entity>
+    <entity entity-name="atparProduct" package-name="org.apache.ofbiz.atparofbizapp" title="Atpar Product Entity" >
+        <field name="atparProductId" type="id"><description>primary sequenced ID</description></field>
+        <field name="productId" type="name"/>
+        <field name="atparProductInternalName" type="name"/>
+        <field name="longDescription" type="name"/>
+        <field name="atparProductType" type="name"/>
+        <field name="atparProductCategoryId" type="name"/>
+        <field name="introductionDate" type="name"/>
+        <field name="thumbnailImagePath" type="name"/>
+        <field name="status" type="numeric"/>
+        <prim-key field="atparProductId"/>
     </entity>
 </entitymodel>

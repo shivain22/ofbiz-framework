@@ -72,6 +72,31 @@ under the License.
             </widgets>
         </section>
     </screen>
+    <screen name="FindAtparProduct">
+        <section>
+            <actions>
+                <set field="headerItem" value="findAtparProduct"/>
+                <set field="titleProperty" value="PageTitleFindAtparProduct"/>
+                <set field="AtparProductCtx" from-field="parameters"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <label text="AtarApplication"/>
+                    </decorator-section>
+                    <decorator-section name="body" >
+                        <screenlet title="Find Atpar Product">
+                            <include-form name="FindAtparProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
+                        <screenlet title="List Atpar Product">
+                            <include-form name="ListAtparProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
     <screen name="FindAtparTechie">
         <section>
             <actions>

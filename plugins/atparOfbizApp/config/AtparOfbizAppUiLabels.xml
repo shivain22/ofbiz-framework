@@ -28,6 +28,11 @@ under the License.
         <value xml:lang="en">OFBiz: AtparOfbizApp</value>
         <value xml:lang="zh-TW">OFBiz: AtparOfbizApp</value>
     </property>
+    <property key="FindAtparProduct">
+        <value xml:lang="en">Find Product</value>
+        <value xml:lang="zh-TW">Find Product</value>
+    </property>
+
     <property key="AtparOfbizAppCompanySubtitle">
         <value xml:lang="en">Part of the Apache OFBiz Family of Open Source Software</value>
         <value xml:lang="it">Un modulo della famiglia di software open source Apache OFBiz</value>

@@ -57,6 +57,57 @@ under the License.
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
         <override name="comments" optional="true" />
     </service>
+    <service name="createAtparProduct" default-entity-name="atparProduct" engine="entity-auto" invoke="create" auth="true">
+        <description>Create an Atpar Techie record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <override name="comments" optional="true"/>
+    </service>
+    <service name="createAtparProductByEvents" engine="java"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparProductEvent" auth="true">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="false" />
+        <attribute name="_upload_file_fileName" type="String" mode="IN" optional="false" />
+        <attribute name="_upload_file_contentType" type="String" mode="IN" optional="false" />
+        <attribute name="productId" type="String" mode="IN" optional="false"/>
+        <attribute name="productTypeId" type="String" mode="IN" optional="false" />
+        <attribute name="status" type="Integer" mode="IN" optional="false"/>
+        <attribute name="internalName" type="String" mode="IN" optional="false" />
+        <attribute name="longDescription" type="String" mode="IN" optional="false" />
+        <attribute name="primaryProductCategoryId" type="String" mode="IN" optional="false" />
+        <attribute name="introductionDate" type="String" mode="IN" optional="false" />
+    </service>
+    <service name="createAtparEcommerceProduct" engine="java" default-entity-name="atparProduct"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieUploadEvent" auth="true">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+<!--        <attribute mode="IN" name="atparProductId" type="String" optional="false" />-->
+        <auto-attributes entity-name="atparProduct" include="all" mode="IN" optional="false"/>
+    </service>
+    <service name="updateAtparProductStatus" default-entity-name="atparProduct" engine="groovy"
+             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="updateAtparProductStatus" auth="true">
+        <description>Update a Product</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <attribute name="atparProductId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="FindAtparProductStatusFalse" engine="groovy"
+             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="findAtparProductStatusFalse" auth="true">
+        <description>Find Pending Products</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <attribute name="entityName" type="String" mode="IN" optional="false"/>
+        <attribute name="inputFields" type="java.util.Map" mode="IN" optional="false"/>
+        <attribute name="orderBy" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="IN" optional="true"/>
+        <attribute name="viewSize" type="Integer" mode="IN" optional="true"/>
+        <attribute name="listIt" type="org.apache.ofbiz.entity.util.EntityListIterator" mode="OUT" optional="true"/>
+        <attribute name="listSize" type="Integer" mode="OUT" optional="true"/>
+        <attribute name="queryString" type="String" mode="OUT" optional="true"/>
+        <attribute name="queryStringMap" type="java.util.Map" mode="OUT" optional="true"/>
+    </service>
+
     <service name="createAtparTechieUploadByEvents" engine="java"
              location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieUploadEvent" auth="true">
         <description>Create an Atpar Techie Upload record</description>

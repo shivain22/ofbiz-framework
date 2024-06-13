@@ -43,6 +43,8 @@ under the License.
     <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
     <request-map uri="EditProduct"><security https="true" auth="true"/><response name="success" type="view" value="EditProduct"/></request-map>
     <request-map uri="FindAtparTechie"><security https="true" auth="true"/><response name="success" type="view" value="FindAtparTechie"/></request-map>
+    <request-map uri="FindAtparProduct"><security https="true" auth="true"/><response name="success" type="view" value="FindAtparProduct"/></request-map>
+
     <request-map uri="createAtparTechie">
         <security https="true" auth="true"/>
         <event type="service" invoke="createAtparTechie"/>
@@ -63,6 +65,23 @@ under the License.
         <response name="error" type="request-redirect" value="EditProduct"/>
     </request-map>
 
+    <request-map uri="createAtparPendingProduct">
+        <security https="true" auth="true"/>
+        <event type="simple" invoke="createAtparPendingProduct" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
+        <response name="success" type="request-redirect" value="EditProduct">
+            <!--            <redirect-parameter name="productId"/>-->
+        </response>
+        <response name="error" type="request-redirect" value="EditProduct"/>
+    </request-map>
+    <request-map uri="createAtparEcommerceProduct">
+        <security https="true" auth="true"/>
+        <event type="simple" invoke="createAtparEcommerceProduct" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
+        <response name="success" type="request-redirect" value="FindAtparProduct">
+            <!--            <redirect-parameter name="productId"/>-->
+        </response>
+        <response name="error" type="request-redirect" value="FindAtparProduct"/>
+    </request-map>
+
     <request-map uri="createProductContent">
         <security https="true" auth="true"/>
         <event type="service" invoke="multipleUploadProductImages" />
@@ -77,4 +96,6 @@ under the License.
     <view-map name="EditProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#EditProduct"/>
     <view-map name="ViewProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#ViewProduct"/>
     <view-map name="FindAtparTechie" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#FindAtparTechie"/>
+    <view-map name="FindAtparProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#FindAtparProduct"/>
+
 </site-conf>

@@ -28,23 +28,136 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AtparOfbizAppEvents {
 
     public static final String module = AtparOfbizAppEvents.class.getName();
-
-    public static Map<String, Object> createAtparTechieUploadEvent(DispatchContext dctx, Map<String, ?> context) {
+//    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static Map<String, Object> createAtparProductEvent(DispatchContext dctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
         ByteBuffer  fileBytes =  (ByteBuffer ) context.get("upload_file");
         String filename = ( String) context.get("_upload_file_fileName");
         String fileContentType = (String) context.get("_upload_file_contentType");
         String productId = ( String) context.get("productId");
-        String filePath = filename;
+        String productTypeId = ( String) context.get("productTypeId");
+        String internalName = ( String) context.get("internalName");
+        Integer status =(Integer)context.get("status");
+        String longDescription = ( String) context.get("longDescription");
+        String  primaryProductCategoryId = ( String) context.get("primaryProductCategoryId");
+        String introductionDate= (String)context.get("introductionDate");
+//        LocalDateTime  introductionDate = LocalDateTime.parse(String.format((String)context.get("introductionDate"),formatter));
+        String filePath=filename;
 
         byte[] bytefile =fileBytes.array();
-        String fileName=filename;
         String destination = System.getProperty("java.io.tmpdir");
+        String storePath=storeFileInDir(destination,bytefile,productId,filename);
+
+        File file2=new File(filePath);
+        try {
+            File file1 = bytesToFile(bytefile, filePath);
+            file2=addTextWatermark("atpar",file1,file2);
+            ByteBuffer resizedImage = resizeImage(file2, 140, 140);
+            bytefile = resizedImage.array();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"PendingProducts"+File.separator+"thumbnailImage";
+        String thumbnailPath=storeFileInDir(destination,bytefile,productId,filename);
+
+        try {
+            Debug.logInfo("=======Creating AtparProduct record in event using service createAtparProduct=========", module);
+            Map<String, Object> resultMap=dispatcher.runSync("createAtparProduct", UtilMisc.toMap("userLogin", userLogin, "productId",productId,"atparProductInternalName", internalName, "status" ,status, "longDescription", longDescription ,"atparProductType", productTypeId , "atparProductCategoryId", primaryProductCategoryId,"introductionDate", introductionDate,"thumbnailImagePath",thumbnailPath ));
+            if (resultMap == null) {
+                throw new GenericServiceException("Service [createAtparProduct] did not return a Map object");
+            }
+            return resultMap;
+        } catch (GenericServiceException e) {
+            String errMsg = "Unable to create new records in AtparProduct entity: " + e.toString();
+            return Collections.emptyMap();
+        }
+    }
+
+    public static Map<String, Object> createAtparTechieUploadEvent(DispatchContext dctx, Map<String, ?> context) {
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+        GenericValue userLogin = (GenericValue) context.get("userLogin");
+        String atparProductId =(String) context.get("atparProductId");
+        String productId = ( String) context.get("productId");
+        String productTypeId = ( String) context.get("atparProductType");
+        String internalName = ( String) context.get("atparProductInternalName");
+        String longDescription = ( String) context.get("longDescription");
+
+        String  primaryProductCategoryId = ( String) context.get("atparProductCategoryId");
+        String introductionDate= (String)context.get("introductionDate");
+        String filePath =(String)context.get("thumbnailImagePath");
+
+
+
+    //  String fileName = path.getFileName().toString();
+        // Read all bytes from the file
+        Map<String, Object> resultMap =new HashMap<>();
+
+        try {
+            Path path = Paths.get(filePath);
+            byte[] byteFile = Files.readAllBytes(path);
+            // Specify the file path where the file will be save
+
+            String [] fileNames={"small.png","medium.png","large.png","detail.png","original.png"};
+//         destination = "C:/Users/chara/shivain22/ofbiz-framework/themes/common-theme/webapp/images/products";
+            String destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"products";
+
+            for(String fileNameIn :fileNames){
+
+                 path = Paths.get(destination + File.separator + productId + File.separator + fileNameIn) ;
+                 Files.createDirectories(path.getParent());
+                 Files.createFile(path);
+
+                // Convert byte array to File
+
+                try {
+                    File filepath = new File(destination + File.separator + productId + File.separator + fileNameIn);
+                    FileOutputStream fos = new FileOutputStream(filepath);
+                    fos.write(byteFile);
+                    fos.close();
+                    System.out.println("File saved successfully at: " + destination + File.separator + productId + File.separator + fileNameIn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    resultMap.put("result","Error");
+                    resultMap.put("message","Error adding Product to Ecommerce Page.");
+                    resultMap.put("atparProductId",atparProductId);
+                    return resultMap;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            resultMap.put("result","Error");
+            resultMap.put("message","Product Image File cannot be read.");
+            resultMap.put("atparProductId",atparProductId);
+            return resultMap;
+        }
+
+
+
+//        try {
+//            Debug.logInfo("=======Creating AtparTechieUpload record in event using service createAtparTechieUpload=========", module);
+//            Map<String, Object> resultMap=dispatcher.runSync("createAtparTechieUpload", UtilMisc.toMap("uploadFile",filename,"userLogin", userLogin ));
+//            if (resultMap == null) {
+//                throw new GenericServiceException("Service [createAtparTechieUpload] did not return a Map object");
+//            }
+//            return resultMap;
+//        } catch (GenericServiceException e) {
+//            String errMsg = "Unable to create new records in AtparTechieUpload entity: " + e.toString();
+//            return Collections.emptyMap();
+//        }
+        resultMap.put("result","success");
+        resultMap.put("atparProductId",atparProductId);
+        return resultMap;
+    }
+
+    public static String  storeFileInDir(String destination, byte[] bytefile, String productId, String fileName){
+
 
         Path path = Paths.get(destination + productId + File.separator + fileName);
 
@@ -63,67 +176,12 @@ public class AtparOfbizAppEvents {
             fos.write(bytefile);
             fos.close();
             System.out.println("File saved successfully at: " + destination + productId + File.separator + fileName);
+            return destination + productId + File.separator + fileName;
         } catch (IOException e) {
             e.printStackTrace();
-            return Collections.emptyMap();
-        }
-
-        File file2=new File(filePath);
-        try {
-            File file1 = bytesToFile(bytefile, filePath);
-            file2=addTextWatermark("atpar",file1,file2);
-            ByteBuffer resizedImage = resizeImage(file2, 140, 140);
-            bytefile = resizedImage.array();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        // Specify the file path where the file will be saved
-
-
-        String [] fileNames={"small.png","medium.png","large.png","detail.png","original.png"};
-//         destination = "C:/Users/chara/shivain22/ofbiz-framework/themes/common-theme/webapp/images/products";
-         destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"products";
-
-        for(String fileNameIn :fileNames){
-
-             path = Paths.get(destination + File.separator + productId + File.separator + fileNameIn) ;
-
-            try {
-                Files.createDirectories(path.getParent());
-                Files.createFile(path);
-            } catch (IOException e) {
-                System.err.println("already exists: " + e.getMessage());
-            }
-
-
-            // Convert byte array to File
-            try {
-                File filepath = new File(destination + File.separator + productId + File.separator + fileNameIn);
-                FileOutputStream fos = new FileOutputStream(filepath);
-                fos.write(bytefile);
-                fos.close();
-                System.out.println("File saved successfully at: " + destination + File.separator + productId + File.separator + fileNameIn);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return Collections.emptyMap();
-            }
-        }
-
-        try {
-            Debug.logInfo("=======Creating AtparTechieUpload record in event using service createAtparTechieUpload=========", module);
-            Map<String, Object> resultMap=dispatcher.runSync("createAtparTechieUpload", UtilMisc.toMap("uploadFile",filename,"userLogin", userLogin ));
-            if (resultMap == null) {
-                throw new GenericServiceException("Service [createAtparTechieUpload] did not return a Map object");
-            }
-            return resultMap;
-        } catch (GenericServiceException e) {
-            String errMsg = "Unable to create new records in AtparTechieUpload entity: " + e.toString();
-            return Collections.emptyMap();
+            return "error";
         }
     }
-
 
     static File addTextWatermark(String text, File sourceImageFile, File destinationFile) {
         try {

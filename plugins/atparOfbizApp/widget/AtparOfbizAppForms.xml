@@ -45,7 +45,7 @@ under the License.
 
     
 <!--    Atpar Edit product form -->
-    <form name="EditProduct"  type="upload" target="createProductAndRole" default-map-name="product" >
+    <form name="EditProduct"  type="upload" target="createAtparPendingProduct" default-map-name="atparProduct" >
         <actions>
             <set field="supportDiscontinuationDate" from-field="supportDiscontinuationDate"/>
             <set field="statusId" value="${groovy: if(supportDiscontinuationDate == null) return 'PRODUCT_ACTIVE' else return 'PRODUCT_CLOSED'}"/>
@@ -83,10 +83,11 @@ under the License.
             </drop-down>
         </field>
         <field name="primaryProductCategoryId"><hidden value="BEST-SELL-1"/></field>
+        <field name="status"><hidden value="0"/></field>
         <field name="upload_file"  title="${uiLabelMap.ThumbnailImage}" ><file size="25"/></field>
 <!--        <field name="uploadFile"  title="${uiLabelMap.FileName}"><text/></field>-->
         <field name="_uploadFile_fileName" ><hidden/></field>
-        <field name="_uploadFile_contentType"  ><hidden/></field>
+        <field name="_uploadFile_contentType" ><hidden/></field>
         <field name="submitButton" title="${uiLabelMap.CommonAdd}" use-when="product==null" widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
                                                                                                                                                                                  var fileName = document.getElementsByName('upload_file')[0].files[0].name; "><submit button-type="button"/></field>
         <field name="submitButton" title="${uiLabelMap.CommonUpdate}" position="1" use-when="product!=null"  widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
@@ -110,6 +111,48 @@ under the License.
         <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" ><submit button-type="button"/></field>
     </form>
 
+    <form name="FindAtparProduct" type="single" target="FindAtparProduct" default-entity-name="atparProduct">
+        <field name="noConditionFind"><hidden value="Y"/> <!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="atparProductId" title="${uiLabelMap.AtparProductId}"><text-find/></field>
+        <field name="atparProductInternalName" title="${uiLabelMap.ProductInternalName}" ><text-find/></field>
+
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button" image-location="/images/icons/magnifier.png"/></field>
+    </form>
+    <form name="ListAtparProduct" type="list" list-name="listIt" paginate-target="FindAtparProduct" default-entity-name="atparProduct" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <!-- Preparing search results for user query by using OFBiz stock service to perform find operations on a single entity or view entity -->
+            <service service-name="FindAtparProductStatusFalse" result-map="result" result-map-list="listIt" >
+                <field-map field-name="inputFields" from-field="AtparProductCtx"/>
+                <field-map field-name="entityName" value="atparProduct"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+
+        </actions>
+
+
+        <field name="atparProductId" title="${uiLabelMap.AtparProductId}" ><display/></field>
+        <field name="productId" title="${uiLabelMap.ProductId}" ><display/></field>
+        <field name="atparProductInternalName" title="${uiLabelMap.AtparProductInternalName}"><display/></field>
+        <field name="atparProductType" title="${uiLabelMap.AtparProductType}" sort-field="true"><display/></field>
+        <field name="atparProductCategoryId" title="${uiLabelMap.AtparProductCategoryId}" sort-field="true"><display/></field>
+        <field name="approveButton" title="${uiLabelMap.Approve}" widget-style="buttontext" >
+            <hyperlink description="${uiLabelMap.Approve}" target="createAtparEcommerceProduct" also-hidden="false" >
+                <parameter param-name="atparProductId" from-field="atparProductId"/>
+                <parameter param-name="productId" from-field="productId"/>
+                <parameter param-name="status" from-field="status"/>
+                <parameter param-name="atparProductInternalName" from-field="atparProductInternalName"/>
+                <parameter param-name="longDescription" from-field="longDescription"/>
+                <parameter param-name="atparProductType" from-field="atparProductType"/>
+                <parameter param-name="atparProductCategoryId" from-field="atparProductCategoryId"/>
+                <parameter param-name="introductionDate" from-field="introductionDate"/>
+                <parameter param-name="thumbnailImagePath" from-field="thumbnailImagePath"/>
+            </hyperlink>
+        </field>
+        <field name="downloadButton" title="${uiLabelMap.Download}"><submit button-type="button"/></field>
+    </form>
     <form name="productEcommercePage" type="single">
         <field name="productId" title="${uiLabelMap.ProductProductId}">
             <text/>
@@ -125,7 +168,7 @@ under the License.
     <form name="FindAtparTechie" type="single" target="FindAtparTechie" default-entity-name="atparTechie">
         <field name="noConditionFind"><hidden value="Y"/> <!-- if this isn't there then with all fields empty no query will be done --></field>
         <field name="atparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><text-find/></field>
-        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}"><text-find/></field>
+        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}" ><text-find/></field>
         <field name="lastName" title="${uiLabelMap.AtparTechielastName}"><text-find/></field>
         <field name="role" title="${uiLabelMap.AtparTechieRole}"><text-find/></field>
         <field name="comment" title="${uiLabelMap.AtparTechieComments}"><text-find/></field>
@@ -150,6 +193,17 @@ under the License.
         <field name="role" title="${uiLabelMap.AtparTechieRole}" sort-field="true"><display/></field>
         <field name="Comment" title="${uiLabelMap.AtparTechieComments}"><display/></field>
     </form>
+
+<!--    <form name="FindAtparTechie" type="single" target="FindAtparTechie" default-entity-name="atparTechie">-->
+<!--        <field name="noConditionFind"><hidden value="Y"/> &lt;!&ndash; if this isn't there then with all fields empty no query will be done &ndash;&gt;</field>-->
+<!--        <field name="atparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><text-find/></field>-->
+<!--        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}" ><text-find/></field>-->
+<!--        <field name="lastName" title="${uiLabelMap.AtparTechielastName}"><text-find/></field>-->
+<!--        <field name="role" title="${uiLabelMap.AtparTechieRole}"><text-find/></field>-->
+<!--        <field name="comment" title="${uiLabelMap.AtparTechieComments}"><text-find/></field>-->
+
+<!--        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button" image-location="/images/icons/magnifier.png"/></field>-->
+<!--    </form>-->
 
 
     <!--Atpar View Product-->
