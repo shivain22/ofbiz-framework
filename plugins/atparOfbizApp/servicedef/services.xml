@@ -87,12 +87,22 @@ under the License.
 <!--        <attribute mode="IN" name="atparProductId" type="String" optional="false" />-->
         <auto-attributes entity-name="atparProduct" include="all" mode="IN" optional="false"/>
     </service>
-    <service name="updateAtparProductStatus" default-entity-name="atparProduct" engine="groovy"
+    <service name="downloadProductContent" engine="java"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="downloadProductContent" auth="true">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute mode="IN" name="productId" type="String" optional="false" />
+    </service>
+    <service name="updateAtparProductStatus"  engine="groovy"
              location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="updateAtparProductStatus" auth="true">
         <description>Update a Product</description>
         <auto-attributes include="pk" mode="IN" optional="false"/>
-        <attribute name="atparProductId" type="String" mode="IN" optional="false"/>
+        <attribute name="atparProductId" type="String" mode="IN" optional="true"/>
+        <attribute name="productId" type="String" mode="IN" optional="true"/>
+        <attribute name="status" type="Integer" mode="IN" optional="false"/>
     </service>
+
     <service name="FindAtparProductStatusFalse" engine="groovy"
              location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="findAtparProductStatusFalse" auth="true">
         <description>Find Pending Products</description>

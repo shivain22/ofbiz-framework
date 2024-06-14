@@ -19,6 +19,13 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -34,42 +41,43 @@ import java.time.format.DateTimeFormatter;
 public class AtparOfbizAppEvents {
 
     public static final String module = AtparOfbizAppEvents.class.getName();
-//    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    //    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public static Map<String, Object> createAtparProductEvent(DispatchContext dctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
-        ByteBuffer  fileBytes =  (ByteBuffer ) context.get("upload_file");
-        String filename = ( String) context.get("_upload_file_fileName");
+        ByteBuffer fileBytes = (ByteBuffer) context.get("upload_file");
+        String filename = (String) context.get("_upload_file_fileName");
         String fileContentType = (String) context.get("_upload_file_contentType");
-        String productId = ( String) context.get("productId");
-        String productTypeId = ( String) context.get("productTypeId");
-        String internalName = ( String) context.get("internalName");
-        Integer status =(Integer)context.get("status");
-        String longDescription = ( String) context.get("longDescription");
-        String  primaryProductCategoryId = ( String) context.get("primaryProductCategoryId");
-        String introductionDate= (String)context.get("introductionDate");
+        String productId = (String) context.get("productId");
+        String productTypeId = (String) context.get("productTypeId");
+        String internalName = (String) context.get("internalName");
+        Integer status = (Integer) context.get("status");
+        String longDescription = (String) context.get("longDescription");
+        String primaryProductCategoryId = (String) context.get("primaryProductCategoryId");
+        String introductionDate = (String) context.get("introductionDate");
 //        LocalDateTime  introductionDate = LocalDateTime.parse(String.format((String)context.get("introductionDate"),formatter));
-        String filePath=filename;
+        String filePath = filename;
 
-        byte[] bytefile =fileBytes.array();
+        byte[] bytefile = fileBytes.array();
         String destination = System.getProperty("java.io.tmpdir");
-        String storePath=storeFileInDir(destination,bytefile,productId,filename);
+        String storePath = storeFileInDir(destination, bytefile, productId, filename);
 
-        File file2=new File(filePath);
+        File file2 = new File(filePath);
         try {
             File file1 = bytesToFile(bytefile, filePath);
-            file2=addTextWatermark("atpar",file1,file2);
+            file2 = addTextWatermark("atpar", file1, file2);
             ByteBuffer resizedImage = resizeImage(file2, 140, 140);
             bytefile = resizedImage.array();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"PendingProducts"+File.separator+"thumbnailImage";
-        String thumbnailPath=storeFileInDir(destination,bytefile,productId,filename);
+        destination = System.getProperty("user.dir") + File.separator + "themes" + File.separator + "common-theme" + File.separator + "webapp" + File.separator + "images" + File.separator + "PendingProducts" + File.separator + "thumbnailImage";
+        String thumbnailPath = storeFileInDir(destination, bytefile, productId, filename);
 
         try {
             Debug.logInfo("=======Creating AtparProduct record in event using service createAtparProduct=========", module);
-            Map<String, Object> resultMap=dispatcher.runSync("createAtparProduct", UtilMisc.toMap("userLogin", userLogin, "productId",productId,"atparProductInternalName", internalName, "status" ,status, "longDescription", longDescription ,"atparProductType", productTypeId , "atparProductCategoryId", primaryProductCategoryId,"introductionDate", introductionDate,"thumbnailImagePath",thumbnailPath ));
+            Map<String, Object> resultMap = dispatcher.runSync("createAtparProduct", UtilMisc.toMap("userLogin", userLogin, "productId", productId, "atparProductInternalName", internalName, "status", status, "longDescription", longDescription, "atparProductType", productTypeId, "atparProductCategoryId", primaryProductCategoryId, "introductionDate", introductionDate, "thumbnailImagePath", thumbnailPath));
             if (resultMap == null) {
                 throw new GenericServiceException("Service [createAtparProduct] did not return a Map object");
             }
@@ -83,36 +91,35 @@ public class AtparOfbizAppEvents {
     public static Map<String, Object> createAtparTechieUploadEvent(DispatchContext dctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
-        String atparProductId =(String) context.get("atparProductId");
-        String productId = ( String) context.get("productId");
-        String productTypeId = ( String) context.get("atparProductType");
-        String internalName = ( String) context.get("atparProductInternalName");
-        String longDescription = ( String) context.get("longDescription");
+        String atparProductId = (String) context.get("atparProductId");
+        String productId = (String) context.get("productId");
+        String productTypeId = (String) context.get("atparProductType");
+        String internalName = (String) context.get("atparProductInternalName");
+        String longDescription = (String) context.get("longDescription");
 
-        String  primaryProductCategoryId = ( String) context.get("atparProductCategoryId");
-        String introductionDate= (String)context.get("introductionDate");
-        String filePath =(String)context.get("thumbnailImagePath");
+        String primaryProductCategoryId = (String) context.get("atparProductCategoryId");
+        String introductionDate = (String) context.get("introductionDate");
+        String filePath = (String) context.get("thumbnailImagePath");
 
 
-
-    //  String fileName = path.getFileName().toString();
+        //  String fileName = path.getFileName().toString();
         // Read all bytes from the file
-        Map<String, Object> resultMap =new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
 
         try {
             Path path = Paths.get(filePath);
             byte[] byteFile = Files.readAllBytes(path);
             // Specify the file path where the file will be save
 
-            String [] fileNames={"small.png","medium.png","large.png","detail.png","original.png"};
+            String[] fileNames = {"small.png", "medium.png", "large.png", "detail.png", "original.png"};
 //         destination = "C:/Users/chara/shivain22/ofbiz-framework/themes/common-theme/webapp/images/products";
-            String destination = System.getProperty("user.dir")+File.separator+"themes"+File.separator+"common-theme"+File.separator+"webapp"+File.separator+"images"+File.separator+"products";
+            String destination = System.getProperty("user.dir") + File.separator + "themes" + File.separator + "common-theme" + File.separator + "webapp" + File.separator + "images" + File.separator + "products";
 
-            for(String fileNameIn :fileNames){
+            for (String fileNameIn : fileNames) {
 
-                 path = Paths.get(destination + File.separator + productId + File.separator + fileNameIn) ;
-                 Files.createDirectories(path.getParent());
-                 Files.createFile(path);
+                path = Paths.get(destination + File.separator + productId + File.separator + fileNameIn);
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
 
                 // Convert byte array to File
 
@@ -124,20 +131,19 @@ public class AtparOfbizAppEvents {
                     System.out.println("File saved successfully at: " + destination + File.separator + productId + File.separator + fileNameIn);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    resultMap.put("result","Error");
-                    resultMap.put("message","Error adding Product to Ecommerce Page.");
-                    resultMap.put("atparProductId",atparProductId);
+                    resultMap.put("result", "Error");
+                    resultMap.put("message", "Error adding Product to Ecommerce Page.");
+                    resultMap.put("atparProductId", atparProductId);
                     return resultMap;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            resultMap.put("result","Error");
-            resultMap.put("message","Product Image File cannot be read.");
-            resultMap.put("atparProductId",atparProductId);
+            resultMap.put("result", "Error");
+            resultMap.put("message", "Product Image File cannot be read.");
+            resultMap.put("atparProductId", atparProductId);
             return resultMap;
         }
-
 
 
 //        try {
@@ -151,12 +157,12 @@ public class AtparOfbizAppEvents {
 //            String errMsg = "Unable to create new records in AtparTechieUpload entity: " + e.toString();
 //            return Collections.emptyMap();
 //        }
-        resultMap.put("result","success");
-        resultMap.put("atparProductId",atparProductId);
+        resultMap.put("result", "success");
+        resultMap.put("atparProductId", atparProductId);
         return resultMap;
     }
 
-    public static String  storeFileInDir(String destination, byte[] bytefile, String productId, String fileName){
+    public static String storeFileInDir(String destination, byte[] bytefile, String productId, String fileName) {
 
 
         Path path = Paths.get(destination + productId + File.separator + fileName);
@@ -213,6 +219,7 @@ public class AtparOfbizAppEvents {
             return sourceImageFile;
         }
     }
+
     public static File bytesToFile(byte[] bytes, String filePath) throws IOException {
         File file = new File(filePath);
         try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -227,7 +234,7 @@ public class AtparOfbizAppEvents {
         ByteBuffer fileBytes = (ByteBuffer) context.get("uploadedFile");
         String filename = (String) context.get("_uploadedFile_fileName");
         String fileContentType = (String) context.get("_uploadedFile_contentType");
-        String productId = ( String) context.get("productId");
+        String productId = (String) context.get("productId");
         String filePath = filename;
 
         byte[] bytefile = fileBytes.array();
@@ -269,6 +276,7 @@ public class AtparOfbizAppEvents {
         }
         return resultMap;
     }
+
     private static ByteBuffer resizeImage(File inputFile, int width, int height) throws IOException {
         BufferedImage originalImage = ImageIO.read(inputFile);
         BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
@@ -291,4 +299,61 @@ public class AtparOfbizAppEvents {
         return parts.length > 1 ? parts[parts.length - 1] : "";
     }
 
+    public static Map<String, Object> downloadProductContent(DispatchContext dctx, Map<String, ?> context) {
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+        GenericValue userLogin = (GenericValue) context.get("userLogin");
+        String productId = (String) context.get("productId");
+
+        Map<String, Object> resultMap=new HashMap<>();
+        String destination = System.getProperty("user.dir") + File.separator + "themes" + File.separator + "common-theme" + File.separator + "webapp" + File.separator + "images" + File.separator + "products" + File.separator + "management";
+        Path sourceDir = Paths.get(destination, productId);
+        String finalDestination = System.getProperty("java.io.tmpdir");
+        String zipFileName = productId + "contents.zip";
+        Path zipFilePath = Paths.get(finalDestination, zipFileName);
+
+        try (FileOutputStream fos = new FileOutputStream(zipFilePath.toFile());
+             ZipOutputStream zos = new ZipOutputStream(fos)) {
+
+            File sourceFile = sourceDir.toFile();
+            zipFile(sourceFile, sourceFile.getName(), zos);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        resultMap.put("message", "success");
+        return resultMap;
+    }
+
+    private static void zipFile(File fileToZip, String fileName, ZipOutputStream zos) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zos.putNextEntry(new ZipEntry(fileName));
+                zos.closeEntry();
+            } else {
+                zos.putNextEntry(new ZipEntry(fileName + "/"));
+                zos.closeEntry();
+            }
+            File[] children = fileToZip.listFiles();
+            if (children != null) {
+                for (File childFile : children) {
+                    zipFile(childFile, fileName + "/" + childFile.getName(), zos);
+                }
+            }
+            return;
+        }
+        try (FileInputStream fis = new FileInputStream(fileToZip)) {
+            ZipEntry zipEntry = new ZipEntry(fileName);
+            zos.putNextEntry(zipEntry);
+            byte[] bytes = new byte[1024];
+            int length;
+            while ((length = fis.read(bytes)) >= 0) {
+                zos.write(bytes, 0, length);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

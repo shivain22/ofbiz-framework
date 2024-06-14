@@ -47,19 +47,50 @@ def updateAtparProductStatus() {
 //    }
 
     // Fetch the atparProduct record based on given parameters
-    GenericValue lookedUpValue = from("atparProduct").where(parameters).queryOne()
-    if (lookedUpValue == null) {
-        return ServiceUtil.returnError("AtparProduct not found for the given parameters.")
+    if (parameters.productId!=null){
+        GenericValue lookedUpValue = from("atparProduct").where("productId",parameters.productId).queryOne()
+        if (lookedUpValue == null) {
+            return ServiceUtil.returnError("AtparProduct not found for the given parameters.")
+        }
+        if(parameters.status==0){
+            lookedUpValue.set("status", 1)
+        }
+        else if(parameters.status==1){
+            lookedUpValue.set("status", 2)
+        }
+
+
+        // Store the updated record
+        lookedUpValue.store()
+
+        // Return success message
+        return ServiceUtil.returnSuccess("Product Content updated successfully.")
     }
 
+    else{
+        GenericValue lookedUpValue = from("atparProduct").where("atparProductId",parameters.atparProductId).queryOne()
+        if (lookedUpValue == null) {
+            return ServiceUtil.returnError("AtparProduct not found for the given parameters.")
+        }
+        if(parameters.status==0){
+            lookedUpValue.set("status", 1)
+        }
+        else if(parameters.status==1){
+            lookedUpValue.set("status", 2)
+        }
+
+
+        // Store the updated record
+        lookedUpValue.store()
+
+        // Return success message
+        return ServiceUtil.returnSuccess("Product Approved successfully.")
+    }
+
+    return ServiceUtil.returnError("Product Approved Failed")
+
     // Update the status field to 1
-    lookedUpValue.set("status", 1)
 
-    // Store the updated record
-    lookedUpValue.store()
-
-    // Return success message
-    return ServiceUtil.returnSuccess("Product Approved successfully.")
 }
 
 def findAtparProductStatusFalse(){

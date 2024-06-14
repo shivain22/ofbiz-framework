@@ -81,10 +81,18 @@ under the License.
         </response>
         <response name="error" type="request-redirect" value="FindAtparProduct"/>
     </request-map>
+    <request-map uri="downloadProductContent">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="downloadProductContent" />
+        <response name="success" type="request-redirect" value="FindAtparProduct">
+            <!--            <redirect-parameter name="productId"/>-->
+        </response>
+        <response name="error" type="request-redirect" value="FindAtparProduct"/>
+    </request-map>
 
     <request-map uri="createProductContent">
         <security https="true" auth="true"/>
-        <event type="service" invoke="multipleUploadProductImages" />
+        <event type="simple" invoke="createProductContent" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
         <response name="success" type="request-redirect" value="EditProduct">
             <!--            <redirect-parameter name="productId"/>-->
         </response>

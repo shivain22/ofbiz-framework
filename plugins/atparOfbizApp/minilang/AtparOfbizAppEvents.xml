@@ -112,11 +112,18 @@
         </entity-one>
 <!--        <if-not-empty field="parameters._additionalImageOne_fileName">-->
             <set field="productContent.productId" from-field="parameters.productId"/>
-            <set field="productContent._additionalImageOne_fileName" from-field="parameters._additionalImageOne_fileName"/>
-            <set field="productContent._additionalImageOne_contentType" from-field="parameters._additionalImageOne_contentType"/>
+            <set field="productContent.additionalImageOne" from-field="parameters.upload_file"/>
+            <set field="productContent._additionalImageOne_fileName" from-field="parameters._upload_file_fileName"/>
+            <set field="productContent._additionalImageOne_contentType" from-field="parameters._upload_file_contentType"/>
             <call-service service-name="multipleUploadProductImages" in-map-name="productContent">
 <!--                                        <result-to-field result-name="productId"/>-->
             </call-service>
+
+            <set field="atparUpadteProduct.productId" from-field="parameters.productId"/>
+            <set field="atparUpadteProduct.status" value="1"/>
+             <call-service service-name="updateAtparProductStatus" in-map-name="atparUpadteProduct">
+                    <!--                <result-to-field result-name="productId"/>-->
+             </call-service>
 <!--        </if-not-empty>-->
     </simple-method >
 
@@ -159,7 +166,7 @@
             </call-service>
 
             <set field="atparUpadteProduct.atparProductId" from-field="parameters.atparProductId"/>
-            <set field="atparUpadteProduct.status" value="1"/>
+            <set field="atparUpadteProduct.status" value="0"/>
             <call-service service-name="updateAtparProductStatus" in-map-name="atparUpadteProduct">
                 <!--                <result-to-field result-name="productId"/>-->
             </call-service>

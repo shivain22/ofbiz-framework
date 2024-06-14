@@ -105,9 +105,9 @@ under the License.
 
     <form name="EditProductContent"  type="upload" target="createProductContent" default-map-name="productContent" >
         <field name="productId" title="${uiLabelMap.ProductProductId}" ><text/></field>
-        <field name="additionalImageOne"  title="${uiLabelMap.UploadFile}"><file size="25"/> </field>
-        <field name="_additionalImageOne_fileName" ><hidden/></field>
-        <field name="_additionalImageOne_contentType" ><hidden/></field>
+        <field name="upload_file"  title="${uiLabelMap.UploadFile}"><file size="25"/> </field>
+        <field name="_uploadFile_fileName" ><hidden/></field>
+        <field name="_uploadFile_contentType" ><hidden/></field>
         <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" ><submit button-type="button"/></field>
     </form>
 
@@ -122,7 +122,7 @@ under the License.
           odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
         <actions>
             <!-- Preparing search results for user query by using OFBiz stock service to perform find operations on a single entity or view entity -->
-            <service service-name="FindAtparProductStatusFalse" result-map="result" result-map-list="listIt" >
+            <service service-name="performFind" result-map="result" result-map-list="listIt" >
                 <field-map field-name="inputFields" from-field="AtparProductCtx"/>
                 <field-map field-name="entityName" value="atparProduct"/>
                 <field-map field-name="orderBy" from-field="parameters.sortField"/>
@@ -138,7 +138,7 @@ under the License.
         <field name="atparProductInternalName" title="${uiLabelMap.AtparProductInternalName}"><display/></field>
         <field name="atparProductType" title="${uiLabelMap.AtparProductType}" sort-field="true"><display/></field>
         <field name="atparProductCategoryId" title="${uiLabelMap.AtparProductCategoryId}" sort-field="true"><display/></field>
-        <field name="approveButton" title="${uiLabelMap.Approve}" widget-style="buttontext" >
+        <field name="approveButton" title="${uiLabelMap.Approve}" widget-style="buttontext" use-when="status==0">
             <hyperlink description="${uiLabelMap.Approve}" target="createAtparEcommerceProduct" also-hidden="false" >
                 <parameter param-name="atparProductId" from-field="atparProductId"/>
                 <parameter param-name="productId" from-field="productId"/>
@@ -151,7 +151,11 @@ under the License.
                 <parameter param-name="thumbnailImagePath" from-field="thumbnailImagePath"/>
             </hyperlink>
         </field>
-        <field name="downloadButton" title="${uiLabelMap.Download}"><submit button-type="button"/></field>
+        <field name="downloadButton" title="${uiLabelMap.Download}" widget-style="buttontext" use-when="status==2">
+            <hyperlink description="${uiLabelMap.Download}" target="downloadProductContent" also-hidden="false" >
+                <parameter param-name="productId" from-field="productId"/>
+            </hyperlink>
+        </field>
     </form>
     <form name="productEcommercePage" type="single">
         <field name="productId" title="${uiLabelMap.ProductProductId}">

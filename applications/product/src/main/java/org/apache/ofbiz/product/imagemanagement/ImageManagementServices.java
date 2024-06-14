@@ -248,23 +248,31 @@ public class ImageManagementServices {
                     return ServiceUtil.returnError(errMsg);
                 }
             }
-
+            String imageUrl = imageServerUrl + "/" + productId + "/" + imageName;
+            String contentIdThumb ="";
+            if(!uploadFileContentType.equals("PDF")){
             Map<String, Object> contentThumbnail = createContentThumbnail(dctx, context, userLogin, imageData, productId, imageName , uploadFileContentType);
             String filenameToUseThumb = (String) contentThumbnail.get("filenameToUseThumb");
-            String contentIdThumb = (String) contentThumbnail.get("contentIdThumb");
-
-            String imageUrl = imageServerUrl + "/" + productId + "/" + imageName;
+             contentIdThumb = (String) contentThumbnail.get("contentIdThumb");
             String imageUrlThumb = imageServerUrl + "/" + productId + "/" + filenameToUseThumb;
+            createContentAndDataResource(dctx, userLogin, filenameToUseThumb, imageUrlThumb, contentIdThumb, fileContentType);
+            }
 
             createContentAndDataResource(dctx, userLogin, imageName, imageUrl, contentId, fileContentType);
-            createContentAndDataResource(dctx, userLogin, filenameToUseThumb, imageUrlThumb, contentIdThumb, fileContentType);
+//            if(!uploadFileContentType.equals("PDF")){
+//                createContentAndDataResource(dctx, userLogin, filenameToUseThumb, imageUrlThumb, contentIdThumb, fileContentType);
+//            }
+
 
             Map<String, Object> createContentAssocMap = new HashMap<>();
             createContentAssocMap.put("contentAssocTypeId", "IMAGE_THUMBNAIL");
             createContentAssocMap.put("contentId", contentId);
             createContentAssocMap.put("contentIdTo", contentIdThumb);
+            if(uploadFileContentType.equals("PDF")){
+                createContentAssocMap.put("contentIdTo", contentId);
+            }
             createContentAssocMap.put("userLogin", userLogin);
-            createContentAssocMap.put("mapKey", "100");
+//            createContentAssocMap.put("mapKey", "100");
             try {
                 Map<String, Object> serviceResult = dispatcher.runSync("createContentAssoc", createContentAssocMap);
                 if (ServiceUtil.isError(serviceResult)) {

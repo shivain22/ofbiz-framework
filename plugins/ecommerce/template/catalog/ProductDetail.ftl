@@ -337,20 +337,21 @@ ${variantInfoJavaScript!}
         </#if>
       </div>
       <#-- Show Image Approved -->
-        <#if productImageList?has_content>
-          <ul class="list-inline gallery">
-            <#list productImageList as productImage>
-              <li class="list-inline-item">
-                <a href="javascript:void(0);"
-                    swapDetail="<@ofbizContentUrl>${productImage.productImage}</@ofbizContentUrl>">
-                  <img src="<@ofbizContentUrl>${productImage.productImageThumb}</@ofbizContentUrl>"
-                      vspace="5" hspace="5" alt=""/>
-                </a>
-              </li>
-            </#list>
-          </ul>
-        </#if>
-    <#else>
+          <#if productImageList?has_content>
+              <ul class="list-inline gallery">
+                  <#list productImageList as productImage>
+                      <li class="list-inline-item">
+                          <#if productImage.productImageThumb??>
+                              <a href="javascript:void(0);" swapDetail="<@ofbizContentUrl>${productImage.productImage}</@ofbizContentUrl>">
+                                  <img src="<@ofbizContentUrl>${productImage.productImageThumb}</@ofbizContentUrl>"
+                                       vspace="5" hspace="5" alt=""/>
+                              </a>
+                          </#if>
+                      </li>
+                  </#list>
+              </ul>
+          </#if>
+      <#else>
       <#-- Product image/name/price -->
       <div id="detailImageBox">
         <#assign productLargeImageUrl = productContentWrapper.get("LARGE_IMAGE_URL", "url")! />
