@@ -82,7 +82,7 @@ under the License.
                 </entity-options>
             </drop-down>
         </field>
-        <field name="primaryProductCategoryId"><hidden value="BEST-SELL-1"/></field>
+        <field name="primaryProductCategoryId"><lookup target-form-name="LookupProductCategory"/></field>
         <field name="status"><hidden value="0"/></field>
         <field name="upload_file"  title="${uiLabelMap.ThumbnailImage}" ><file size="25"/></field>
 <!--        <field name="uploadFile"  title="${uiLabelMap.FileName}"><text/></field>-->
@@ -104,21 +104,22 @@ under the License.
     </form>
 
     <form name="EditProductContent"  type="upload" target="createProductContent" default-map-name="productContent" >
-        <field name="productId" title="${uiLabelMap.ProductId}" ><text/></field>
+        <field name="productId" title="${uiLabelMap.ProductId}"><lookup target-form-name="LookupProduct"  /></field>
         <field name="upload_file"  title="${uiLabelMap.UploadFile}"><file size="25"/> </field>
         <field name="_uploadFile_fileName" ><hidden/></field>
         <field name="_uploadFile_contentType" ><hidden/></field>
         <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" ><submit button-type="button"/></field>
     </form>
 
-    <form name="AprroveProduct" type="single" target="AprroveProduct" default-entity-name="atparProduct">
+    <form name="ApproveProduct" type="single" target="ApproveProduct" default-entity-name="atparProduct">
         <field name="noConditionFind"><hidden value="Y"/> <!-- if this isn't there then with all fields empty no query will be done --></field>
-        <field name="atparProductId" title="${uiLabelMap.ProductId}"><text-find/></field>
+        <field name="atparProductId" title="${uiLabelMap.ProductId}" ><text-find/></field>
+
         <field name="atparProductInternalName" title="${uiLabelMap.ProductInternalName}" ><text-find/></field>
 
         <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button" image-location="/images/icons/magnifier.png"/></field>
     </form>
-    <form name="ListAtparProduct" type="list" list-name="listIt" paginate-target="AprroveProduct" default-entity-name="atparProduct" separate-columns="true"
+    <form name="ListAtparProduct" type="list" list-name="listIt" paginate-target="ApproveProduct" default-entity-name="atparProduct" separate-columns="true"
           odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
         <actions>
             <!-- Preparing search results for user query by using OFBiz stock service to perform find operations on a single entity or view entity -->

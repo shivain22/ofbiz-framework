@@ -41,9 +41,11 @@ under the License.
 
     <!-- Request Mappings -->
     <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="EditProduct"/></request-map>
-    <request-map uri="AprroveProduct"><security https="true" auth="true"/><response name="success" type="view" value="AprroveProduct"/></request-map>
+    <request-map uri="ApproveProduct"><security https="true" auth="true"/><response name="success" type="view" value="ApproveProduct"/></request-map>
     <request-map uri="EditProduct"><security https="true" auth="true"/><response name="success" type="view" value="EditProduct"/></request-map>
     <request-map uri="PublishProduct"><security https="true" auth="true"/><response name="success" type="view" value="PublishProduct"/></request-map>
+    <request-map uri="LookupProduct"><security https="true" auth="true"/><response name="success" type="view" value="LookupProduct"/></request-map>
+    <request-map uri="LookupProductCategory"><security auth="true" https="true"/><response name="success" type="view" value="LookupProductCategory"/></request-map>
 <!--    <request-map uri="FindAtparTechie"><security https="true" auth="true"/><response name="success" type="view" value="FindAtparTechie"/></request-map>-->
 <!--    <request-map uri="FindAtparProduct"><security https="true" auth="true"/><response name="success" type="view" value="FindAtparProduct"/></request-map>-->
 
@@ -78,18 +80,18 @@ under the License.
     <request-map uri="createAtparEcommerceProduct">
         <security https="true" auth="true"/>
         <event type="simple" invoke="createAtparEcommerceProduct" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
-        <response name="success" type="request-redirect" value="AprroveProduct">
+        <response name="success" type="request-redirect" value="ApproveProduct">
             <!--            <redirect-parameter name="productId"/>-->
         </response>
-        <response name="error" type="request-redirect" value="AprroveProduct"/>
+        <response name="error" type="request-redirect" value="ApproveProduct"/>
     </request-map>
     <request-map uri="downloadProductContent">
         <security https="true" auth="true"/>
         <event type="service" invoke="downloadProductContent" />
-        <response name="success" type="request-redirect" value="AprroveProduct">
+        <response name="success" type="request-redirect" value="ApproveProduct">
             <!--            <redirect-parameter name="productId"/>-->
         </response>
-        <response name="error" type="request-redirect" value="AprroveProduct"/>
+        <response name="error" type="request-redirect" value="ApproveProduct"/>
     </request-map>
 
     <request-map uri="createProductContent">
@@ -105,10 +107,11 @@ under the License.
 
     <view-map name="main" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#EditProduct"/>
     <view-map name="EditProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#EditProduct"/>
-    <view-map name="AprroveProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#AprroveProduct"/>
+    <view-map name="ApproveProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#ApproveProduct"/>
     <view-map name="ViewProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#ViewProduct"/>
     <view-map name="PublishProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#PublishProduct"/>
-
+    <view-map name="LookupProduct" type="screen" page="component://product/widget/catalog/LookupScreens.xml#LookupProduct"/>
+    <view-map name="LookupProductCategory" type="screen" page="component://product/widget/catalog/LookupScreens.xml#LookupProductCategory"/>
 <!--    <view-map name="FindAtparTechie" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#FindAtparTechie"/>-->
 <!--    <view-map name="FindAtparProduct" type="screen" page="component://atparOfbizApp/widget/AtparOfbizAppScreens.xml#FindAtparProduct"/>-->
 
