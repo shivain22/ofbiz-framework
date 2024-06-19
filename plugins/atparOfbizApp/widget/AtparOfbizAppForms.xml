@@ -21,29 +21,29 @@ under the License.
 <forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://ofbiz.apache.org/Widget-Form" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form http://ofbiz.apache.org/dtds/widget-form.xsd">
 
-    <form name="AddAtparTechie" type="single" target="createAtparTechie">
-        <!-- We have this utility in OFBiz to render form based on service definition.
-             Service attributes will automatically lookedup and will be shown on form
-        -->
-<!--        <field name="upoadFile">-->
-<!--            <file size="25"></file>-->
+<!--    <form name="AddAtparTechie" type="single" target="createAtparTechie">-->
+<!--        &lt;!&ndash; We have this utility in OFBiz to render form based on service definition.-->
+<!--             Service attributes will automatically lookedup and will be shown on form-->
+<!--        &ndash;&gt;-->
+<!--&lt;!&ndash;        <field name="upoadFile">&ndash;&gt;-->
+<!--&lt;!&ndash;            <file size="25"></file>&ndash;&gt;-->
+<!--&lt;!&ndash;        </field>&ndash;&gt;-->
+<!--        <field name="atparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><text/></field>-->
+<!--        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}"><text/></field>-->
+<!--        <field name="lastName" title="${uiLabelMap.AtparTechielastName}"><text/></field>-->
+<!--        <field name="role" title="${uiLabelMap.AtparTechieRole}"><text/></field>-->
+<!--        <field name="comments" title="${uiLabelMap.AtparTechieComments}"><text/></field>-->
+<!--        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>-->
+<!--    </form>-->
+<!--    <form name="AddAtparTechieUpload"  type="upload" target="createAtparTechieUpload">-->
+<!--        <auto-fields-service service-name="createAtparTechieUpload"/>-->
+<!--        <field  name="upload_file" title="${uiLabelMap.upload_file}">-->
+<!--            <file size="25"/>-->
 <!--        </field>-->
-        <field name="atparTechieUploadId" title="${uiLabelMap.AtparTechieUploadId}"><text/></field>
-        <field name="firstName" title="${uiLabelMap.AtparTechieFirstName}"><text/></field>
-        <field name="lastName" title="${uiLabelMap.AtparTechielastName}"><text/></field>
-        <field name="role" title="${uiLabelMap.AtparTechieRole}"><text/></field>
-        <field name="comments" title="${uiLabelMap.AtparTechieComments}"><text/></field>
-        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
-    </form>
-    <form name="AddAtparTechieUpload"  type="upload" target="createAtparTechieUpload">
-        <auto-fields-service service-name="createAtparTechieUpload"/>
-        <field  name="upload_file" title="${uiLabelMap.upload_file}">
-            <file size="25"/>
-        </field>
-        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
-    </form>
+<!--        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>-->
+<!--    </form>-->
 
-    
+<!--    -->
 <!--    Atpar Edit product form -->
     <form name="EditProduct"  type="upload" target="createAtparPendingProduct" default-map-name="atparProduct" >
         <actions>
@@ -73,9 +73,9 @@ under the License.
             </drop-down>
         </field>
         <field name="productId"><text/></field>
-        <field name="internalName" title="${uiLabelMap.AtparProductName}" required-field="true"><text/></field>
+        <field name="internalName" title="${uiLabelMap.ProductName}" required-field="true"><text/></field>
         <field name="longDescription" title="${uiLabelMap.CommonDescription}"><textarea/></field>
-        <field name="productTypeId" title="${uiLabelMap.ProductProductType}">
+        <field name="productTypeId" title="${uiLabelMap.ProductType}">
             <drop-down no-current-selected-key="GOOD">
                 <entity-options entity-name="ProductType"> <!-- [${productTypeId}] -->
                     <entity-order-by field-name="description"/>
@@ -104,21 +104,21 @@ under the License.
     </form>
 
     <form name="EditProductContent"  type="upload" target="createProductContent" default-map-name="productContent" >
-        <field name="productId" title="${uiLabelMap.ProductProductId}" ><text/></field>
+        <field name="productId" title="${uiLabelMap.ProductId}" ><text/></field>
         <field name="upload_file"  title="${uiLabelMap.UploadFile}"><file size="25"/> </field>
         <field name="_uploadFile_fileName" ><hidden/></field>
         <field name="_uploadFile_contentType" ><hidden/></field>
         <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit" ><submit button-type="button"/></field>
     </form>
 
-    <form name="FindAtparProduct" type="single" target="FindAtparProduct" default-entity-name="atparProduct">
+    <form name="AprroveProduct" type="single" target="AprroveProduct" default-entity-name="atparProduct">
         <field name="noConditionFind"><hidden value="Y"/> <!-- if this isn't there then with all fields empty no query will be done --></field>
-        <field name="atparProductId" title="${uiLabelMap.AtparProductId}"><text-find/></field>
+        <field name="atparProductId" title="${uiLabelMap.ProductId}"><text-find/></field>
         <field name="atparProductInternalName" title="${uiLabelMap.ProductInternalName}" ><text-find/></field>
 
         <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button" image-location="/images/icons/magnifier.png"/></field>
     </form>
-    <form name="ListAtparProduct" type="list" list-name="listIt" paginate-target="FindAtparProduct" default-entity-name="atparProduct" separate-columns="true"
+    <form name="ListAtparProduct" type="list" list-name="listIt" paginate-target="AprroveProduct" default-entity-name="atparProduct" separate-columns="true"
           odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
         <actions>
             <!-- Preparing search results for user query by using OFBiz stock service to perform find operations on a single entity or view entity -->
@@ -133,11 +133,11 @@ under the License.
         </actions>
 
 
-        <field name="atparProductId" title="${uiLabelMap.AtparProductId}" ><display/></field>
+        <field name="atparProductId" title="${uiLabelMap.ProductId}" ><display/></field>
         <field name="productId" title="${uiLabelMap.ProductId}" ><display/></field>
-        <field name="atparProductInternalName" title="${uiLabelMap.AtparProductInternalName}"><display/></field>
-        <field name="atparProductType" title="${uiLabelMap.AtparProductType}" sort-field="true"><display/></field>
-        <field name="atparProductCategoryId" title="${uiLabelMap.AtparProductCategoryId}" sort-field="true"><display/></field>
+        <field name="atparProductInternalName" title="${uiLabelMap.ProductInternalName}"><display/></field>
+        <field name="atparProductType" title="${uiLabelMap.ProductType}" sort-field="true"><display/></field>
+        <field name="atparProductCategoryId" title="${uiLabelMap.ProductCategoryId}" sort-field="true"><display/></field>
         <field name="approveButton" title="${uiLabelMap.Approve}" widget-style="buttontext" use-when="status==0">
             <hyperlink description="${uiLabelMap.Approve}" target="createAtparEcommerceProduct" also-hidden="false" >
                 <parameter param-name="atparProductId" from-field="atparProductId"/>

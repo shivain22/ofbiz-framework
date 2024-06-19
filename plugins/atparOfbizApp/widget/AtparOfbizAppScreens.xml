@@ -21,10 +21,10 @@ under the License.
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://ofbiz.apache.org/Widget-Screen" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Screen http://ofbiz.apache.org/dtds/widget-screen.xsd">
 
-    <screen name="main">
+   <!-- <screen name="main">
         <section>
             <actions>
-                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="headerItem" value="main"/>&lt;!&ndash; this highlights the selected menu-item with name "main" &ndash;&gt;
             </actions>
             <widgets>
                 <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
@@ -46,7 +46,7 @@ under the License.
 
             </widgets>
         </section>
-    </screen>
+    </screen>-->
     <screen name="EditProduct">
         <section>
             <actions>
@@ -58,11 +58,8 @@ under the License.
                         <label text="AtarApplication"/>
                     </decorator-section>
                     <decorator-section name="body" >
-                        <screenlet title="Add Atpar Product">
+                        <screenlet title="Add Product">
                             <include-form name="EditProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
-                        </screenlet>
-                        <screenlet title="Edit Atpar Product Content">
-                            <include-form name="EditProductContent" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
 <!--                        <screenlet>-->
 <!--                            <include-menu name="ProductSubTabBar" location="component://product/widget/catalog/CatalogMenus.xml"/>-->
@@ -72,11 +69,33 @@ under the License.
             </widgets>
         </section>
     </screen>
-    <screen name="FindAtparProduct">
+    <screen name="PublishProduct">
         <section>
             <actions>
-                <set field="headerItem" value="findAtparProduct"/>
-                <set field="titleProperty" value="PageTitleFindAtparProduct"/>
+                <set field="headerItem" value="PublishProduct"/><!-- this highlights the selected menu-item with name "main" -->
+            </actions>
+            <widgets>
+                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <label text="AtarApplication"/>
+                    </decorator-section>
+                    <decorator-section name="body" >
+                        <screenlet title="Edit Product Content">
+                            <include-form name="EditProductContent" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        </screenlet>
+                        <!--                        <screenlet>-->
+                        <!--                            <include-menu name="ProductSubTabBar" location="component://product/widget/catalog/CatalogMenus.xml"/>-->
+                        <!--                        </screenlet>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="AprroveProduct">
+        <section>
+            <actions>
+                <set field="headerItem" value="AprroveProduct"/>
                 <set field="AtparProductCtx" from-field="parameters"/>
             </actions>
             <widgets>
@@ -85,10 +104,10 @@ under the License.
                         <label text="AtarApplication"/>
                     </decorator-section>
                     <decorator-section name="body" >
-                        <screenlet title="Find Atpar Product">
-                            <include-form name="FindAtparProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                        <screenlet title="Find  Product">
+                            <include-form name="AprroveProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
-                        <screenlet title="List Atpar Product">
+                        <screenlet title="List  Product">
                             <include-form name="ListAtparProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
                     </decorator-section>
@@ -97,32 +116,32 @@ under the License.
             </widgets>
         </section>
     </screen>
-    <screen name="FindAtparTechie">
-        <section>
-            <actions>
-                <set field="headerItem" value="findAtparTechie"/>
-                <set field="titleProperty" value="PageTitleFindAtparTechie"/>
-                <set field="AtparTechieCtx" from-field="parameters"/>
-            </actions>
-            <widgets>
-                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">
-                    <decorator-section name="body">
-                        <label text="AtarApplication"/>
-                    </decorator-section>
-                    <decorator-section name="body" >
-                        <screenlet title="Find Atpar Techie">
-                            <include-form name="FindAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
-                        </screenlet>
-                        <screenlet title="List Atpar Techie">
-                            <include-form name="ListAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
-                        </screenlet>
+<!--    <screen name="FindAtparTechie">-->
+<!--        <section>-->
+<!--            <actions>-->
+<!--                <set field="headerItem" value="FindAtparTechie"/>-->
+<!--                <set field="titleProperty" value="PageTitleFindAtparTechie"/>-->
+<!--                <set field="AtparTechieCtx" from-field="parameters"/>-->
+<!--            </actions>-->
+<!--            <widgets>-->
+<!--                <decorator-screen name="AtparOfbizAppCommonDecorator" location="${parameters.mainDecoratorLocation}">-->
+<!--                    <decorator-section name="body">-->
+<!--                        <label text="AtarApplication"/>-->
+<!--                    </decorator-section>-->
+<!--                    <decorator-section name="body" >-->
+<!--                        <screenlet title="Find Atpar Techie">-->
+<!--                            <include-form name="FindAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>-->
+<!--                        </screenlet>-->
+<!--                        <screenlet title="List Atpar Techie">-->
+<!--                            <include-form name="ListAtparTechie" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>-->
+<!--                        </screenlet>-->
 
-                    </decorator-section>
-                </decorator-screen>
+<!--                    </decorator-section>-->
+<!--                </decorator-screen>-->
 
-            </widgets>
-        </section>
-    </screen>
+<!--            </widgets>-->
+<!--        </section>-->
+<!--    </screen>-->
 <!--    <screen name="EditProduct">-->
 <!--        <section>-->
 <!--            <actions>-->

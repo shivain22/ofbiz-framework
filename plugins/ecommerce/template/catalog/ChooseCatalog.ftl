@@ -28,7 +28,7 @@ under the License.
     ${uiLabelMap.ProductChooseCatalog}
   </div>
   <div class="card-body">
-    <form name="choosecatalogform" method="post" action="<@ofbizUrl>main</@ofbizUrl>">
+    <form name="choosecatalogform" method="post" action="/ecommerce/control/main">
             <select name='CURRENT_CATALOG_ID' class='selectBox form-control' onchange="submit()">
               <option value='${currentCatalogId}'>${currentCatalogName}</option>
               <option value='${currentCatalogId}'></option>

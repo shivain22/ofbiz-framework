@@ -23,11 +23,15 @@ under the License.
     <VisualTheme visualThemeId="RAINBOWSTONE_RUBY" visualThemeSetId="BACKOFFICE" description="Rainbow Stone - Ruby"/>
     <VisualTheme visualThemeId="RAINBOWSTONE_EMERALD" visualThemeSetId="BACKOFFICE" description="Rainbow Stone - Emerald"/>
     <VisualTheme visualThemeId="RAINBOWSTONE_AMBER" visualThemeSetId="BACKOFFICE" description="Rainbow Stone - Amber"/>
+    <VisualTheme visualThemeId="RAINBOWSTONE_ERP" visualThemeSetId="BACKOFFICE" description="Rainbow Stone - Erp"/>
+    <VisualTheme visualThemeId="RAINBOWSTONE_AUREX" visualThemeSetId="BACKOFFICE" description="Rainbow Stone - Aurex"/>
     <delete>
     <!-- These files are not set in Theme.xml, these are including using layoutSettings.VT_STYLESHEET_LESS -->
     <VisualThemeResource visualThemeId="RAINBOWSTONE_SAPHIR" resourceTypeEnumId="VT_STYLESHEET_LESS" resourceValue="/rainbowstone/rainbowstone-Sapphire.less" sequenceId="01"/>
     <VisualThemeResource visualThemeId="RAINBOWSTONE_RUBY" resourceTypeEnumId="VT_STYLESHEET_LESS" resourceValue="/rainbowstone/rainbowstone-ruby.less" sequenceId="01"/>
     <VisualThemeResource visualThemeId="RAINBOWSTONE_EMERALD" resourceTypeEnumId="VT_STYLESHEET_LESS" resourceValue="/rainbowstone/rainbowstone-emerald.less" sequenceId="01"/>
     <VisualThemeResource visualThemeId="RAINBOWSTONE_AMBER" resourceTypeEnumId="VT_STYLESHEET_LESS" resourceValue="/rainbowstone/rainbowstone-amber.less" sequenceId="01"/>
+        <VisualThemeResource visualThemeId="RAINBOWSTONE_ERP" resourceTypeEnumId="VT_STYLESHEET_LESS" resourceValue="/rainbowstone/rainbowstone-erp.less" sequenceId="01"/>
+        <VisualThemeResource visualThemeId="RAINBOWSTONE_AUREX" resourceTypeEnumId="VT_STYLESHEET_LESS" resourceValue="/rainbowstone/rainbowstone-aurex.less" sequenceId="01"/>
     </delete>
 </entity-engine-xml>

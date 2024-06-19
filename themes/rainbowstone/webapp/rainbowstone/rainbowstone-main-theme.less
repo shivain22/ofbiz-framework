@@ -361,17 +361,18 @@
 }
 
 #company-logo {
-  right: 10px;
+  right: -50px;
   top: 2px;
-  background: url("images/ofbiz-simple-white.svg") no-repeat left top / cover;
+  background: @logo-light no-repeat left top / cover;
   min-height: 50px;
-  min-width: 50px;
-  margin-right: 15px;
+  min-width: 2000px;
+  margin-right: 20px;
   align-self: center;
   @media screen and (min-width: 1232px) {
+    right: -50px;
     min-height: 50px;
-    min-width: 129px;
-    background: url("images/ofbiz_logo.svg") no-repeat left top / cover;
+    min-width: 200px;
+    background: @logo no-repeat left top / cover;
   }
 }
 

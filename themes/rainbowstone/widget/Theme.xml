@@ -38,6 +38,14 @@ under the License.
             <description>${util:label('CommonEntityLabels', 'VisualTheme.description.RAINBOWSTONE_EMERALD', locale)}</description>
             <screenshot location="/rainbowstone/images/themeEmerald.png"/>
         </visual-theme>
+        <visual-theme id="RAINBOWSTONE_ERP" display-name="Rainbow Stone - Erp">
+            <description>${util:label('CommonEntityLabels', 'VisualTheme.description.RAINBOWSTONE_ERP', locale)}</description>
+            <screenshot location="/rainbowstone/images/themeSaphir.png"/>
+        </visual-theme>
+        <visual-theme id="RAINBOWSTONE_AUREX" display-name="Rainbow Stone - Aurex">
+            <description>${util:label('CommonEntityLabels', 'VisualTheme.description.RAINBOWSTONE_AUREX', locale)}</description>
+            <screenshot location="/rainbowstone/images/themeSaphir.png"/>
+        </visual-theme>
     </visual-themes>
 
     <extends location="component://common-theme/widget/Theme.xml"/>

@@ -17,32 +17,23 @@
  * under the License.
  *******************************************************************************/
 
-/* Logo */
-@logo-emerald : url("images/ofbiz_logo.svg");
-@logo-light-emerald : url("images/ofbiz-simple-white.svg");
+@logo-erp : url("images/logo-erp.png");
+@logo-light-erp : url("images/logo-light-erp.png");
 
-@logo : @logo-emerald;
-@logo-light : @logo-light-emerald;
+@logo : @logo-erp;
+@logo-light : @logo-light-erp;
 
-/* Emerald colors */
-@green-dark: #197948;
-@green-main: #23af9b;
-@green-medium: #7ae3ad;
-@green-light: #e5f9ef;
-@green-light2: #d7f9ef;
+/* Helveticus ERP colors */
+@erp:#3699ff;
+@erp-dark: #5d5f69;
+@erp-light: #e1f0ff;
 
-/* Emerald theme */
-@main-color-theme: @green-main;
-@dark-color-theme: @green-dark;
-@medium-color-theme: @green-medium;
-@light-color-theme: @green-light;
-@light2-color-theme: @green-light2;
-@font-color-for-dark: @white;
-@font-color-for-main: @white;
-@font-color-for-medium: @dark-color-theme;
-@font-color-for-light: @dark-color-theme;
-@shadow-color: @black;
-@shadow-color-light: @greydark;
+
+@header-color: @erp;
+@footer-color: @erp;
+@light-color-theme: @erp-light;
+@main-color-theme: @erp;
+@dark-color-theme: @erp-dark;
 
 /* include main less theme file */
-@import (less) "rainbowstone-main-theme.less";
+@import (less) "helveticus-main-theme.less";

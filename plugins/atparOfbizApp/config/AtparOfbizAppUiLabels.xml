@@ -32,6 +32,16 @@ under the License.
         <value xml:lang="en">Find Product</value>
         <value xml:lang="zh-TW">Find Product</value>
     </property>
+    <property key="PublishProduct">
+        <value xml:lang="en">Upload/Publish Product To Market</value>
+    </property>
+
+    <property key="EditProduct">
+        <value xml:lang="en">Add Digital Asset/Property</value>
+    </property>
+    <property key="ApproveProduct">
+        <value xml:lang="en">Approve Digital Asset/Property</value>
+    </property>
 
     <property key="AtparOfbizAppCompanySubtitle">
         <value xml:lang="en">Part of the Apache OFBiz Family of Open Source Software</value>
@@ -44,4 +54,5 @@ under the License.
         <value xml:lang="zh">�?�?许你�?览这个页�?�。</value>
         <value xml:lang="zh-TW">�?�?許您檢視這個�?�?�.</value>
     </property>
+
 </resource>

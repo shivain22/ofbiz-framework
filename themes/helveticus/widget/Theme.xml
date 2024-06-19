@@ -38,6 +38,14 @@ under the License.
             <description>${util:label('CommonEntityLabels', 'VisualTheme.description.HELVETICUS_EMERALD', locale)}</description>
             <screenshot location="/helveticus/images/themeHelveticus_emerald.png"/>
         </visual-theme>
+        <visual-theme id="HELVETICUS_AUREX" display-name="Helveticus - Aurex">
+            <description>${util:label('CommonEntityLabels', 'VisualTheme.description.HELVETICUS_AUREX', locale)}</description>
+            <screenshot location="/helveticus/images/themeHelveticus_saphir.png"/>
+        </visual-theme>
+        <visual-theme id="HELVETICUS_ERP" display-name="Helveticus - Erp">
+            <description>${util:label('CommonEntityLabels', 'VisualTheme.description.HELVETICUS_ERP', locale)}</description>
+            <screenshot location="/helveticus/images/themeHelveticus_saphir.png"/>
+        </visual-theme>
     </visual-themes>
 
     <extends location="component://common-theme/widget/Theme.xml"/>

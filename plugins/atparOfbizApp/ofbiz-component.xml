@@ -45,9 +45,9 @@ under the License.
 
     <!-- web applications; will be mounted when using the embedded container -->
     <webapp name="atparOfbizApp"
-        title="AtparOfbizApp"
+        title="Real Estate Tokenization"
         server="default-server"
         location="webapp/atparOfbizApp"
         base-permission="OFBTOOLS,ATPAROFBIZAPP"
-        mount-point="/atparOfbizApp"/>
+        mount-point="/realEstateTokenization"/>
 </ofbiz-component>
