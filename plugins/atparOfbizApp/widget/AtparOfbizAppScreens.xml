@@ -92,10 +92,10 @@ under the License.
         </section>
     </screen>
 
-    <screen name="AprroveProduct">
+    <screen name="ApproveProduct">
         <section>
             <actions>
-                <set field="headerItem" value="AprroveProduct"/>
+                <set field="headerItem" value="ApproveProduct"/>
                 <set field="AtparProductCtx" from-field="parameters"/>
             </actions>
             <widgets>
@@ -105,7 +105,7 @@ under the License.
                     </decorator-section>
                     <decorator-section name="body" >
                         <screenlet title="Find  Product">
-                            <include-form name="AprroveProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
+                            <include-form name="ApproveProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>
                         </screenlet>
                         <screenlet title="List  Product">
                             <include-form name="ListAtparProduct" location="component://atparOfbizApp/widget/AtparOfbizAppForms.xml"/>

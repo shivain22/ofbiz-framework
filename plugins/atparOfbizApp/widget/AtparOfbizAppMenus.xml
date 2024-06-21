@@ -24,7 +24,7 @@ under the License.
        <!-- <menu-item name="main" title="${uiLabelMap.EditProduct}"><link target="EditProduct"/></menu-item>-->
         <!--<menu-item name="FindAtparTechie" title="${uiLabelMap.FindAtparTechie}"><link target="FindAtparTechie"/></menu-item>-->
         <menu-item name="EditProduct" title="${uiLabelMap.EditProduct}"><link target="EditProduct"/></menu-item>
-        <menu-item name="ApproveProduct" title="${uiLabelMap.ApproveProduct}"><link target="AprroveProduct"/></menu-item>
+        <menu-item name="ApproveProduct" title="${uiLabelMap.ApproveProduct}"><link target="ApproveProduct"/></menu-item>
         <menu-item name="PublishProduct" title="${uiLabelMap.PublishProduct}"><link target="PublishProduct"/></menu-item>
     </menu>
 <!--    <menu name="ProductSubTabBar" menu-container-style="button-bar button-style-2" default-selected-style="selected">-->
