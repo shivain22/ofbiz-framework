@@ -235,7 +235,7 @@ under the License.
         <attribute name="listSize" type="Integer" mode="OUT" optional="true"/>
     </service>
 
-    <service name="performFind" auth="false" engine="java" invoke="performFind" location="org.apache.ofbiz.common.FindServices">
+    <service name="performFind" auth="false" engine="java" invoke="performFind" location="org.apache.ofbiz.common.FindServices" export="true" action="GET">
         <description>Generic service to return an entity iterator.  set filterByDate to Y to exclude expired records.
            set noConditionFind to Y to find without conditions.  </description>
         <attribute name="entityName" type="String" mode="IN" optional="false"/>
