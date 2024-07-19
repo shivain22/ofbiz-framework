@@ -22,16 +22,8 @@ import static org.apache.ofbiz.base.util.UtilGenerics.checkCollection;
 import static org.apache.ofbiz.base.util.UtilGenerics.checkMap;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TimeZone;
 
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.ObjectType;
@@ -507,6 +499,7 @@ public class FindServices {
         String orderBy = (String) context.get("orderBy");
         Map<String, ?> inputFields = checkMap(context.get("inputFields"), String.class, Object.class); // Input
         String noConditionFind = (String) context.get("noConditionFind");
+        Map<String, ?> parameters = UtilGenerics.checkMap(context.get("parameters"), String.class, Object.class);
         String distinct = (String) context.get("distinct");
         List<String> fieldList = UtilGenerics.cast(context.get("fieldList"));
         GenericValue userLogin = (GenericValue) context.get("userLogin");
@@ -560,7 +553,16 @@ public class FindServices {
         }
         EntityConditionList<EntityCondition> exprList = UtilGenerics.cast(prepareResult.get("entityConditionList"));
         List<String> orderByList = checkCollection(prepareResult.get("orderByList"), String.class);
-
+        List<String> tableFields = new ArrayList<>();
+        Object fieldsListObj = prepareResult.get("fieldsList");
+        if (fieldsListObj instanceof List<?>) {
+            List<?> rawList = (List<?>) fieldsListObj;
+            for (Object obj : rawList) {
+                if (obj instanceof String) {
+                    tableFields.add((String) obj);
+                }
+            }
+        }
         Map<String, Object> executeResult = null;
         try {
             executeResult = dispatcher.runSync("executeFind", UtilMisc.toMap("entityName", entityName, "orderByList", orderByList,
@@ -580,8 +582,23 @@ public class FindServices {
             }
         }
 
+        EntityListIterator listIt= (EntityListIterator) executeResult.get("listIt");
+
+         List<Object> resultList = new ArrayList<>();
+        if (listIt != null && !tableFields.isEmpty()) {
+            GenericValue entity;
+            while ((entity = listIt.next()) != null) {
+                Map<String, String> result = new HashMap<>();
+                for (String fieldName : tableFields) {
+                    result.put(fieldName,entity.getString(fieldName));
+                    System.out.println(fieldName+": "+entity.getString(fieldName));
+                }
+                resultList.add(result);
+            }
+        }
         Map<String, Object> results = ServiceUtil.returnSuccess();
-        results.put("listIt", executeResult.get("listIt"));
+//        results.put("listIt", executeResult.get("listIt"));
+        results.put("resultList",resultList);
         results.put("listSize", executeResult.get("listSize"));
         results.put("queryString", prepareResult.get("queryString"));
         results.put("queryStringMap", prepareResult.get("queryStringMap"));
@@ -675,6 +692,7 @@ public class FindServices {
         results.put("queryStringMap", queryStringMap);
         results.put("orderByList", orderByList);
         results.put("entityConditionList", exprList);
+        results.put("fieldsList",modelEntity.getAllFieldNames());
         return results;
     }
 
@@ -723,6 +741,8 @@ public class FindServices {
                     UtilMisc.toMap("entityName", (dynamicViewEntity != null ? dynamicViewEntity.getEntityName() : entityName),
                                    "errorString", e.getMessage()), locale));
         }
+
+
 
         Map<String, Object> results = ServiceUtil.returnSuccess();
         results.put("listIt", listIt);

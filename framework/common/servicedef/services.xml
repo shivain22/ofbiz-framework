@@ -217,6 +217,7 @@ under the License.
         <attribute name="fromDateName" type="String" mode="IN" optional="true"/>
         <attribute name="thruDateName" type="String" mode="IN" optional="true"/>
         <attribute name="queryString" type="String" mode="OUT" optional="true"/>
+        <attribute name="fieldsList" type="java.util.List" mode="OUT" optional="true"/>
         <attribute name="queryStringMap" type="java.util.Map" mode="OUT" optional="true"/>
         <attribute name="orderByList" type="java.util.List" mode="OUT" optional="true"/>
         <attribute name="entityConditionList" type="org.apache.ofbiz.entity.condition.EntityConditionList" mode="OUT" optional="true"/>
@@ -235,7 +236,7 @@ under the License.
         <attribute name="listSize" type="Integer" mode="OUT" optional="true"/>
     </service>
 
-    <service name="performFind" auth="false" engine="java" invoke="performFind" location="org.apache.ofbiz.common.FindServices">
+    <service name="performFind" auth="false" engine="java" invoke="performFind" location="org.apache.ofbiz.common.FindServices" action="GET" export="true">
         <description>Generic service to return an entity iterator.  set filterByDate to Y to exclude expired records.
            set noConditionFind to Y to find without conditions.  </description>
         <attribute name="entityName" type="String" mode="IN" optional="false"/>
@@ -251,10 +252,11 @@ under the License.
         <attribute name="thruDateName" type="String" mode="IN" optional="true"/>
         <attribute name="viewIndex" type="Integer" mode="IN" optional="true"/>
         <attribute name="viewSize" type="Integer" mode="IN" optional="true"/>
-        <attribute name="listIt" type="org.apache.ofbiz.entity.util.EntityListIterator" mode="OUT" optional="true"/>
-        <attribute name="listSize" type="Integer" mode="OUT" optional="true"/>
-        <attribute name="queryString" type="String" mode="OUT" optional="true"/>
-        <attribute name="queryStringMap" type="java.util.Map" mode="OUT" optional="true"/>
+        <attribute name="resultList" type="java.util.List" mode="OUT" optional="true"/>
+<!--        <attribute name="listIt" type="org.apache.ofbiz.entity.util.EntityListIterator" mode="OUT" optional="true"/>-->
+<!--        <attribute name="listSize" type="Integer" mode="OUT" optional="true"/>-->
+<!--        <attribute name="queryString" type="String" mode="OUT" optional="true"/>-->
+<!--        <attribute name="queryStringMap" type="java.util.Map" mode="OUT" optional="true"/>-->
     </service>
 
     <service name="performFindList" auth="false" engine="java" invoke="performFindList" location="org.apache.ofbiz.common.FindServices">
