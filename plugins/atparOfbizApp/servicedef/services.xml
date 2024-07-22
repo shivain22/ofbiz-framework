@@ -79,7 +79,7 @@ under the License.
         <description>Create an Atpar Techie Upload record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
-        <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="true" />
+        <attribute mode="IN" name="upload_file" type="java.io.File" optional="true" />
         <attribute name="_upload_file_fileName" type="String" mode="IN" optional="true" />
         <attribute name="_upload_file_contentType" type="String" mode="IN" optional="true" />
         <attribute name="productId" type="String" mode="IN" optional="false"/>

@@ -15,12 +15,14 @@ import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.DispatchContext;
 import java.io.*;
 import java.nio.*;
+import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
@@ -43,10 +45,11 @@ public class AtparOfbizAppEvents {
     public static final String module = AtparOfbizAppEvents.class.getName();
 
     //    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    public static Map<String, Object> createAtparProductEvent(DispatchContext dctx, Map<String, ?> context) {
+    public static Map<String, Object> createAtparProductEvent(DispatchContext dctx, Map<String, ?> context) throws IOException {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
-        ByteBuffer fileBytes = (ByteBuffer) context.get("upload_file");
+        File file = (File) context.get("upload_file");
+        ByteBuffer fileBytes=fileToByteBuffer(file);
         String filename = (String) context.get("_upload_file_fileName");
         String fileContentType = (String) context.get("_upload_file_contentType");
         String productId = (String) context.get("productId");
@@ -58,6 +61,7 @@ public class AtparOfbizAppEvents {
         String introductionDate = (String) context.get("introductionDate");
 //        LocalDateTime  introductionDate = LocalDateTime.parse(String.format((String)context.get("introductionDate"),formatter));
         String filePath = filename;
+
 
         byte[] bytefile = fileBytes.array();
         String destination = System.getProperty("java.io.tmpdir");
@@ -87,7 +91,24 @@ public class AtparOfbizAppEvents {
             return Collections.emptyMap();
         }
     }
+    public static ByteBuffer fileToByteBuffer(File file) throws IOException {
+        // Create a FileInputStream to read the file
+        try (FileInputStream fis = new FileInputStream(file); FileChannel fileChannel = fis.getChannel()) {
+            // Get the size of the file
+            long fileSize = fileChannel.size();
 
+            // Create a ByteBuffer to hold the file's content
+            ByteBuffer byteBuffer = ByteBuffer.allocate((int) fileSize);
+
+            // Read the file's content into the ByteBuffer
+            fileChannel.read(byteBuffer);
+
+            // Flip the ByteBuffer to prepare it for reading
+            byteBuffer.flip();
+
+            return byteBuffer;
+        }
+    }
     public static Map<String, Object> createAtparTechieUploadEvent(DispatchContext dctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
