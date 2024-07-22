@@ -96,7 +96,7 @@ under the License.
 
     <request-map uri="createProductContent">
         <security https="true" auth="true"/>
-        <event type="simple" invoke="createProductContent" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
+        <event type="service" invoke="createProductContent" />
         <response name="success" type="request-redirect" value="PublishProduct">
             <!--            <redirect-parameter name="productId"/>-->
         </response>

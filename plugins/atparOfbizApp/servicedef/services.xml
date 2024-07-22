@@ -63,6 +63,17 @@ under the License.
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
         <override name="comments" optional="true"/>
     </service>
+
+    <service name="createProductContent" engine="java"
+             location="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml" invoke="createProductContent" auth="true" export="true" action="POST">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute name="productId" type="String" mode="IN" optional="false"/>
+        <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="true" />
+        <attribute name="_upload_file_fileName" type="String" mode="IN" optional="true" />
+        <attribute name="_upload_file_contentType" type="String" mode="IN" optional="true" />
+    </service>
     <service name="createAtparProductByEvents" engine="java"
              location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparProductEvent" auth="true" export="true" action="POST">
         <description>Create an Atpar Techie Upload record</description>
@@ -104,7 +115,7 @@ under the License.
         <auto-attributes entity-name="atparProduct" include="all" mode="IN" optional="false"/>
     </service>
     <service name="downloadProductContent" engine="java"
-             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="downloadProductContent" auth="true">
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="downloadProductContent" auth="true" action="GET" export="true">
         <description>Create an Atpar Techie Upload record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
