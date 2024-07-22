@@ -585,6 +585,118 @@ public class FindServices {
         EntityListIterator listIt= (EntityListIterator) executeResult.get("listIt");
 
          List<Object> resultList = new ArrayList<>();
+//        if (listIt != null && !tableFields.isEmpty()) {
+//            GenericValue entity;
+//            while ((entity = listIt.next()) != null) {
+//                Map<String, String> result = new HashMap<>();
+//                for (String fieldName : tableFields) {
+//                    result.put(fieldName,entity.getString(fieldName));
+//                    System.out.println(fieldName+": "+entity.getString(fieldName));
+//                }
+//                resultList.add(result);
+//            }
+//        }
+        Map<String, Object> results = ServiceUtil.returnSuccess();
+        results.put("listIt", executeResult.get("listIt"));
+//        results.put("resultList",resultList);
+        results.put("listSize", executeResult.get("listSize"));
+        results.put("queryString", prepareResult.get("queryString"));
+        results.put("queryStringMap", prepareResult.get("queryStringMap"));
+        return results;
+    }
+
+    public static Map<String, Object> newPerformFind(DispatchContext dctx, Map<String, ?> context) {
+        String entityName = (String) context.get("entityName");
+        DynamicViewEntity dynamicViewEntity = (DynamicViewEntity) context.get("dynamicViewEntity");
+        String orderBy = (String) context.get("orderBy");
+        Map<String, ?> inputFields = checkMap(context.get("inputFields"), String.class, Object.class); // Input
+        String noConditionFind = (String) context.get("noConditionFind");
+        Map<String, ?> parameters = UtilGenerics.checkMap(context.get("parameters"), String.class, Object.class);
+        String distinct = (String) context.get("distinct");
+        List<String> fieldList = UtilGenerics.cast(context.get("fieldList"));
+        GenericValue userLogin = (GenericValue) context.get("userLogin");
+        Locale locale = (Locale) context.get("locale");
+        Delegator delegator = dctx.getDelegator();
+        if (UtilValidate.isEmpty(noConditionFind)) {
+            // try finding in inputFields Map
+            noConditionFind = (String) inputFields.get("noConditionFind");
+        }
+        if (UtilValidate.isEmpty(noConditionFind)) {
+            // Use configured default
+            noConditionFind = EntityUtilProperties.getPropertyValue("widget", "widget.defaultNoConditionFind", delegator);
+        }
+        String filterByDate = (String) context.get("filterByDate");
+        if (UtilValidate.isEmpty(filterByDate)) {
+            // try finding in inputFields Map
+            filterByDate = (String) inputFields.get("filterByDate");
+        }
+        Timestamp filterByDateValue = (Timestamp) context.get("filterByDateValue");
+        String fromDateName = (String) context.get("fromDateName");
+        if (UtilValidate.isEmpty(fromDateName)) {
+            // try finding in inputFields Map
+            fromDateName = (String) inputFields.get("fromDateName");
+        }
+        String thruDateName = (String) context.get("thruDateName");
+        if (UtilValidate.isEmpty(thruDateName)) {
+            // try finding in inputFields Map
+            thruDateName = (String) inputFields.get("thruDateName");
+        }
+
+        Integer viewSize = (Integer) context.get("viewSize");
+        Integer viewIndex = (Integer) context.get("viewIndex");
+        Integer maxRows = null;
+        if (viewSize != null && viewIndex != null) {
+            maxRows = viewSize * (viewIndex + 1);
+        }
+
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+
+        Map<String, Object> prepareResult = null;
+        try {
+            prepareResult = dispatcher.runSync("prepareFind", UtilMisc.toMap("entityName", entityName, "orderBy", orderBy,
+                    "dynamicViewEntity", dynamicViewEntity,
+                    "inputFields", inputFields, "filterByDate", filterByDate, "noConditionFind", noConditionFind,
+                    "filterByDateValue", filterByDateValue, "userLogin", userLogin, "fromDateName", fromDateName,
+                    "thruDateName", thruDateName,
+                    "locale", context.get("locale"), "timeZone", context.get("timeZone")));
+        } catch (GenericServiceException gse) {
+            return ServiceUtil.returnError(UtilProperties.getMessage(RESOURCE, "CommonFindErrorPreparingConditions",
+                    UtilMisc.toMap("errorString", gse.getMessage()), locale));
+        }
+        EntityConditionList<EntityCondition> exprList = UtilGenerics.cast(prepareResult.get("entityConditionList"));
+        List<String> orderByList = checkCollection(prepareResult.get("orderByList"), String.class);
+        List<String> tableFields = new ArrayList<>();
+        Object fieldsListObj = prepareResult.get("fieldsList");
+        if (fieldsListObj instanceof List<?>) {
+            List<?> rawList = (List<?>) fieldsListObj;
+            for (Object obj : rawList) {
+                if (obj instanceof String) {
+                    tableFields.add((String) obj);
+                }
+            }
+        }
+        Map<String, Object> executeResult = null;
+        try {
+            executeResult = dispatcher.runSync("executeFind", UtilMisc.toMap("entityName", entityName, "orderByList", orderByList,
+                    "dynamicViewEntity", dynamicViewEntity,
+                    "fieldList", fieldList, "entityConditionList", exprList,
+                    "noConditionFind", noConditionFind, "distinct", distinct,
+                    "locale", context.get("locale"), "timeZone", context.get("timeZone"),
+                    "maxRows", maxRows));
+        } catch (GenericServiceException gse) {
+            return ServiceUtil.returnError(UtilProperties.getMessage(RESOURCE, "CommonFindErrorRetrieveIterator",
+                    UtilMisc.toMap("errorString", gse.getMessage()), locale));
+        }
+
+        if (executeResult.get("listIt") == null) {
+            if (Debug.verboseOn()) {
+                Debug.logVerbose("No list iterator found for query string + [" + prepareResult.get("queryString") + "]", MODULE);
+            }
+        }
+
+        EntityListIterator listIt= (EntityListIterator) executeResult.get("listIt");
+
+        List<Object> resultList = new ArrayList<>();
         if (listIt != null && !tableFields.isEmpty()) {
             GenericValue entity;
             while ((entity = listIt.next()) != null) {
@@ -604,6 +716,7 @@ public class FindServices {
         results.put("queryStringMap", prepareResult.get("queryStringMap"));
         return results;
     }
+
 
     /**
      * prepareFind

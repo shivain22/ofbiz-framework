@@ -79,12 +79,28 @@ under the License.
         <attribute name="primaryProductCategoryId" type="String" mode="IN" optional="false" />
         <attribute name="introductionDate" type="String" mode="IN" optional="false" />
     </service>
+    <service name="approveProductEcommerce" engine="simple"
+             location="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml" invoke="createAtparEcommerceProduct" auth="true" action="POST" export="true" >
+        <description>Aprrove product to Ecommerce</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute mode="IN" name="atparProductId" type="String" optional="false" />
+        <attribute mode="IN" name="atparProductType" type="String" optional="true" />
+        <attribute mode="IN" name="longDescription" type="String" optional="true" />
+        <attribute mode="IN" name="atparProductId" type="String" optional="false" />
+        <attribute mode="IN" name="productId" type="String" optional="true" />
+        <attribute mode="IN" name="atparProductInternalName" type="String" optional="true" />
+        <attribute mode="IN" name="atparProductCategoryId" type="String" optional="true" />
+        <attribute mode="IN" name="thumbnailImagePath" type="String" optional="true" />
+        <attribute mode="IN" name="status" type="Integer" optional="true" />
+        <attribute mode="IN" name="introductionDate" type="String" optional="true" />
+    </service>
     <service name="createAtparEcommerceProduct" engine="java" default-entity-name="atparProduct"
-             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieUploadEvent" auth="true">
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="createAtparTechieUploadEvent" auth="true" >
         <description>Create an Atpar Techie Upload record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
-<!--        <attribute mode="IN" name="atparProductId" type="String" optional="false" />-->
+        <attribute mode="INOUT" name="atparProductId" type="String" optional="false" />
         <auto-attributes entity-name="atparProduct" include="all" mode="IN" optional="false"/>
     </service>
     <service name="downloadProductContent" engine="java"
@@ -95,7 +111,7 @@ under the License.
         <attribute mode="IN" name="productId" type="String" optional="false" />
     </service>
     <service name="updateAtparProductStatus"  engine="groovy"
-             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="updateAtparProductStatus" auth="true" export="true" action="PUT">
+             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="updateAtparProductStatus" auth="true" >
         <description>Update a Product</description>
         <auto-attributes include="pk" mode="IN" optional="false"/>
         <attribute name="atparProductId" type="String" mode="IN" optional="true"/>

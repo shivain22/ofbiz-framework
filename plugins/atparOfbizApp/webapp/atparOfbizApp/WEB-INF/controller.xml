@@ -79,7 +79,7 @@ under the License.
     </request-map>
     <request-map uri="createAtparEcommerceProduct">
         <security https="true" auth="true"/>
-        <event type="simple" invoke="createAtparEcommerceProduct" path="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml"/>
+        <event type="service" invoke="approveProductEcommerce" />
         <response name="success" type="request-redirect" value="ApproveProduct">
             <!--            <redirect-parameter name="productId"/>-->
         </response>
