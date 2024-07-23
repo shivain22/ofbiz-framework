@@ -15,7 +15,6 @@ import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.DispatchContext;
 import java.io.*;
 import java.nio.*;
-import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
+import java.nio.channels.FileChannel;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -48,8 +47,18 @@ public class AtparOfbizAppEvents {
     public static Map<String, Object> createAtparProductEvent(DispatchContext dctx, Map<String, ?> context) throws IOException {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
-        File file = (File) context.get("upload_file");
-        ByteBuffer fileBytes=fileToByteBuffer(file);
+        ByteBuffer fileBytes= null;
+        if(context.containsKey("upload_file_file")){
+            String base64FileContent = (String) context.get("upload_file_file");
+            byte[] bytes = Base64.getDecoder().decode(base64FileContent);
+             fileBytes = ByteBuffer.wrap(bytes);
+        }
+        else if(context.containsKey("upload_file")){
+            fileBytes = (ByteBuffer) context.get("upload_file");
+        }
+
+//        ByteBuffer fileBytes=fileToByteBuffer(file);
+
         String filename = (String) context.get("_upload_file_fileName");
         String fileContentType = (String) context.get("_upload_file_contentType");
         String productId = (String) context.get("productId");
@@ -60,16 +69,16 @@ public class AtparOfbizAppEvents {
         String primaryProductCategoryId = (String) context.get("primaryProductCategoryId");
         String introductionDate = (String) context.get("introductionDate");
 //        LocalDateTime  introductionDate = LocalDateTime.parse(String.format((String)context.get("introductionDate"),formatter));
-        String filePath = filename;
 
 
+        assert fileBytes != null;
         byte[] bytefile = fileBytes.array();
         String destination = System.getProperty("java.io.tmpdir");
         String storePath = storeFileInDir(destination, bytefile, productId, filename);
 
-        File file2 = new File(filePath);
+        File file2 = new File(filename);
         try {
-            File file1 = bytesToFile(bytefile, filePath);
+            File file1 = bytesToFile(bytefile, filename);
             file2 = addTextWatermark("atpar", file1, file2);
             ByteBuffer resizedImage = resizeImage(file2, 140, 140);
             bytefile = resizedImage.array();
@@ -91,6 +100,7 @@ public class AtparOfbizAppEvents {
             return Collections.emptyMap();
         }
     }
+
     public static ByteBuffer fileToByteBuffer(File file) throws IOException {
         // Create a FileInputStream to read the file
         try (FileInputStream fis = new FileInputStream(file); FileChannel fileChannel = fis.getChannel()) {
