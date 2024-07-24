@@ -64,7 +64,7 @@ under the License.
         <override name="comments" optional="true"/>
     </service>
 
-    <service name="createProductContent" engine="java"
+    <service name="createProductContentSimple" engine="simple"
              location="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml" invoke="createProductContent" auth="true" export="true" action="POST">
         <description>Create an Atpar Techie Upload record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>

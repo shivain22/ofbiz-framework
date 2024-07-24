@@ -96,7 +96,7 @@ under the License.
 
     <request-map uri="createProductContent">
         <security https="true" auth="true"/>
-        <event type="service" invoke="createProductContent" />
+        <event type="service" invoke="createProductContentSimple" />
         <response name="success" type="request-redirect" value="PublishProduct">
             <!--            <redirect-parameter name="productId"/>-->
         </response>

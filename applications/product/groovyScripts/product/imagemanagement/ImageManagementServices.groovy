@@ -341,8 +341,7 @@ def updateStatusImageManagement() {
                     productContent.purchaseFromDate = nowTimestamp
                     productContent.store()
                 } else {
-                    Long countApprove = from("ContentApproval").where(contentId: parameters.contentId, roleTypeId: "IMAGEAPPROVER",
-                        approvalStatusId: "IM_APPROVED").queryCount()
+                    Long countApprove = from("ContentApproval").where(contentId: parameters.contentId, roleTypeId: "IMAGEAPPROVER", approvalStatusId: "IM_APPROVED").queryCount()
                     if (countApprove >= (Long) 2) {
                         GenericValue content = from("Content").where(parameters).queryOne()
                         content.statusId = "IM_APPROVED"
