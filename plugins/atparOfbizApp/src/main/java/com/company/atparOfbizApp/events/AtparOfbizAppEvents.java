@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ofbiz.base.util.Debug;
+import org.apache.ofbiz.base.util.UtilDateTime;
 import org.apache.ofbiz.base.util.UtilMisc;
 import org.apache.ofbiz.base.util.UtilValidate;
 import org.apache.ofbiz.entity.Delegator;
@@ -18,6 +19,7 @@ import java.nio.*;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.*;
 
 import java.io.File;
@@ -64,10 +66,10 @@ public class AtparOfbizAppEvents {
         String productId = (String) context.get("productId");
         String productTypeId = (String) context.get("productTypeId");
         String internalName = (String) context.get("internalName");
-        Integer status = (Integer) context.get("status");
+        Integer status = 0;
         String longDescription = (String) context.get("longDescription");
         String primaryProductCategoryId = (String) context.get("primaryProductCategoryId");
-        String introductionDate = (String) context.get("introductionDate");
+        String introductionDate = String.valueOf(UtilDateTime.nowTimestamp());
 //        LocalDateTime  introductionDate = LocalDateTime.parse(String.format((String)context.get("introductionDate"),formatter));
 
         String thumbnailPath="";
