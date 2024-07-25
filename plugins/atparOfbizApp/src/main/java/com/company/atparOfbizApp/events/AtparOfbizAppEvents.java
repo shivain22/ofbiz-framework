@@ -70,24 +70,24 @@ public class AtparOfbizAppEvents {
         String introductionDate = (String) context.get("introductionDate");
 //        LocalDateTime  introductionDate = LocalDateTime.parse(String.format((String)context.get("introductionDate"),formatter));
 
+        String thumbnailPath="";
+       if(fileBytes!=null) {
+           byte[] bytefile = fileBytes.array();
+           String destination = System.getProperty("java.io.tmpdir");
+           String storePath = storeFileInDir(destination, bytefile, productId, filename);
 
-        assert fileBytes != null;
-        byte[] bytefile = fileBytes.array();
-        String destination = System.getProperty("java.io.tmpdir");
-        String storePath = storeFileInDir(destination, bytefile, productId, filename);
-
-        File file2 = new File(filename);
-        try {
-            File file1 = bytesToFile(bytefile, filename);
-            file2 = addTextWatermark("atpar", file1, file2);
-            ByteBuffer resizedImage = resizeImage(file2, 140, 140);
-            bytefile = resizedImage.array();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        destination = System.getProperty("user.dir") + File.separator + "themes" + File.separator + "common-theme" + File.separator + "webapp" + File.separator + "images" + File.separator + "PendingProducts" + File.separator + "thumbnailImage";
-        String thumbnailPath = storeFileInDir(destination, bytefile, productId, filename);
-
+           File file2 = new File(filename);
+           try {
+               File file1 = bytesToFile(bytefile, filename);
+               file2 = addTextWatermark("atpar", file1, file2);
+               ByteBuffer resizedImage = resizeImage(file2, 140, 140);
+               bytefile = resizedImage.array();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+           destination = System.getProperty("user.dir") + File.separator + "themes" + File.separator + "common-theme" + File.separator + "webapp" + File.separator + "images" + File.separator + "PendingProducts" + File.separator + "thumbnailImage";
+            thumbnailPath = storeFileInDir(destination, bytefile, productId, filename);
+       }
         try {
             Debug.logInfo("=======Creating AtparProduct record in event using service createAtparProduct=========", module);
             Map<String, Object> resultMap = dispatcher.runSync("createAtparProduct", UtilMisc.toMap("userLogin", userLogin, "productId", productId, "atparProductInternalName", internalName, "status", status, "longDescription", longDescription, "atparProductType", productTypeId, "atparProductCategoryId", primaryProductCategoryId, "introductionDate", introductionDate, "thumbnailImagePath", thumbnailPath));
