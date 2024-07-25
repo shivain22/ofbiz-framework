@@ -85,11 +85,11 @@ under the License.
         <attribute name="_upload_file_contentType" type="String" mode="IN" optional="true" />
         <attribute name="productId" type="String" mode="IN" optional="false"/>
         <attribute name="productTypeId" type="String" mode="IN" optional="false" />
-        <attribute name="status" type="Integer" mode="IN" optional="false"/>
+        <attribute name="status" type="Integer" mode="IN" optional="true"/>
         <attribute name="internalName" type="String" mode="IN" optional="false" />
         <attribute name="longDescription" type="String" mode="IN" optional="false" />
         <attribute name="primaryProductCategoryId" type="String" mode="IN" optional="false" />
-        <attribute name="introductionDate" type="String" mode="IN" optional="false" />
+        <attribute name="introductionDate" type="String" mode="IN" optional="true" />
     </service>
     <service name="approveProductEcommerce" engine="simple"
              location="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml" invoke="createAtparEcommerceProduct" auth="true" action="POST" export="true" >
