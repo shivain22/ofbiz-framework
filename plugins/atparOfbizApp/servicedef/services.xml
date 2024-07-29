@@ -131,9 +131,14 @@ under the License.
         <attribute name="productId" type="String" mode="IN" optional="true"/>
         <attribute name="status" type="Integer" mode="IN" optional="false"/>
     </service>
+    <service name="checkWebhook" engine="groovy"
+             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="checkWebhook" auth="true" export="true" action="GET">
+        <description>Test End point</description>
 
+    </service>
     <service name="FindAtparProductStatusFalse" engine="groovy"
              location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="findAtparProductStatusFalse" auth="true">
+
         <description>Find Pending Products</description>
         <auto-attributes include="pk" mode="IN" optional="false"/>
         <attribute name="entityName" type="String" mode="IN" optional="false"/>
