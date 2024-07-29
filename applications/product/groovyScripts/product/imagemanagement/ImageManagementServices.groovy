@@ -36,7 +36,9 @@ def uploadProductImages() {
     result.productId = parameters.productId
     Map addAdditionalViewForProductMap = parameters
     Map editUploadIMageFile =parameters
+    Map editUploadFile =parameters
     Map <String,Object> resizedImageUpload = [:]
+    Map <String,Object> fileUpdate = [:]
     if (parameters._additionalImageOne_fileName) {
         addAdditionalViewForProductMap.productId = parameters.productId
         addAdditionalViewForProductMap.imageResize = parameters.imageResize
@@ -47,6 +49,7 @@ def uploadProductImages() {
         if((String)addAdditionalViewForProductMap._uploadedFile_contentType in imageContentTypes){
             addAdditionalViewForProductMap.productContentTypeId = "IMAGE"
             editUploadIMageFile.uploadedFile=parameters.additionalImageOne
+            editUploadIMageFile.uploadedFileFile=parameters.additionalImageOneFile
             editUploadIMageFile._uploadedFile_fileName=parameters._additionalImageOne_fileName
             editUploadIMageFile._uploadedFile_contentType=parameters._additionalImageOne_contentType
             editUploadIMageFile.productId=parameters.productId
@@ -54,6 +57,12 @@ def uploadProductImages() {
             addAdditionalViewForProductMap.uploadedFile=resizedImageUpload.uploadedFile
         }else{
             addAdditionalViewForProductMap.productContentTypeId = "DIGITAL_DOWNLOAD"
+            if(parameters.additionalImageOneFile!=null ){
+                editUploadFile.uploadedFile=parameters.additionalImageOne
+                editUploadFile.uploadedFileFile=parameters.additionalImageOneFile
+                fileUpdate = run service: "updateUploadFileEvent", with: editUploadFile
+                addAdditionalViewForProductMap.uploadedFile=fileUpdate.uploadedFile
+            }
         }
 
         serviceResult = run service: "addMultipleuploadForProduct", with: addAdditionalViewForProductMap

@@ -264,7 +264,15 @@ public class AtparOfbizAppEvents {
     public static Map<String, Object> updateUploadsizeEvent(DispatchContext dctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
-        ByteBuffer fileBytes = (ByteBuffer) context.get("uploadedFile");
+        ByteBuffer fileBytes= null;
+        if(context.containsKey("uploadedFileFile") && context.get("uploadedFileFile")!=null){
+            String base64FileContent = (String) context.get("uploadedFileFile");
+            byte[] bytes = Base64.getDecoder().decode(base64FileContent);
+            fileBytes = ByteBuffer.wrap(bytes);
+        }
+        else if(context.containsKey("uploadedFile") && context.get("uploadedFile")!=null){
+            fileBytes = (ByteBuffer) context.get("uploadedFile");
+        }
         String filename = (String) context.get("_uploadedFile_fileName");
         String fileContentType = (String) context.get("_uploadedFile_contentType");
         String productId = (String) context.get("productId");
@@ -309,6 +317,23 @@ public class AtparOfbizAppEvents {
         }
         return resultMap;
     }
+    public static Map<String, Object> updateUploadFileEvent(DispatchContext dctx, Map<String, ?> context) {
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+        GenericValue userLogin = (GenericValue) context.get("userLogin");
+        ByteBuffer fileBytes= null;
+        if(context.containsKey("uploadFileFile")){
+            String base64FileContent = (String) context.get("uploadFileFile");
+            byte[] bytes = Base64.getDecoder().decode(base64FileContent);
+            fileBytes = ByteBuffer.wrap(bytes);
+        }
+        else if(context.containsKey("uploadFile")){
+            fileBytes = (ByteBuffer) context.get("uploadFile");
+        }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("uploadedFile", fileBytes);
+        return resultMap;
+    }
+
 
     private static ByteBuffer resizeImage(File inputFile, int width, int height) throws IOException {
         BufferedImage originalImage = ImageIO.read(inputFile);

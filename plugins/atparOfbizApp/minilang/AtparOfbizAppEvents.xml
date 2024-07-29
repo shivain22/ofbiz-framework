@@ -113,6 +113,7 @@
 <!--        <if-not-empty field="parameters._additionalImageOne_fileName">-->
             <set field="productContent.productId" from-field="parameters.productId"/>
             <set field="productContent.additionalImageOne" from-field="parameters.upload_file"/>
+            <set field="productContent.additionalImageOneFile" from-field="parameters.upload_file_file"/>
             <set field="productContent._additionalImageOne_fileName" from-field="parameters._upload_file_fileName"/>
             <set field="productContent._additionalImageOne_contentType" from-field="parameters._upload_file_contentType"/>
             <call-service service-name="multipleUploadProductImages" in-map-name="productContent">

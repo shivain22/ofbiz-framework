@@ -71,6 +71,7 @@ under the License.
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
         <attribute name="productId" type="String" mode="IN" optional="false"/>
         <attribute mode="IN" name="upload_file" type="java.nio.ByteBuffer" optional="true" />
+        <attribute mode="IN" name="upload_file_file" type="String" optional="true" />
         <attribute name="_upload_file_fileName" type="String" mode="IN" optional="true" />
         <attribute name="_upload_file_contentType" type="String" mode="IN" optional="true" />
     </service>
@@ -161,10 +162,19 @@ under the License.
         <description>Create an Atpar Techie Upload record</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
-        <attribute mode="INOUT" name="uploadedFile" type="java.nio.ByteBuffer" optional="false" />
+        <attribute mode="INOUT" name="uploadedFile" type="java.nio.ByteBuffer" optional="true" />
+        <attribute mode="INOUT" name="uploadedFileFile" type="String" optional="true" />
         <attribute name="_uploadedFile_fileName" type="String" mode="IN" optional="false" />
         <attribute name="_uploadedFile_contentType" type="String" mode="IN" optional="false" />
         <attribute name="productId" type="String" mode="IN" optional="false" />
+    </service>
+    <service name="updateUploadFileEvent" engine="java"
+             location="com.company.atparOfbizApp.events.AtparOfbizAppEvents" invoke="updateUploadFileEvent" auth="true">
+        <description>Create an Atpar Techie Upload record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+        <attribute mode="INOUT" name="uploadedFile" type="java.nio.ByteBuffer" optional="true" />
+        <attribute mode="INOUT" name="uploadedFileFile" type="String" optional="true" />
     </service>
     <service name="multipleUploadProductGallery" engine="groovy"
              location="component://product/groovyScripts/product/imagemanagement/ImageManagementServices.groovy" invoke="uploadProductImages" auth="true">
