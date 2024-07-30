@@ -703,7 +703,7 @@ public class FindServices {
                 Map<String, String> result = new HashMap<>();
                 for (String fieldName : tableFields) {
                     result.put(fieldName,entity.getString(fieldName));
-                    System.out.println(fieldName+": "+entity.getString(fieldName));
+//                    System.out.println(fieldName+": "+entity.getString(fieldName));
                 }
                 resultList.add(result);
             }
