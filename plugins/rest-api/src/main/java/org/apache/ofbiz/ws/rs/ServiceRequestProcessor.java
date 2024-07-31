@@ -64,6 +64,7 @@ public class ServiceRequestProcessor {
         }
         Map<String, Object> serviceContext = dispatchContext.makeValidContext(serviceName, ModelService.IN_PARAM, requestMap);
         serviceContext.put("userLogin", userLogin);
+        serviceContext.put("requestMap",requestMap);
         Map<String, Object> result = dispatcher.runSync(serviceName, serviceContext);
         Map<String, Object> responseData = new LinkedHashMap<>();
         if (ServiceUtil.isSuccess(result)) {
