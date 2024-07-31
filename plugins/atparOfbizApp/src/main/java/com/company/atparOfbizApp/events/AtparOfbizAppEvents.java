@@ -321,13 +321,13 @@ public class AtparOfbizAppEvents {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         GenericValue userLogin = (GenericValue) context.get("userLogin");
         ByteBuffer fileBytes= null;
-        if(context.containsKey("uploadFileFile")){
-            String base64FileContent = (String) context.get("uploadFileFile");
+        if(context.containsKey("uploadedFileFile")){
+            String base64FileContent = (String) context.get("uploadedFileFile");
             byte[] bytes = Base64.getDecoder().decode(base64FileContent);
             fileBytes = ByteBuffer.wrap(bytes);
         }
-        else if(context.containsKey("uploadFile")){
-            fileBytes = (ByteBuffer) context.get("uploadFile");
+        else if(context.containsKey("uploadedFile")){
+            fileBytes = (ByteBuffer) context.get("uploadedFile");
         }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("uploadedFile", fileBytes);
