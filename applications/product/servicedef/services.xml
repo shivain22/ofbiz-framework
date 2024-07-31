@@ -46,7 +46,7 @@ under the License.
         <override name="internalName" optional="false"/>
     </service>
     <service name="updateProduct" default-entity-name="Product" engine="groovy"
-                location="component://product/groovyScripts/product/product/ProductServices.groovy" invoke="updateProduct" auth="true">
+                location="component://product/groovyScripts/product/product/ProductServices.groovy" invoke="updateProduct" auth="true" export="true" action="PUT">
         <description>Update a Product</description>
         <implements service="interfaceProduct"/>
         <auto-attributes include="pk" mode="IN" optional="false"/>
@@ -1393,6 +1393,7 @@ under the License.
         <attribute name="productId" type="String" mode="INOUT" optional="false"/>
         <attribute name="imageResize" type="String" mode="IN" optional="true"/>
         <attribute name="additionalImageOne" type="java.nio.ByteBuffer" mode="IN" optional="true"/>
+        <attribute name="additionalImageOneFile" type="String" mode="IN" optional="true"/>
         <attribute name="_additionalImageOne_fileName" type="String" mode="IN" optional="true"/>
         <attribute name="_additionalImageOne_contentType" type="String" mode="IN" optional="true"/>
         <attribute name="additionalImageTwo" type="java.nio.ByteBuffer" mode="IN" optional="true"/>

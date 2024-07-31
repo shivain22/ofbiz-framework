@@ -92,6 +92,12 @@ under the License.
         <attribute name="primaryProductCategoryId" type="String" mode="IN" optional="false" />
         <attribute name="introductionDate" type="String" mode="IN" optional="true" />
     </service>
+
+    <service name="createFinverseProductByEvents" engine="java"
+             location="com.company.atparOfbizApp.events.FinverseProductEvent" invoke="createFinverseProductEvent" auth="true" export="true" action="POST">
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
+        <attribute name="productId" type="String" mode="IN" optional="false"/>
+    </service>
     <service name="approveProductEcommerce" engine="simple"
              location="component://atparOfbizApp/minilang/AtparOfbizAppEvents.xml" invoke="createAtparEcommerceProduct" auth="true" action="POST" export="true" >
         <description>Aprrove product to Ecommerce</description>
