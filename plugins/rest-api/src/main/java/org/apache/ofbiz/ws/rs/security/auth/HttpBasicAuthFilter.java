@@ -43,13 +43,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilHttp;
 import org.apache.ofbiz.base.util.UtilMisc;
+import org.apache.ofbiz.base.util.UtilValidate;
 import org.apache.ofbiz.entity.Delegator;
+import org.apache.ofbiz.entity.DelegatorFactory;
 import org.apache.ofbiz.entity.GenericDelegator;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.security.Security;
 import org.apache.ofbiz.service.GenericServiceException;
 import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.ServiceUtil;
+import org.apache.ofbiz.webapp.WebAppUtil;
 import org.apache.ofbiz.webapp.control.ContextFilter;
 import org.apache.ofbiz.webapp.control.ControlServlet;
 import org.apache.ofbiz.webapp.control.LoginWorker;
@@ -99,45 +102,80 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
         String pass = jsonNode.path("PASSWORD").asText();
         String userTenantId = jsonNode.path("userTenantId").asText();
         LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
-        GenericDelegator delegator = (GenericDelegator) servletContext.getAttribute("delegator");
+        Delegator delegator = (Delegator) servletContext.getAttribute("delegator");
 
         Security security= (Security) servletContext.getAttribute("security");
         httpRequest.setAttribute("USERNAME",user);
         httpRequest.setAttribute("PASSWORD",pass);
         httpRequest.setAttribute("userTenantId",userTenantId);
-        httpRequest.setAttribute("dispatcher",dispatcher);
-        httpRequest.setAttribute("delegator",delegator);
-        httpRequest.setAttribute("servletContext",servletContext);
-        httpRequest.setAttribute("security",security);
-        ControlServlet controlServlet = (ControlServlet) servletContext.getAttribute("controlServlet");
-        if(controlServlet==null){
-            controlServlet = new ControlServlet();
-            try {
-                controlServlet.doPost(httpRequest,httpResponse);
-            } catch (ServletException e) {
-                throw new RuntimeException(e);
+
+        String delegatorName="";
+        if(!userTenantId.isEmpty()) {
+            delegatorName = getDelegatorName(userTenantId, delegator, dispatcher);
+            if (!delegatorName.isEmpty()) {
+
+                try {
+                    // after this line the delegator is replaced with the new per-tenant delegator
+                    delegator = DelegatorFactory.getDelegator(delegatorName);
+                    dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+                } catch (NullPointerException e) {
+                    Debug.logError(e, "Error getting tenant delegator", MODULE);
+                    Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + userTenantId + "]  not found...");
+
+                }
             }
         }
+            else {
+                delegatorName = "default";
 
-        AuthContextFilter contextFilter=new AuthContextFilter();
+                    try {
+                        // after this line the delegator is replaced with the new per-tenant delegator
+                        delegator = DelegatorFactory.getDelegator(delegatorName);
+                        dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+                    } catch (NullPointerException e) {
+                        Debug.logError(e, "Error getting tenant delegator", MODULE);
+                        Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + userTenantId + "]  not found...");
 
-        FilterChain chain = new FilterChain() {
-            @Override
-            public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
-                // Chain handling logic, if needed
+                    }
+
             }
-        };
-        try {
-            contextFilter.doFilter(httpRequest, httpResponse, chain);
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        }
-        String result =LoginWorker.login(httpRequest, httpResponse );
+            httpRequest.setAttribute("dispatcher",dispatcher);
+            httpRequest.setAttribute("delegator",delegator);
+            servletContext.setAttribute("dispatcher",dispatcher);
+            servletContext.setAttribute("delegator",delegator);
+            httpRequest.setAttribute("servletContext",servletContext);
+            httpRequest.setAttribute("security",security);
+
+
+//        ControlServlet controlServlet = (ControlServlet) servletContext.getAttribute("controlServlet");
+//        if(controlServlet==null){
+//            controlServlet = new ControlServlet();
+//            try {
+//                controlServlet.doPost(httpRequest,httpResponse);
+//            } catch (ServletException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
+//        AuthContextFilter contextFilter=new AuthContextFilter();
+//
+//        FilterChain chain = new FilterChain() {
+//            @Override
+//            public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+//                // Chain handling logic, if needed
+//            }
+//        };
+//        try {
+//            contextFilter.doFilter(httpRequest, httpResponse, chain);
+//        } catch (ServletException e) {
+//            throw new RuntimeException(e);
+//        }
+//        String result =LoginWorker.login(httpRequest, httpResponse );
 
         String[] tokens = (new String(Base64.getDecoder().decode(authorizationHeader.split(" ")[1]), "UTF-8")).split(":");
         final String username = tokens[0];
         final String password = tokens[1];
-        if(result.equals("success")){
+        if(!user.isEmpty() && !pass.isEmpty()){
 
 
             try {
@@ -191,7 +229,7 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
 
     private void authenticate(String userName, String password) throws ForbiddenException {
         Map<String, Object> result = null;
-        LocalDispatcher dispatcher = (LocalDispatcher) httpRequest.getAttribute("dispatcher");
+        LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
         try {
             result = dispatcher.runSync("userLogin",
                     UtilMisc.toMap("login.username", userName, "login.password", password, "locale", UtilHttp.getLocale(httpRequest)));
@@ -206,6 +244,31 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
 
         GenericValue userLogin = (GenericValue) result.get("userLogin");
         httpRequest.setAttribute("userLogin", userLogin);
+    }
+
+    private String getDelegatorName(String tenantId,Delegator delegator,LocalDispatcher dispatcher ){
+
+        Map<String, ?> result = null;
+        String delegatorName="";
+        if (UtilValidate.isNotEmpty(tenantId)) {
+            // see if we need to activate a tenant delegator, only do if the current delegatorName has a hash symbol in it,
+            // and if the passed in tenantId doesn't match the one in the delegatorName
+            String oldDelegatorName = delegator.getDelegatorName();
+            int delegatorNameHashIndex = oldDelegatorName.indexOf('#');
+            String currentDelegatorTenantId = null;
+            if (delegatorNameHashIndex > 0) {
+                currentDelegatorTenantId = oldDelegatorName.substring(delegatorNameHashIndex + 1);
+                if (currentDelegatorTenantId != null) currentDelegatorTenantId = currentDelegatorTenantId.trim();
+            }
+
+            if (delegatorNameHashIndex == -1 || (currentDelegatorTenantId != null && !tenantId.equals(currentDelegatorTenantId))) {
+                // make that tenant active, setup a new delegator and a new dispatcher
+                 delegatorName = delegator.getDelegatorBaseName() + "#" + tenantId;
+
+            }
+        }
+
+        return delegatorName;
     }
 
 }

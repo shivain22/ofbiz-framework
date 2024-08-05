@@ -143,12 +143,12 @@ under the License.
         <attribute name="nextProductId" type="String" mode="OUT" optional="true"/>
     </service>
     <service name="getProductCategoryAndLimitedMembers" engine="java"
-            location="org.apache.ofbiz.product.category.CategoryServices" invoke="getProductCategoryAndLimitedMembers">
+            location="org.apache.ofbiz.product.category.CategoryServices" invoke="getProductCategoryAndLimitedMembers" export="true" action="GET">
         <description>Gets a productCategory and a Collection of associated productCategoryMembers and calculates limiting parameters</description>
         <attribute name="productCategoryId" type="String" mode="IN" optional="false"/>
         <attribute name="prodCatalogId" type="String" mode="IN" optional="true"/>
-        <attribute name="defaultViewSize" type="Integer" mode="IN" optional="false"/>
-        <attribute name="limitView" type="Boolean" mode="IN" optional="false"/>
+        <attribute name="defaultViewSize" type="Integer" mode="IN" optional="true"/>
+        <attribute name="limitView" type="Boolean" mode="IN" optional="true"/>
         <attribute name="checkViewAllow" type="Boolean" mode="IN" optional="true"/>
         <attribute name="viewIndexString" type="String" mode="IN" optional="true"/>
         <attribute name="viewSizeString" type="String" mode="IN" optional="true"/>

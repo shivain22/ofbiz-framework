@@ -222,8 +222,15 @@ public class CategoryServices {
         Delegator delegator = dctx.getDelegator();
         LocalDispatcher dispatcher = dctx.getDispatcher();
         String productCategoryId = (String) context.get("productCategoryId");
-        boolean limitView = (Boolean) context.get("limitView");
-        int defaultViewSize = (Integer) context.get("defaultViewSize");
+        boolean limitView =false;
+        if (context.containsKey("limitView")) {
+            limitView= (Boolean) context.get("limitView");
+        }
+
+        int defaultViewSize = 100;
+        if (context.containsKey("defaultViewSize")) {
+            defaultViewSize= (int) context.get("limitView");
+        }
         Timestamp introductionDateLimit = (Timestamp) context.get("introductionDateLimit");
         Timestamp releaseDateLimit = (Timestamp) context.get("releaseDateLimit");
 
