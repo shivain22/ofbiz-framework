@@ -478,6 +478,8 @@ public final class LoginWorker {
                     // after this line the delegator is replaced with the new per-tenant delegator
                     delegator = DelegatorFactory.getDelegator(delegatorName);
                     dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+                    request.setAttribute("delegator",delegator);
+                    request.setAttribute("delegator",dispatcher);
                 } catch (NullPointerException e) {
                     Debug.logError(e, "Error getting tenant delegator", MODULE);
                     Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + tenantId + "]  not found...");

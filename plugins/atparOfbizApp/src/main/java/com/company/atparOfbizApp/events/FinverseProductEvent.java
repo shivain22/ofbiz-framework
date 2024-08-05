@@ -26,7 +26,8 @@ public class FinverseProductEvent {
 
     public static Map<String, Object> createFinverseProductEvent(DispatchContext dctx, Map<String, ?> context) throws GenericServiceException {
         LocalDispatcher dispatcher= dctx.getDispatcher();
-        Map<String,?> requestMap = (Map<String, ?>)context.get("requestMap");
+        Map<String,?> request1 = (Map<String, ?>)context.get("requestMap");
+        Map<String,?> requestMap = (Map<String,?>)request1.get("request");
         String productName= (String)requestMap.get("name");
         String productIdName= (String)requestMap.get("shortName");
         String productId=productIdName+productName;

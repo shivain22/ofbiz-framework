@@ -161,51 +161,80 @@ public class ControlServlet extends HttpServlet {
         // try to get it from the session first so that we can have a delegator/dispatcher/security
         // for a certain user if desired.
         Delegator delegator = null;
-        String delegatorName = (String) session.getAttribute("delegatorName");
-        if (UtilValidate.isNotEmpty(delegatorName)) {
-            delegator = DelegatorFactory.getDelegator(delegatorName);
-        }
-        if (delegator == null) {
-            delegator = (Delegator) getServletContext().getAttribute("delegator");
-        }
-        if (delegator == null) {
-            Debug.logError("[ControlServlet] ERROR: delegator not found in ServletContext", MODULE);
+        if (request.getAttribute("delegator") == null) {
+
+            String delegatorName = (String) session.getAttribute("delegatorName");
+            if (UtilValidate.isNotEmpty(delegatorName)) {
+                delegator = DelegatorFactory.getDelegator(delegatorName);
+            }
+
+
+            if (delegator == null) {
+                delegator = (Delegator) getServletContext().getAttribute("delegator");
+            }
+            if (delegator == null) {
+                Debug.logError("[ControlServlet] ERROR: delegator not found in ServletContext", MODULE);
+            } else {
+                request.setAttribute("delegator", delegator);
+                // always put this in the session too so that session events can use the delegator
+                session.setAttribute("delegatorName", delegator.getDelegatorName());
+            }
         } else {
-            request.setAttribute("delegator", delegator);
-            // always put this in the session too so that session events can use the delegator
-            session.setAttribute("delegatorName", delegator.getDelegatorName());
+            delegator = (Delegator) request.getAttribute("delegator");
         }
+        LocalDispatcher dispatcher = null;
+        if (request.getAttribute("dispatcher") == null) {
 
-        LocalDispatcher dispatcher = (LocalDispatcher) session.getAttribute("dispatcher");
-        if (dispatcher == null) {
-            dispatcher = (LocalDispatcher) getServletContext().getAttribute("dispatcher");
-        }
-        if (dispatcher == null) {
-            Debug.logError("[ControlServlet] ERROR: dispatcher not found in ServletContext", MODULE);
-        }
-        request.setAttribute("dispatcher", dispatcher);
 
-        Security security = (Security) session.getAttribute("security");
-        if (security == null) {
-            security = (Security) getServletContext().getAttribute("security");
+            dispatcher = (LocalDispatcher) session.getAttribute("dispatcher");
+            if (dispatcher == null) {
+                dispatcher = (LocalDispatcher) getServletContext().getAttribute("dispatcher");
+            }
+            if (dispatcher == null) {
+                Debug.logError("[ControlServlet] ERROR: dispatcher not found in ServletContext", MODULE);
+            }
+            request.setAttribute("dispatcher", dispatcher);
+        } else {
+            dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
         }
-        if (security == null) {
-            Debug.logError("[ControlServlet] ERROR: security not found in ServletContext", MODULE);
+        Security security = null;
+        if (request.getAttribute("security") == null) {
+            security = (Security) session.getAttribute("security");
+            if (security == null) {
+                security = (Security) getServletContext().getAttribute("security");
+            }
+            if (security == null) {
+                Debug.logError("[ControlServlet] ERROR: security not found in ServletContext", MODULE);
+            }
+            request.setAttribute("security", security);
+        } else {
+            security = (Security) request.getAttribute("security");
         }
-        request.setAttribute("security", security);
-
         VisualTheme visualTheme = UtilHttp.getVisualTheme(request);
         if (visualTheme != null) {
             UtilHttp.setVisualTheme(request, visualTheme);
         }
+        ServletContext servletContext = (ServletContext) request.getAttribute("servletContext");
+        if (servletContext == null) {
+            servletContext = getServletContext();
+        }
+        RequestHandler handler=null;
+        try {
+            handler = RequestHandler.getRequestHandler(servletContext);
+            request.setAttribute("_REQUEST_HANDLER_", handler);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        RequestHandler handler = RequestHandler.getRequestHandler(getServletContext());
-        request.setAttribute("_REQUEST_HANDLER_", handler);
+        ServletContextHashModel ftlServletContext = null;
+        try {
 
-        ServletContextHashModel ftlServletContext = new ServletContextHashModel(this,
-                FreeMarkerWorker.getDefaultOfbizWrapper());
-        request.setAttribute("ftlServletContext", ftlServletContext);
-
+            ftlServletContext = new ServletContextHashModel(this,
+                    FreeMarkerWorker.getDefaultOfbizWrapper());
+            request.setAttribute("ftlServletContext", ftlServletContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // setup some things that should always be there
         UtilHttp.setInitialRequestInfo(request);
         VisitHandler.getVisitor(request, response);
@@ -226,42 +255,43 @@ public class ControlServlet extends HttpServlet {
         request.setAttribute(ControlFilter.FORWARDED_FROM_SERVLET, Boolean.TRUE);
 
         String errorPage = null;
-        try {
-            // the ServerHitBin call for the event is done inside the doRequest method
-            handler.doRequest(request, response, null, userLogin, delegator);
-        } catch (MethodNotAllowedException e) {
-            response.setContentType("text/plain");
-            response.setCharacterEncoding(request.getCharacterEncoding());
-            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-            response.getWriter().print(e.getMessage());
-            Debug.logError(e.getMessage(), MODULE);
-        } catch (RequestHandlerException e) {
-            Throwable throwable = e.getNested() != null ? e.getNested() : e;
-            if (throwable instanceof IOException) {
-                // when an IOException occurs (most of the times caused by the browser window being closed
-                // before the request is completed) the connection with the browser is lost and so there is
-                // no need to serve the error page; a message is logged to record the event
-                if (Debug.warningOn()) {
-                    Debug.logWarning(e, "Communication error with the client while processing the request: "
-                            + request.getAttribute("_CONTROL_PATH_") + request.getPathInfo(), MODULE);
+        if (handler != null) {
+            try {
+                // the ServerHitBin call for the event is done inside the doRequest method
+                handler.doRequest(request, response, null, userLogin, delegator);
+            } catch (MethodNotAllowedException e) {
+                response.setContentType("text/plain");
+                response.setCharacterEncoding(request.getCharacterEncoding());
+                response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                response.getWriter().print(e.getMessage());
+                Debug.logError(e.getMessage(), MODULE);
+            } catch (RequestHandlerException e) {
+                Throwable throwable = e.getNested() != null ? e.getNested() : e;
+                if (throwable instanceof IOException) {
+                    // when an IOException occurs (most of the times caused by the browser window being closed
+                    // before the request is completed) the connection with the browser is lost and so there is
+                    // no need to serve the error page; a message is logged to record the event
+                    if (Debug.warningOn()) {
+                        Debug.logWarning(e, "Communication error with the client while processing the request: "
+                                + request.getAttribute("_CONTROL_PATH_") + request.getPathInfo(), MODULE);
+                    }
+                    if (Debug.verboseOn()) {
+                        Debug.logVerbose(throwable, MODULE);
+                    }
+                } else {
+                    Debug.logError(throwable, "Error in request handler: ", MODULE);
+                    request.setAttribute("_ERROR_MESSAGE_", UtilCodec.getEncoder("html").encode(throwable.toString()));
+                    errorPage = handler.getDefaultErrorPage(request);
                 }
-                if (Debug.verboseOn()) {
-                    Debug.logVerbose(throwable, MODULE);
-                }
-            } else {
-                Debug.logError(throwable, "Error in request handler: ", MODULE);
-                request.setAttribute("_ERROR_MESSAGE_", UtilCodec.getEncoder("html").encode(throwable.toString()));
+            } catch (RequestHandlerExceptionAllowExternalRequests e) {
+                errorPage = handler.getDefaultErrorPage(request);
+                Debug.logInfo("Going to external page: " + request.getPathInfo(), MODULE);
+            } catch (Exception e) {
+                Debug.logError(e, "Error in request handler: ", MODULE);
+                request.setAttribute("_ERROR_MESSAGE_", UtilCodec.getEncoder("html").encode(e.toString()));
                 errorPage = handler.getDefaultErrorPage(request);
             }
-        } catch (RequestHandlerExceptionAllowExternalRequests e) {
-            errorPage = handler.getDefaultErrorPage(request);
-            Debug.logInfo("Going to external page: " + request.getPathInfo(), MODULE);
-        } catch (Exception e) {
-            Debug.logError(e, "Error in request handler: ", MODULE);
-            request.setAttribute("_ERROR_MESSAGE_", UtilCodec.getEncoder("html").encode(e.toString()));
-            errorPage = handler.getDefaultErrorPage(request);
         }
-
         if (errorPage != null) {
             Debug.logError("An error occurred, going to the errorPage: " + errorPage, MODULE);
 
@@ -360,19 +390,21 @@ public class ControlServlet extends HttpServlet {
                     + "because there is no session and as the response isCommitted we can't get a new one. "
                     + "The output was successful, but we just can't save ServerHit/Bin info.", MODULE);
         } else {
-            try {
-                UtilHttp.setInitialRequestInfo(request);
-                VisitHandler.getVisitor(request, response);
-                if (handler.trackStats(request)) {
-                    ServerHitBin.countRequest(webappName + "." + rname, request, requestStartTime,
-                            System.currentTimeMillis() - requestStartTime, userLogin);
+            if (handler != null){
+                try {
+                    UtilHttp.setInitialRequestInfo(request);
+                    VisitHandler.getVisitor(request, response);
+                    if (handler.trackStats(request)) {
+                        ServerHitBin.countRequest(webappName + "." + rname, request, requestStartTime,
+                                System.currentTimeMillis() - requestStartTime, userLogin);
+                    }
+                } catch (Throwable t) {
+                    Debug.logError(t, "Error in ControlServlet saving ServerHit/Bin information; "
+                            + "the output was successful, but can't save this tracking information. The error was: "
+                            + t.toString(), MODULE);
                 }
-            } catch (Throwable t) {
-                Debug.logError(t, "Error in ControlServlet saving ServerHit/Bin information; "
-                        + "the output was successful, but can't save this tracking information. The error was: "
-                        + t.toString(), MODULE);
-            }
         }
+    }
         if (Debug.timingOn()) {
             timer.timerString("[" + webappName + "::" + rname + " (Domain:" + request.getScheme() + "://"
                     + request.getServerName() + ")] Request Done", MODULE);
@@ -384,7 +416,10 @@ public class ControlServlet extends HttpServlet {
     }
 
     private void logRequestInfo(HttpServletRequest request) {
-        ServletContext servletContext = this.getServletContext();
+        ServletContext servletContext= (ServletContext) request.getAttribute("servletContext");
+        if(servletContext==null) {
+             servletContext = this.getServletContext();
+        }
         HttpSession session = request.getSession();
 
         Debug.logVerbose("--- Start Request Headers: ---", MODULE);

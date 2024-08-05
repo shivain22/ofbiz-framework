@@ -18,12 +18,17 @@
  *******************************************************************************/
 package org.apache.ofbiz.ws.rs.security.auth;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import java.util.Base64;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -33,13 +38,21 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilHttp;
 import org.apache.ofbiz.base.util.UtilMisc;
+import org.apache.ofbiz.entity.Delegator;
+import org.apache.ofbiz.entity.GenericDelegator;
 import org.apache.ofbiz.entity.GenericValue;
+import org.apache.ofbiz.security.Security;
 import org.apache.ofbiz.service.GenericServiceException;
 import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.ServiceUtil;
+import org.apache.ofbiz.webapp.control.ContextFilter;
+import org.apache.ofbiz.webapp.control.ControlServlet;
+import org.apache.ofbiz.webapp.control.LoginWorker;
 import org.apache.ofbiz.ws.rs.common.AuthenticationScheme;
 import org.apache.ofbiz.ws.rs.security.AuthToken;
 import org.apache.ofbiz.ws.rs.util.RestApiUtil;
@@ -58,30 +71,99 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
     private HttpServletRequest httpRequest;
 
     @Context
+    private HttpServletResponse httpResponse;
+
+    @Context
     private ServletContext servletContext;
 
     private static final String REALM = "OFBiz";
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * @param requestContext
      * @throws IOException
      */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
+
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if (!isBasicAuth(authorizationHeader)) {
             abortWithUnauthorized(requestContext, false, "Unauthorized: Access is denied due to invalid or absent Authorization header");
             return;
         }
+
+        // Get request body
+        String requestBody = getRequestBody(requestContext);
+        JsonNode jsonNode = objectMapper.readTree(requestBody);
+        String user = jsonNode.path("USERNAME").asText();
+        String pass = jsonNode.path("PASSWORD").asText();
+        String userTenantId = jsonNode.path("userTenantId").asText();
+        LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
+        GenericDelegator delegator = (GenericDelegator) servletContext.getAttribute("delegator");
+
+        Security security= (Security) servletContext.getAttribute("security");
+        httpRequest.setAttribute("USERNAME",user);
+        httpRequest.setAttribute("PASSWORD",pass);
+        httpRequest.setAttribute("userTenantId",userTenantId);
+        httpRequest.setAttribute("dispatcher",dispatcher);
+        httpRequest.setAttribute("delegator",delegator);
+        httpRequest.setAttribute("servletContext",servletContext);
+        httpRequest.setAttribute("security",security);
+        ControlServlet controlServlet = (ControlServlet) servletContext.getAttribute("controlServlet");
+        if(controlServlet==null){
+            controlServlet = new ControlServlet();
+            try {
+                controlServlet.doPost(httpRequest,httpResponse);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        AuthContextFilter contextFilter=new AuthContextFilter();
+
+        FilterChain chain = new FilterChain() {
+            @Override
+            public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+                // Chain handling logic, if needed
+            }
+        };
+        try {
+            contextFilter.doFilter(httpRequest, httpResponse, chain);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        }
+        String result =LoginWorker.login(httpRequest, httpResponse );
+
         String[] tokens = (new String(Base64.getDecoder().decode(authorizationHeader.split(" ")[1]), "UTF-8")).split(":");
         final String username = tokens[0];
         final String password = tokens[1];
-        try {
-            authenticate(username, password);
-        } catch (ForbiddenException fe) {
-            abortWithUnauthorized(requestContext, true, "Access Denied: " + fe.getMessage());
-        }
+        if(result.equals("success")){
 
+
+            try {
+                authenticate(user, pass);
+            } catch (ForbiddenException fe) {
+                abortWithUnauthorized(requestContext, true, "Access Denied: " + fe.getMessage());
+            }
+        }
+        else {
+
+            try {
+                authenticate(username, password);
+            } catch (ForbiddenException fe) {
+                abortWithUnauthorized(requestContext, true, "Access Denied: " + fe.getMessage());
+            }
+        }
+    }
+
+    private String getRequestBody(ContainerRequestContext requestContext) throws IOException {
+        // Buffer the request body
+        InputStream inputStream = requestContext.getEntityStream();
+        String requestBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+
+        // Reset the stream so it can be read again later
+        requestContext.setEntityStream(new ByteArrayInputStream(requestBody.getBytes(StandardCharsets.UTF_8)));
+        return requestBody;
     }
 
     /**
@@ -109,7 +191,7 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
 
     private void authenticate(String userName, String password) throws ForbiddenException {
         Map<String, Object> result = null;
-        LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
+        LocalDispatcher dispatcher = (LocalDispatcher) httpRequest.getAttribute("dispatcher");
         try {
             result = dispatcher.runSync("userLogin",
                     UtilMisc.toMap("login.username", userName, "login.password", password, "locale", UtilHttp.getLocale(httpRequest)));

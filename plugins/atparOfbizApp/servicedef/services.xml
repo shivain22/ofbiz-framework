@@ -138,7 +138,7 @@ under the License.
         <attribute name="status" type="Integer" mode="IN" optional="false"/>
     </service>
     <service name="checkWebhook" engine="groovy"
-             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="checkWebhook" auth="true" export="true" action="GET">
+             location="component://atparOfbizApp/groovyScripts/atparProduct.groovy" invoke="checkWebhook" auth="true" export="true" action="POST">
         <description>Test End point</description>
 
     </service>
