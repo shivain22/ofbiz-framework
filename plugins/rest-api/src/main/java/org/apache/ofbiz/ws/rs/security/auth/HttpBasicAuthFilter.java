@@ -109,36 +109,21 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
         httpRequest.setAttribute("PASSWORD",pass);
         httpRequest.setAttribute("userTenantId",userTenantId);
 
-        String delegatorName="";
+        String delegatorName="default";
         if(!userTenantId.isEmpty()) {
             delegatorName = getDelegatorName(userTenantId, delegator, dispatcher);
-            if (!delegatorName.isEmpty()) {
 
-                try {
-                    // after this line the delegator is replaced with the new per-tenant delegator
-                    delegator = DelegatorFactory.getDelegator(delegatorName);
-                    dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
-                } catch (NullPointerException e) {
-                    Debug.logError(e, "Error getting tenant delegator", MODULE);
-                    Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + userTenantId + "]  not found...");
-
-                }
-            }
         }
-            else {
-                delegatorName = "default";
 
-                    try {
-                        // after this line the delegator is replaced with the new per-tenant delegator
-                        delegator = DelegatorFactory.getDelegator(delegatorName);
-                        dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
-                    } catch (NullPointerException e) {
-                        Debug.logError(e, "Error getting tenant delegator", MODULE);
-                        Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + userTenantId + "]  not found...");
+        try {
+            // after this line the delegator is replaced with the new per-tenant delegator
+            delegator = DelegatorFactory.getDelegator(delegatorName);
+            dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+        } catch (NullPointerException e) {
+            Debug.logError(e, "Error getting tenant delegator", MODULE);
+            Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + userTenantId + "]  not found...");
 
-                    }
-
-            }
+        }
             httpRequest.setAttribute("dispatcher",dispatcher);
             httpRequest.setAttribute("delegator",delegator);
             servletContext.setAttribute("dispatcher",dispatcher);

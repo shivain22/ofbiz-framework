@@ -35,12 +35,15 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.ofbiz.base.util.Debug;
+import org.apache.ofbiz.base.util.UtilMisc;
 import org.apache.ofbiz.base.util.UtilValidate;
 import org.apache.ofbiz.entity.Delegator;
+import org.apache.ofbiz.entity.DelegatorFactory;
 import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.service.GenericServiceException;
+import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.ModelService;
 import org.apache.ofbiz.webapp.WebAppUtil;
 import org.apache.ofbiz.webapp.control.JWTManager;
@@ -92,13 +95,39 @@ public class APIAuthFilter implements ContainerRequestFilter {
                 }
             }
         }
+
         Delegator delegator = (Delegator) servletContext.getAttribute("delegator");
+        LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
         if (!isTokenBasedAuthentication(authorizationHeader)) {
             abortWithUnauthorized(requestContext, false, "Unauthorized: Access is denied due to invalid or absent Authorization header.");
             return;
         }
+
         String jwtToken = JWTManager.getHeaderAuthBearerToken(httpRequest);
         Map<String, Object> claims = JWTManager.validateToken(jwtToken, JWTManager.getJWTKey(delegator));
+        if(claims.containsKey("userTenantId")) {
+            String userTenantId = claims.get("userTenantId").toString();
+            String delegatorName="default";
+            if (!userTenantId.isEmpty()) {
+                delegatorName = getDelegatorName(userTenantId, delegator, dispatcher);
+
+            }
+            try {
+                // after this line the delegator is replaced with the new per-tenant delegator
+                delegator = DelegatorFactory.getDelegator(delegatorName);
+                dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+            } catch (NullPointerException e) {
+                Debug.logError(e, "Error getting tenant delegator", MODULE);
+                Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + userTenantId + "]  not found...");
+
+            }
+            httpRequest.setAttribute("dispatcher", dispatcher);
+            httpRequest.setAttribute("delegator", delegator);
+            servletContext.setAttribute("dispatcher", dispatcher);
+            servletContext.setAttribute("delegator", delegator);
+            httpRequest.setAttribute("servletContext", servletContext);
+
+        }
         if (claims.containsKey(ModelService.ERROR_MESSAGE)) {
             abortWithUnauthorized(requestContext, true, "Unauthorized: " + (String) claims.get(ModelService.ERROR_MESSAGE));
         } else {
@@ -152,6 +181,31 @@ public class APIAuthFilter implements ContainerRequestFilter {
 
     private boolean isServiceResource() {
         return OFBizServiceResource.class.isAssignableFrom(resourceInfo.getResourceClass());
+    }
+
+    private String getDelegatorName(String tenantId,Delegator delegator,LocalDispatcher dispatcher ){
+
+        Map<String, ?> result = null;
+        String delegatorName="";
+        if (UtilValidate.isNotEmpty(tenantId)) {
+            // see if we need to activate a tenant delegator, only do if the current delegatorName has a hash symbol in it,
+            // and if the passed in tenantId doesn't match the one in the delegatorName
+            String oldDelegatorName = delegator.getDelegatorName();
+            int delegatorNameHashIndex = oldDelegatorName.indexOf('#');
+            String currentDelegatorTenantId = null;
+            if (delegatorNameHashIndex > 0) {
+                currentDelegatorTenantId = oldDelegatorName.substring(delegatorNameHashIndex + 1);
+                if (currentDelegatorTenantId != null) currentDelegatorTenantId = currentDelegatorTenantId.trim();
+            }
+
+            if (delegatorNameHashIndex == -1 || (currentDelegatorTenantId != null && !tenantId.equals(currentDelegatorTenantId))) {
+                // make that tenant active, setup a new delegator and a new dispatcher
+                delegatorName = delegator.getDelegatorBaseName() + "#" + tenantId;
+
+            }
+        }
+
+        return delegatorName;
     }
 
 }
