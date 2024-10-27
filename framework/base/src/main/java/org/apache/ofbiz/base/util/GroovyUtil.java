@@ -198,7 +198,7 @@ public final class GroovyUtil {
             return GROOVY_CLASS_LOADER.parseClass(text);
         } else {
             GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
-            Class<?> classLoader = GROOVY_CLASS_LOADER.parseClass(text);
+            Class<?> classLoader = groovyClassLoader.parseClass(text);
             groovyClassLoader.close();
             return classLoader;
         }
