@@ -64,7 +64,7 @@ public class SecurityUtilTest {
                 chmod,mkdir,fopen,fclose,new file,upload,getfilename,download,getoutputstring,readfile,iframe,object,embed,onload,build,\
                 python,perl ,/perl,ruby ,/ruby,process,function,class,InputStream,to_server,wget ,static,assign,webappPath,\
                 ifconfig,route,crontab,netstat,uname ,hostname,iptables,whoami,"cmd",*cmd|,+cmd|,=cmd|,localhost,thread,require,gzdeflate,\
-                execute,println,calc,touch,curl,base64,tcp
+                execute,println,calc,touch,curl,base64,tcp,4444
          */
         try {
             List<String> allowed = new ArrayList<>();
@@ -138,7 +138,7 @@ public class SecurityUtilTest {
             assertFalse(SecuredUpload.isValidText("hostname", allowed));
             assertFalse(SecuredUpload.isValidText("iptables", allowed));
             assertFalse(SecuredUpload.isValidText("whoami", allowed));
-            // ip, ls, nc, ip, cat and pwd can't be used, too short
+            // ip, ls, nc, ip, cat and pwd can't be used, too short for allowing some images
             assertFalse(SecuredUpload.isValidText("\"cmd\"", allowed));
             assertFalse(SecuredUpload.isValidText("*cmd|", allowed));
             assertFalse(SecuredUpload.isValidText("+cmd|", allowed));
