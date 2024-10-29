@@ -129,9 +129,9 @@ public class SecuredUpload {
      */
     public static boolean isValidEncodedText(String content, List<String> allowed) throws IOException {
         try {
-            return !isValidText(Base64.getDecoder().decode(content).toString(), allowed, false)
-                    || !isValidText(Base64.getMimeDecoder().decode(content).toString(), allowed, false)
-                    || !isValidText(Base64.getUrlDecoder().decode(content).toString(), allowed, false);
+            return !isValidText(String.valueOf(Base64.getDecoder().decode(content)), allowed)
+                    || !isValidText(String.valueOf(Base64.getMimeDecoder().decode(content)), allowed)
+                    || !isValidText(String.valueOf(Base64.getUrlDecoder().decode(content)), allowed);
         } catch (IllegalArgumentException e) {
             // the encoded text isn't a Base64, allow it because there is no security risk
             return true;
