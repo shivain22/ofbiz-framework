@@ -89,11 +89,11 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-        if (!isBasicAuth(authorizationHeader)) {
-            abortWithUnauthorized(requestContext, false, "Unauthorized: Access is denied due to invalid or absent Authorization header");
-            return;
-        }
+//        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+//        if (!isBasicAuth(authorizationHeader)) {
+//            abortWithUnauthorized(requestContext, false, "Unauthorized: Access is denied due to invalid or absent Authorization header");
+//            return;
+//        }
 
         // Get request body
         String requestBody = getRequestBody(requestContext);
@@ -157,9 +157,9 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
 //        }
 //        String result =LoginWorker.login(httpRequest, httpResponse );
 
-        String[] tokens = (new String(Base64.getDecoder().decode(authorizationHeader.split(" ")[1]), "UTF-8")).split(":");
-        final String username = tokens[0];
-        final String password = tokens[1];
+//        String[] tokens = (new String(Base64.getDecoder().decode(authorizationHeader.split(" ")[1]), "UTF-8")).split(":");
+        final String username = user;
+        final String password = pass;
         if(!user.isEmpty() && !pass.isEmpty()){
 
 
@@ -238,7 +238,7 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
         if (UtilValidate.isNotEmpty(tenantId)) {
             // see if we need to activate a tenant delegator, only do if the current delegatorName has a hash symbol in it,
             // and if the passed in tenantId doesn't match the one in the delegatorName
-            String oldDelegatorName = delegator.getDelegatorName();
+            String oldDelegatorName = "default";
             int delegatorNameHashIndex = oldDelegatorName.indexOf('#');
             String currentDelegatorTenantId = null;
             if (delegatorNameHashIndex > 0) {

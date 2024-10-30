@@ -86,7 +86,7 @@ under the License.
         <field name="status"><hidden value="0"/></field>
         <field name="upload_file"  title="${uiLabelMap.ThumbnailImage}" ><file size="25"/></field>
 <!--        <field name="uploadFile"  title="${uiLabelMap.FileName}"><text/></field>-->
-        <field name="_uploadFile_fileName" ><hidden/></field>
+        <field name="_uploadFile_fileName"  ><hidden/></field>
         <field name="_uploadFile_contentType" ><hidden/></field>
         <field name="submitButton" title="${uiLabelMap.CommonAdd}" use-when="product==null" widget-style="smallSubmit" event="onClick" action="javascript: if(document.EditProduct.statusId.value == 'PRODUCT_CLOSED') {
                                                                                                                                                                                  var fileName = document.getElementsByName('upload_file')[0].files[0].name; "><submit button-type="button"/></field>

@@ -229,7 +229,7 @@ public class CategoryServices {
 
         int defaultViewSize = 100;
         if (context.containsKey("defaultViewSize")) {
-            defaultViewSize= (int) context.get("limitView");
+            defaultViewSize= (int) context.get("defaultViewSize");
         }
         Timestamp introductionDateLimit = (Timestamp) context.get("introductionDateLimit");
         Timestamp releaseDateLimit = (Timestamp) context.get("releaseDateLimit");

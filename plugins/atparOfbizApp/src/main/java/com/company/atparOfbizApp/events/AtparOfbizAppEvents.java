@@ -60,9 +60,15 @@ public class AtparOfbizAppEvents {
         }
 
 //        ByteBuffer fileBytes=fileToByteBuffer(file);
+         String filename="default";
+        String fileContentType="image/jpeg";
+        if(context.containsKey("_upload_file_fileName")){
+            filename = (String) context.get("_upload_file_fileName");
+        }
+        if(context.containsKey("_upload_file_contentType")){
+            fileContentType = (String) context.get("_upload_file_contentType");
+        }
 
-        String filename = (String) context.get("_upload_file_fileName");
-        String fileContentType = (String) context.get("_upload_file_contentType");
         String productId = (String) context.get("productId");
         String productTypeId = (String) context.get("productTypeId");
         String internalName = (String) context.get("internalName");

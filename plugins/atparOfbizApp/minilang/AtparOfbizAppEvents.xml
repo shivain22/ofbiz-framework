@@ -93,7 +93,43 @@
             <set field="atparProduct.status" from-field="parameters.status"/>
             <set field="atparProduct.introductionDate" from-field="nowTimestamp"/>
             <set field="atparProduct.primaryProductCategoryId" from-field="parameters.primaryProductCategoryId"/>
-            <set field="atparProduct._upload_file_fileName" from-field="parameters._upload_file_fileName"/>
+            <set field="atparProduct.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+" from-field="parameters._upload_file_fileName"/>
             <set field="atparProduct._upload_file_contentType" from-field="parameters._upload_file_contentType"/>
             <set field="atparProduct.upload_file" from-field="parameters.upload_file" type="java.nio.ByteBuffer"/>
             <set field="atparProduct.userLogin" from-field="sysUserLogin"/>
