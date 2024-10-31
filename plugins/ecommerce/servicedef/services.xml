@@ -1,0 +1,39 @@
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
+    <description>Ecommerce Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+
+    <service name="noSyntaxError" engine="interface">
+        <description>
+            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here
+        </description>
+    </service>
+    <service name="createcustomer" engine="simple"
+             location="component://ecommerce/minilang/customer/CustomerEvents.xml" invoke="createCustomer" auth="false" action="POST" export="true">
+        <description>Register new Customer to Ecommerce</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+
+        <!-- Input Attributes -->
+        <attribute mode="IN" name="USER_FIRST_NAME" type="String" optional="false"/>
+        <attribute mode="IN" name="USER_LAST_NAME" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_EMAIL" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_ADDRESS1" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_CITY" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_POSTAL_CODE" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_COUNTRY" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_STATE" type="String" optional="false"/>
+
+        <attribute mode="IN" name="USERNAME" type="String" optional="true"/>
+        <attribute mode="IN" name="PASSWORD" type="String" optional="true"/>
+        <attribute mode="IN" name="CONFIRM_PASSWORD" type="String" optional="true"/>
+
+        <!-- Output Attributes -->
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="OUT" optional="true"/>
+        <attribute mode="OUT" name="customerId" type="String" optional="false"/>
+        <attribute mode="OUT" name="registrationStatus" type="String" optional="true"/>
+    </service>
+
+</services>

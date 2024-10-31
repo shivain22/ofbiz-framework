@@ -409,7 +409,7 @@ under the License.
         <!-- now finished, log in the user and set the cart's partyId to that of the newly created customer ... -->
         <if-compare field="allowPassword" operator="equals" value="Y">
             <script>groovy:
-                org.apache.ofbiz.webapp.control.LoginWorker.doBasicLogin(createdUserLogin, request)
+                org.apache.ofbiz.webapp.control.LoginWorker.doBasicLogin(createdUserLogin, request, response)
                 org.apache.ofbiz.webapp.control.LoginWorker.autoLoginSet(request, response)
                 session = request.getSession()
                 cart = session.getAttribute("shoppingCart")
@@ -949,7 +949,7 @@ under the License.
 
             <!-- now finished, log in the user and set the cart's partyId -->
             <script>groovy:
-                    org.apache.ofbiz.webapp.control.LoginWorker.doBasicLogin(userLogin, request)
+                    org.apache.ofbiz.webapp.control.LoginWorker.doBasicLogin(userLogin, request, response)
                     org.apache.ofbiz.webapp.control.LoginWorker.autoLoginSet(request, response)
             </script>
             <set field="parameters.userLogin" from-field="userLogin"/>
@@ -1255,7 +1255,7 @@ under the License.
             </call-service>
             <set-current-user-login value-field="newUserLogin"/>
             <script>groovy:
-                    org.apache.ofbiz.webapp.control.LoginWorker.doBasicLogin(newUserLogin, request)
+                    org.apache.ofbiz.webapp.control.LoginWorker.doBasicLogin(newUserLogin, request, response)
                     org.apache.ofbiz.webapp.control.LoginWorker.autoLoginSet(request, response)
             </script>
             <!-- disabledDateTime/disableForYears set time until a user login remains disabled -->
