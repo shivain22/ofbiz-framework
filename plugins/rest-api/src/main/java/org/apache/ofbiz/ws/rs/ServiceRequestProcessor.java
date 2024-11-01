@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
@@ -51,6 +52,8 @@ public class ServiceRequestProcessor {
         Map<String, Object> requestMap = (Map<String, Object>) requestContext.get("requestMap");
         LocalDispatcher dispatcher = (LocalDispatcher) requestContext.get("dispatcher");
         HttpServletRequest request = (HttpServletRequest) requestContext.get("request");
+        HttpServletResponse response = (HttpServletResponse) requestContext.get("response"); // Ensure you get the response
+
         GenericValue userLogin = (GenericValue) request.getAttribute("userLogin");
         DispatchContext dispatchContext = dispatcher.getDispatchContext();
         ModelService service = null;
@@ -65,6 +68,8 @@ public class ServiceRequestProcessor {
         Map<String, Object> serviceContext = dispatchContext.makeValidContext(serviceName, ModelService.IN_PARAM, requestMap);
         serviceContext.put("userLogin", userLogin);
         serviceContext.put("requestMap",requestMap);
+        serviceContext.put("request", request);  // Add request
+        serviceContext.put("response", response); // Add response
         Map<String, Object> result = dispatcher.runSync(serviceName, serviceContext);
         Map<String, Object> responseData = new LinkedHashMap<>();
         if (ServiceUtil.isSuccess(result)) {

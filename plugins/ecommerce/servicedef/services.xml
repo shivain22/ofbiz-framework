@@ -9,25 +9,54 @@
             Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here
         </description>
     </service>
-    <service name="createcustomer" engine="simple"
-             location="component://ecommerce/minilang/customer/CustomerEvents.xml" invoke="createCustomer" auth="false" action="POST" export="true">
+    <service name="createcustomer" engine="java"
+             location="org.apache.ofbiz.ecommerce.customer.customerEvents" invoke="registerCustomer" auth="false" action="POST" export="true">
         <description>Register new Customer to Ecommerce</description>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="false"/>
 
         <!-- Input Attributes -->
+        <attribute mode="IN" name="emailProductStoreId" type="String" optional="false"/>
+        <attribute mode="IN" name="USER_TITLE" type="String" optional="true"/>
         <attribute mode="IN" name="USER_FIRST_NAME" type="String" optional="false"/>
         <attribute mode="IN" name="USER_LAST_NAME" type="String" optional="false"/>
+        <attribute mode="IN" name="USER_MIDDLE_NAME" type="String" optional="true"/>
+        <attribute mode="IN" name="USER_SUFFIX" type="String" optional="true"/>
         <attribute mode="IN" name="CUSTOMER_EMAIL" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_EMAIL_ALLOW_SOL" type="String" optional="true"/>
         <attribute mode="IN" name="CUSTOMER_ADDRESS1" type="String" optional="false"/>
+        <attribute mode="IN" name="CUSTOMER_ADDRESS2" type="String" optional="true"/>
         <attribute mode="IN" name="CUSTOMER_CITY" type="String" optional="false"/>
         <attribute mode="IN" name="CUSTOMER_POSTAL_CODE" type="String" optional="false"/>
         <attribute mode="IN" name="CUSTOMER_COUNTRY" type="String" optional="false"/>
         <attribute mode="IN" name="CUSTOMER_STATE" type="String" optional="false"/>
-
+        <attribute mode="IN" name="CUSTOMER_ADDRESS_ALLOW_SOL" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_HOME_COUNTRY" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_HOME_AREA" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_HOME_CONTACT" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_HOME_EXT" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_HOME_ALLOW_SOL" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_WORK_COUNTRY" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_WORK_AREA" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_WORK_CONTACT" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_WORK_EXT" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_WORK_ALLOW_SOL" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_FAX_COUNTRY" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_FAX_AREA" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_FAX_CONTACT" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_FAX_ALLOW_SOL" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_MOBILE_COUNTRY" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_MOBILE_AREA" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_MOBILE_CONTACT" type="String" optional="true"/>
+        <attribute mode="IN" name="CUSTOMER_MOBILE_ALLOW_SOL" type="String" optional="true"/>
+        <attribute mode="IN" name="UNUSEEMAIL" type="String" optional="true"/>
         <attribute mode="IN" name="USERNAME" type="String" optional="true"/>
         <attribute mode="IN" name="PASSWORD" type="String" optional="true"/>
         <attribute mode="IN" name="CONFIRM_PASSWORD" type="String" optional="true"/>
+        <attribute mode="IN" name="PASSWORD_HINT" type="String" optional="true"/>
+        <attribute mode="IN" name="PASSWORD_HINT" type="String" optional="true"/>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
+
 
         <!-- Output Attributes -->
         <auto-attributes include="pk" mode="OUT" optional="false"/>
