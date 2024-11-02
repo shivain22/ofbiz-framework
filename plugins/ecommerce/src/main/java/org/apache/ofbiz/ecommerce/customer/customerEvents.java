@@ -6,11 +6,13 @@ import org.apache.ofbiz.base.util.UtilMisc;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.order.shoppingcart.ShoppingCart;
+import org.apache.ofbiz.order.shoppingcart.ShoppingCartEvents;
 import org.apache.ofbiz.service.DispatchContext;
 import org.apache.ofbiz.service.GenericServiceException;
 import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.ServiceUtil;
 import org.apache.ofbiz.entity.Delegator;
+import org.apache.ofbiz.webapp.control.JWTManager;
 import org.apache.ofbiz.webapp.control.LoginWorker;
 import org.apache.ofbiz.party.party.PartyWorker;
 import org.apache.ofbiz.ws.rs.security.auth.HttpBasicAuthFilter;
@@ -24,6 +26,36 @@ import java.util.Map;
 
 public class customerEvents {
     private static final String MODULE = customerEvents.class.getName();
+
+    public static Map<String, String> loginCustomer(DispatchContext ctx, Map<String, ?> context) {
+        LocalDispatcher dispatcher = ctx.getDispatcher();
+        Locale locale = (Locale) context.get("locale");
+        Delegator delegator = ctx.getDelegator();
+
+        HttpServletRequest request = (HttpServletRequest) context.get("request");
+        HttpServletResponse response = (HttpServletResponse) context.get("response");
+
+        request.setAttribute("dispatcher",dispatcher);
+        request.setAttribute("delegator",delegator);
+        request.setAttribute("locale",locale);
+
+        if(request.getAttribute("USERNAME")==null){
+            request.setAttribute("USERNAME",context.get("USERNAME"));
+        }
+        if(request.getAttribute("PASSWORD")==null){
+            request.setAttribute("PASSWORD",context.get("PASSWORD"));
+        }
+        Map<String, String> outputMap = new HashMap<>();
+        String result = JWTManager.getAuthenticationJwtToken(request,response );
+        if(!result.equals("error")) {
+            outputMap.put("message", "success");
+            outputMap.put("token", result);
+            return outputMap;
+        }
+        outputMap.put("message", "error");
+        outputMap.put("token", null);
+        return outputMap;
+    }
 
     public static Map<String, String> registerCustomer(DispatchContext ctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = ctx.getDispatcher();
@@ -213,4 +245,35 @@ public class customerEvents {
             e.printStackTrace();
         }
     }
+
+    public static String addToCart(DispatchContext ctx, Map<String, ?> context) {
+        LocalDispatcher dispatcher = ctx.getDispatcher();
+        Locale locale = (Locale) context.get("locale");
+        Delegator delegator = ctx.getDelegator();
+
+        HttpServletRequest request = (HttpServletRequest) context.get("request");
+        HttpServletResponse response = (HttpServletResponse) context.get("response");
+
+        request.setAttribute("dispatcher",dispatcher);
+        request.setAttribute("delegator",delegator);
+        request.setAttribute("locale",locale);
+
+        if(request.getAttribute("add_product_id")==null){
+            request.setAttribute("add_product_id",context.get("add_product_id"));
+        }
+        if(request.getAttribute("clearSearch")==null){
+            request.setAttribute("clearSearch",context.get("clearSearch"));
+        }
+        if(request.getAttribute("mainSubmitted")==null){
+            request.setAttribute("mainSubmitted",context.get("mainSubmitted"));
+        }
+        if(request.getAttribute("quantity")==null){
+            request.setAttribute("quantity",context.get("quantity"));
+        }
+       String result= "error";
+
+        result=ShoppingCartEvents.addToCart(request,response);
+        return result;
+    }
+
 }

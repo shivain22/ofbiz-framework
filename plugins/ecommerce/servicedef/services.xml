@@ -56,7 +56,7 @@
         <attribute mode="IN" name="PASSWORD_HINT" type="String" optional="true"/>
         <attribute mode="IN" name="PASSWORD_HINT" type="String" optional="true"/>
         <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
-
+        <attribute name="response" mode="IN" type="javax.servlet.http.HttpServletResponse" optional="true"/>
 
         <!-- Output Attributes -->
         <auto-attributes include="pk" mode="OUT" optional="false"/>
@@ -65,4 +65,27 @@
         <attribute mode="OUT" name="registrationStatus" type="String" optional="true"/>
     </service>
 
+    <service name="loginCustomer" engine="java"
+             location="org.apache.ofbiz.ecommerce.customer.customerEvents" invoke="loginCustomer" auth="false" action="POST" export="true">
+    <description>Login  Customer to Ecommerce</description>
+
+        <attribute mode="IN" name="USERNAME" type="String" optional="false"/>
+        <attribute mode="IN" name="PASSWORD" type="String" optional="false"/>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
+        <attribute name="response" mode="IN" type="javax.servlet.http.HttpServletResponse" optional="true"/>
+        <attribute mode="OUT" name="message" type="String" optional="false"/>
+        <attribute mode="OUT" name="token" type="String" optional="false"/>
+    </service>
+
+    <service name="additem" engine="java"
+             location="org.apache.ofbiz.ecommerce.customer.customerEvents" invoke="addToCart" action="POST" export="true">
+        <description>Login  Customer to Ecommerce</description>
+        <attribute mode="IN" name="add_product_id" type="String" optional="true"/>
+        <attribute mode="IN" name="clearSearch" type="String" optional="true"/>
+        <attribute mode="IN" name="mainSubmitted" type="String" optional="true"/>
+        <attribute mode="IN" name="quantity" type="String" optional="true"/>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
+        <attribute name="response" mode="IN" type="javax.servlet.http.HttpServletResponse" optional="true"/>
+        <attribute mode="OUT" name="message" type="String" optional="true"/>
+    </service>
 </services>

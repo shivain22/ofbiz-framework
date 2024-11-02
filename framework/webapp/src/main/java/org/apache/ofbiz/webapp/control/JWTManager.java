@@ -206,6 +206,55 @@ public class JWTManager {
         return "success";
     }
 
+    public static String getAuthenticationJwtToken(HttpServletRequest request, HttpServletResponse response) {
+        LocalDispatcher dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
+        Delegator delegator = (Delegator) request.getAttribute("delegator");
+
+        String username;
+        String password;
+
+        if (UtilValidate.isNotEmpty(request.getAttribute("USERNAME"))) {
+            username = (String) request.getAttribute("USERNAME");
+        } else {
+            username = request.getParameter("USERNAME");
+        }
+        if (UtilValidate.isNotEmpty(request.getAttribute("PASSWORD"))) {
+            password = (String) request.getAttribute("PASSWORD");
+        } else {
+            password = request.getParameter("PASSWORD");
+        }
+
+        if (UtilValidate.isEmpty(username) || UtilValidate.isEmpty(password)) {
+            request.setAttribute("_ERROR_MESSAGE_", "Username / Password can not be empty");
+            Debug.logError("UserName / Password can not be empty", MODULE);
+            return "error";
+        }
+        Map<String, Object> result;
+        try {
+            result = dispatcher.runSync("userLogin", UtilMisc.toMap("login.username", username, "login.password", password,
+                    "locale", UtilHttp.getLocale(request)));
+        } catch (GenericServiceException e) {
+            Debug.logError(e, "Error calling userLogin service", MODULE);
+            request.setAttribute("_ERROR_MESSAGE_", e.getMessage());
+            return "error";
+        }
+        if (!ServiceUtil.isSuccess(result)) {
+            Debug.logError(ServiceUtil.getErrorMessage(result), MODULE);
+            request.setAttribute("_ERROR_MESSAGE_", ServiceUtil.getErrorMessage(result));
+            return "error";
+        }
+        GenericValue userLogin = (GenericValue) result.get("userLogin");
+
+        String token = createJwt(delegator, UtilMisc.toMap("userLoginId", userLogin.getString("userLoginId")));
+        if (token == null) {
+            Debug.logError("Unable to generate token", MODULE);
+            request.setAttribute("_ERROR_MESSAGE_", "Unable to generate token");
+            return "error";
+        }
+        request.setAttribute("token", token);
+       return token;
+    }
+
     /**
      * Gets the authentication token from the "Authorization" header if it is
      * in the form {@code Bearer <token>}.
