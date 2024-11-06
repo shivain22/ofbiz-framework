@@ -20,7 +20,6 @@ package org.apache.ofbiz.base.util;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -331,15 +330,6 @@ public class ObjectType {
         }
 
         if (converter != null) {
-            // numeric types : replace non-breaking spaces (which break parsing) by normal spaces
-            List<?> numericClasses = UtilMisc.toList(BigDecimal.class, Double.class, Float.class);
-            if (obj instanceof String && numericClasses.contains(targetClass)) {
-                final String[] tmp = {String.valueOf(obj)};
-                List<Character> nonBreakingWhitespaces = UtilMisc.toList('\u00A0', '\u202F', '\u2007');
-                nonBreakingWhitespaces.forEach(character -> tmp[0] = tmp[0].replace(character, ' '));
-                obj = tmp[0];
-            }
-
             if (converter instanceof LocalizedConverter) {
                 LocalizedConverter<Object, Object> localizedConverter = UtilGenerics.cast(converter);
                 if (timeZone == null) {
@@ -355,7 +345,6 @@ public class ObjectType {
                     throw new GeneralException(e.getMessage(), e);
                 }
             }
-
             try {
                 return converter.convert(obj);
             } catch (ConversionException e) {
