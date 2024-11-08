@@ -33,6 +33,7 @@ import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -69,6 +70,7 @@ import org.apache.commons.imaging.formats.tiff.TiffImageParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ofbiz.base.crypto.HashCrypt;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.FileUtil;
 import org.apache.ofbiz.base.util.StringUtil;
@@ -138,23 +140,34 @@ public class SecuredUpload {
         }
     }
 
+    // Cover method of the same name below. Historically used with 84 references when below was created
+    // This is used for checking there is no web shell in an uploaded file
     public static boolean isValidText(String content, List<String> allowed) throws IOException {
-        return isValidText(content, allowed, true);
+        return isValidText(content, allowed, false);
     }
 
     public static boolean isValidText(String content, List<String> allowed, boolean testEncodeContent) throws IOException {
         if (content == null) {
             return false;
         }
-        String contentWithoutSpaces = content.replaceAll("\\s", "");
-        if ((contentWithoutSpaces.contains("\"+\"") || contentWithoutSpaces.contains("'+'"))
-                && !ALLOWSTRINGCONCATENATIONINUPLOADEDFILES) {
-            Debug.logInfo("The uploaded file contains a string concatenation. It can't be uploaded for security reason", MODULE);
-            return false;
+        if (!testEncodeContent) {
+            String contentWithoutSpaces = content.replaceAll(" ", "");
+            if ((contentWithoutSpaces.contains("\"+\"") || contentWithoutSpaces.contains("'+'"))
+                    && !ALLOWSTRINGCONCATENATIONINUPLOADEDFILES) {
+                Debug.logInfo("The uploaded file contains a string concatenation. It can't be uploaded for security reason", MODULE);
+                return false;
+            }
         }
+        // This is used for checking there is no reverse shell in a query string
         if (testEncodeContent && !isValidEncodedText(content, allowed)) {
             return false;
+        } else if (testEncodeContent) {
+            // e.g. split parameters of an at all non encoded  HTTP query string
+            List<String> queryParameters = StringUtil.split(content, "&");
+            return DENIEDWEBSHELLTOKENS.stream().allMatch(token -> isValid(queryParameters, token, allowed));
         }
+
+        // This is used for checking there is no web shell in an uploaded file
         return DENIEDWEBSHELLTOKENS.stream().allMatch(token -> isValid(content, token.toLowerCase(), allowed));
     }
 
@@ -857,10 +870,29 @@ public class SecuredUpload {
         return isValidText(content, allowed);
     }
 
+    // This is used for checking there is no web shell
     private static boolean isValid(String content, String string, List<String> allowed) {
         boolean isOK = !content.toLowerCase().contains(string) || allowed.contains(string);
         if (!isOK) {
             Debug.logInfo("The uploaded file contains the string '" + string + "'. It can't be uploaded for security reason", MODULE);
+        }
+        return isOK;
+    }
+
+    // This is used for checking there is no reverse shell
+    private static boolean isValid(List<String> queryParameters, String string, List<String> allowed) {
+        boolean isOK = true;
+        for (String parameter : queryParameters) {
+            if (!HashCrypt.cryptBytes("SHA", "OFBiz", parameter.getBytes(StandardCharsets.UTF_8)).contains(string)
+                    || allowed.contains(HashCrypt.cryptBytes("SHA", "OFBiz", parameter.getBytes(StandardCharsets.UTF_8)))) {
+                continue;
+            } else {
+                isOK = false;
+                break;
+            }
+        }
+        if (!isOK) {
+            Debug.logInfo("The HTTP query string contains the string '" + string + "'. It can't be uploaded for security reason", MODULE);
         }
         return isOK;
     }
@@ -882,6 +914,12 @@ public class SecuredUpload {
         String deniedTokens = UtilProperties.getPropertyValue("security", "deniedWebShellTokens");
         return UtilValidate.isNotEmpty(deniedTokens) ? StringUtil.split(deniedTokens, ",") : new ArrayList<>();
     }
+
+    public static List<String> getallowedTokens() {
+        String allowedTokens = UtilProperties.getPropertyValue("security", "allowedTokens");
+        return UtilValidate.isNotEmpty(allowedTokens) ? StringUtil.split(allowedTokens, ",") : new ArrayList<>();
+    }
+
 
     private static boolean checkMaxLinesLength(String fileToCheck) {
         try {
