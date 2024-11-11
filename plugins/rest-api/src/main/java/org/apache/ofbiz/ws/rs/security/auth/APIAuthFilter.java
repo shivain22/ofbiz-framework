@@ -105,7 +105,7 @@ public class APIAuthFilter implements ContainerRequestFilter {
 
         String jwtToken = JWTManager.getHeaderAuthBearerToken(httpRequest);
         Map<String, Object> claims = JWTManager.validateToken(jwtToken, JWTManager.getJWTKey(delegator));
-        if(claims.containsKey("userTenantId")) {
+        if(claims.containsKey("userTenantId") &&( delegator.getDelegatorName().equals("default") || delegator.getDelegatorName().isEmpty())) {
             String userTenantId = claims.get("userTenantId").toString();
             String delegatorName="default";
             if (!userTenantId.isEmpty()) {
