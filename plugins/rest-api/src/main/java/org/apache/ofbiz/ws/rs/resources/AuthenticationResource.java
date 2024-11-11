@@ -71,8 +71,9 @@ public class AuthenticationResource extends OFBizResource {
         httpRequest.setAttribute("delegator", getDelegator());
         httpRequest.setAttribute("dispatcher", getDispatcher());
         GenericValue userLogin = (GenericValue) httpRequest.getAttribute("userLogin");
+        GenericValue userTenantId = (GenericValue) httpRequest.getAttribute("userTenantId");
         //TODO : Move this into an OFBiz service. All such implementations should be inside an OFBiz service.
-        String jwtToken = JWTManager.createJwt(getDelegator(), UtilMisc.toMap("userLoginId", userLogin.getString("userLoginId")));
+        String jwtToken = JWTManager.createJwt(getDelegator(), UtilMisc.toMap("userLoginId", userLogin.getString("userLoginId"),"userTenantId",userTenantId));
         Map<String, Object> tokenPayload = UtilMisc.toMap("access_token", jwtToken, "expires_in",
                 EntityUtilProperties.getPropertyValue("security", "security.jwt.token.expireTime", "1800", getDelegator()), "token_type", "Bearer");
         return RestApiUtil.success("Token granted.", tokenPayload);
