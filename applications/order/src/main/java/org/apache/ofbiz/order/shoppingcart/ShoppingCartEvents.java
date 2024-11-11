@@ -988,6 +988,13 @@ public class ShoppingCartEvents {
                 }
             }
         }
+        if(request.getAttribute("productStoreId")!=null && cart.getProductStoreId()==null){
+            cart.setProductStoreId((String) request.getAttribute("productStoreId"));
+        }
+//        else{
+//            cart.setProductStoreId("9000");
+//        }
+
         return cart;
     }
 

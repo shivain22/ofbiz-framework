@@ -84,6 +84,7 @@
         <attribute mode="IN" name="clearSearch" type="String" optional="true"/>
         <attribute mode="IN" name="mainSubmitted" type="String" optional="true"/>
         <attribute mode="IN" name="quantity" type="String" optional="true"/>
+        <attribute mode="IN" name="productStoreId" type="String" optional="true"/>
         <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
         <attribute name="response" mode="IN" type="javax.servlet.http.HttpServletResponse" optional="true"/>
         <attribute mode="OUT" name="message" type="String" optional="true"/>

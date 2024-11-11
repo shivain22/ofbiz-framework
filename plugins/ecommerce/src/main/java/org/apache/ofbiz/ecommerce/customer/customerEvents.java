@@ -246,7 +246,7 @@ public class customerEvents {
         }
     }
 
-    public static String addToCart(DispatchContext ctx, Map<String, ?> context) {
+    public static Map<String, String> addToCart(DispatchContext ctx, Map<String, ?> context) {
         LocalDispatcher dispatcher = ctx.getDispatcher();
         Locale locale = (Locale) context.get("locale");
         Delegator delegator = ctx.getDelegator();
@@ -270,9 +270,12 @@ public class customerEvents {
         if(request.getAttribute("quantity")==null){
             request.setAttribute("quantity",context.get("quantity"));
         }
-       String result= "error";
+        if(request.getAttribute("productStoreId")==null){
+            request.setAttribute("productStoreId",context.get("productStoreId"));
+        }
+        Map<String, String> result=  new HashMap<>();
 
-        result=ShoppingCartEvents.addToCart(request,response);
+        result.put("message",ShoppingCartEvents.addToCart(request,response));
         return result;
     }
 
