@@ -20,6 +20,7 @@ package org.apache.ofbiz.base.util;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
