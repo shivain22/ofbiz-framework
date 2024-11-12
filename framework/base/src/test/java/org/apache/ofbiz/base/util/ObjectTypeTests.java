@@ -390,7 +390,7 @@ public class ObjectTypeTests {
         // usual pattern assumes that the String->BigDecimal conversion will break with bad timezone/locale
         // which is not the case for this particular test
         assertEquals("String->BigDecimal supports NBSP",
-                simpleTypeOrObjectConvert("29 000", "BigDecimal", null, LOCALE_DATA.goodTimeZone,
+                simpleTypeOrObjectConvert("29 000", "BigDecimal", null, LOCALE_DATA.goodTimeZone,
                         LOCALE_DATA.goodLocale, false), largeBigDecimal);
     }
 

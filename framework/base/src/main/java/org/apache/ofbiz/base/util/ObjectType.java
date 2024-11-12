@@ -331,13 +331,10 @@ public class ObjectType {
         }
 
         if (converter != null) {
-            // numeric types : replace non-breaking spaces (which break parsing) by normal spaces
-            List<?> numericClasses = UtilMisc.toList(BigDecimal.class, Double.class, Float.class);
+            // numeric types : replace everything that's not in [:IsAlnum:] or [:IsPunct:] classes by an empty string
+            List<?> numericClasses = UtilMisc.toList(BigDecimal.class, Double.class, Float.class, Long.class);
             if (obj instanceof String && numericClasses.contains(targetClass)) {
-                final String[] tmp = {String.valueOf(obj)};
-                List<Character> nonBreakingWhitespaces = UtilMisc.toList('\u00A0', '\u202F', '\u2007');
-                nonBreakingWhitespaces.forEach(character -> tmp[0] = tmp[0].replace(character, ' '));
-                obj = tmp[0];
+                obj = ((String) obj).replaceAll("[^\\p{IsAlnum}\\p{IsPunct}]", "");
             }
 
             if (converter instanceof LocalizedConverter) {
