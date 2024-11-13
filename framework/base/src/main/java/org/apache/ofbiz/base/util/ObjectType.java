@@ -20,7 +20,6 @@ package org.apache.ofbiz.base.util;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -332,8 +331,7 @@ public class ObjectType {
 
         if (converter != null) {
             // numeric types : replace everything that's not in [:IsAlnum:] or [:IsPunct:] classes by an empty string
-            List<?> numericClasses = UtilMisc.toList(BigDecimal.class, Double.class, Float.class, Long.class);
-            if (obj instanceof String && numericClasses.contains(targetClass)) {
+            if (obj instanceof String && Number.class.isAssignableFrom((targetClass))) {
                 obj = ((String) obj).replaceAll("[^\\p{IsAlnum}\\p{IsPunct}]", "");
             }
 
