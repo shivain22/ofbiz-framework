@@ -48,6 +48,7 @@ public class ObjectTypeTests {
     // These numbers are all based on 1 / 128, which is a binary decimal
     // that can be represented by both float and double
     private final BigDecimal dcml = new BigDecimal("781.25");
+    private final BigDecimal largeBigDecimal = new BigDecimal("29000");
     private final Double dbl = Double.valueOf("7.8125E2");
     private final Float flt = Float.valueOf("7.8125E2");
     private final Long lng = Long.valueOf("781");
@@ -389,7 +390,7 @@ public class ObjectTypeTests {
         // usual pattern assumes that the String->BigDecimal conversion will break with bad timezone/locale
         // which is not the case for this particular test
         assertEquals("String->BigDecimal supports NBSP",
-                simpleTypeOrObjectConvert("29 000", "BigDecimal", null, LOCALE_DATA.goodTimeZone,
+                simpleTypeOrObjectConvert("29Â 000", "BigDecimal", null, LOCALE_DATA.goodTimeZone,
                         LOCALE_DATA.goodLocale, false), largeBigDecimal);
     }
 
