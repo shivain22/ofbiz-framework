@@ -56,7 +56,7 @@ public class AuthenticationResource extends OFBizResource {
 
     @Context
     private HttpServletResponse httpResponse;
-
+    private static final String PRIVATE_TENANT_HEADER = "X-PrivateTenant";
     /**
      */
     @POST
@@ -65,9 +65,15 @@ public class AuthenticationResource extends OFBizResource {
     @AuthToken
     @Operation(security = @SecurityRequirement(name = "basicAuth"),
             operationId = "getAuthToken", description = "Generates JWT token for subsequent API calles.")
-    public Response getAuthToken(@Parameter(in = ParameterIn.HEADER, name = "Authorization",
-            description = "Authorization header using Basic Authentication", example = HttpHeaders.AUTHORIZATION + ": Basic YWRtaW46b2ZiaXo=")
-            @HeaderParam(HttpHeaders.AUTHORIZATION) String creds) {
+    public Response getAuthToken(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization",
+                    description = "Authorization header using Basic Authentication",
+                    example = HttpHeaders.AUTHORIZATION + ": Basic YWRtaW46b2ZiaXo=")
+            @HeaderParam(HttpHeaders.AUTHORIZATION) String creds,
+
+            @Parameter(in = ParameterIn.HEADER, name = PRIVATE_TENANT_HEADER,
+                    description = "Custom header for tenant identification")
+            @HeaderParam(PRIVATE_TENANT_HEADER) String privateTenant) {
         httpRequest.setAttribute("delegator", getDelegator());
         httpRequest.setAttribute("dispatcher", getDispatcher());
         GenericValue userLogin = (GenericValue) httpRequest.getAttribute("userLogin");

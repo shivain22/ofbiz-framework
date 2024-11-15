@@ -61,7 +61,7 @@ import org.apache.ofbiz.ws.rs.util.RestApiUtil;
 public class APIAuthFilter implements ContainerRequestFilter {
 
     private static final String MODULE = APIAuthFilter.class.getName();
-
+    private static final String PRIVATE_TENANT_HEADER = "X-PrivateTenant";
     @Context
     private UriInfo uriInfo;
 
@@ -79,12 +79,47 @@ public class APIAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        String tenantId = requestContext.getHeaderString(PRIVATE_TENANT_HEADER);
+
+        Delegator delegator = (Delegator) servletContext.getAttribute("delegator");
+        LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
+        String delegatorName = "default";
+        try {
+            // after this line the delegator is replaced with the new per-tenant delegator
+            delegator = DelegatorFactory.getDelegator(delegatorName);
+            dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+        } catch (NullPointerException e) {
+            Debug.logError(e, "Error getting tenant delegator", MODULE);
+            Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + tenantId + "]  not found...");
+
+        }
+
+        if (!tenantId.isEmpty() && tenantId !=null) {
+             delegatorName = getDelegatorName(tenantId, delegator, dispatcher);
+            try {
+                // after this line the delegator is replaced with the new per-tenant delegator
+                 delegator = DelegatorFactory.getDelegator(delegatorName);
+                 dispatcher = WebAppUtil.makeWebappDispatcher(servletContext, delegator);
+            } catch (NullPointerException e) {
+                Debug.logError(e, "Error getting tenant delegator", MODULE);
+                Map<String, String> messageMap = UtilMisc.toMap("errorMessage", "Tenant [" + tenantId + "]  not found...");
+
+            }
+            httpRequest.setAttribute("dispatcher", dispatcher);
+            httpRequest.setAttribute("delegator", delegator);
+            servletContext.setAttribute("dispatcher", dispatcher);
+            servletContext.setAttribute("delegator", delegator);
+            httpRequest.setAttribute("servletContext", servletContext);
+        }
+
+
         if (isServiceResource()) {
             String service = (String) RestApiUtil.extractParams(uriInfo.getPathParameters()).get("serviceName");
             if (UtilValidate.isNotEmpty(service)) {
                 ModelService mdService = null;
                 try {
                     mdService = WebAppUtil.getDispatcher(servletContext).getDispatchContext().getModelService(service);
+
                 } catch (GenericServiceException e) {
                     Debug.logError(e.getMessage(), MODULE);
                 }
@@ -96,8 +131,7 @@ public class APIAuthFilter implements ContainerRequestFilter {
             }
         }
 
-        Delegator delegator = (Delegator) servletContext.getAttribute("delegator");
-        LocalDispatcher dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
+
         if (!isTokenBasedAuthentication(authorizationHeader)) {
             abortWithUnauthorized(requestContext, false, "Unauthorized: Access is denied due to invalid or absent Authorization header.");
             return;
@@ -107,7 +141,7 @@ public class APIAuthFilter implements ContainerRequestFilter {
         Map<String, Object> claims = JWTManager.validateToken(jwtToken, JWTManager.getJWTKey(delegator));
         if(claims.containsKey("userTenantId") &&( delegator.getDelegatorName().equals("default") || delegator.getDelegatorName().isEmpty())) {
             String userTenantId = claims.get("userTenantId").toString();
-            String delegatorName="default";
+             delegatorName="default";
             if (!userTenantId.isEmpty()) {
                 delegatorName = getDelegatorName(userTenantId, delegator, dispatcher);
 

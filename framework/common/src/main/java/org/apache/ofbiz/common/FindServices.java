@@ -672,7 +672,9 @@ public class FindServices {
             for (Object obj : rawList) {
                 if (obj instanceof String) {
                     tableFields.add((String) obj);
+
                 }
+
             }
         }
         Map<String, Object> executeResult = null;
@@ -703,6 +705,36 @@ public class FindServices {
                 Map<String, String> result = new HashMap<>();
                 for (String fieldName : tableFields) {
                     result.put(fieldName,entity.getString(fieldName));
+
+                    if(fieldName.equals("productId") ){
+                        if(entity.getString(fieldName).equals("PC001")){
+                            System.out.println("price");
+                        }
+                        List<GenericValue> productPrices = null;
+                        try {
+                            productPrices = EntityQuery.use(delegator).from("ProductPrice").where("productId",
+                                    entity.getString(fieldName)).orderBy("-fromDate").cache(true).queryList();
+                        } catch (GenericEntityException e) {
+                            Debug.logError(e, MODULE);
+                        }
+                        //change this for product price
+                        if (productPrices != null) {
+                            for (GenericValue onePrice: productPrices) {
+                                if ("DEFAULT_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //defaultPrice
+                                    result.put("defaultPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                } else if ("WHOLESALE_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //
+                                    result.put("wholeSalePrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                } else if ("LIST_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //listPrice
+                                    result.put("listPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                } else {
+                                    result.put("defaultPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                    result.put("listPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                    result.put("wholeSalePrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                }
+                            }
+                        }
+                    }
+
 //                    System.out.println(fieldName+": "+entity.getString(fieldName));
                 }
                 resultList.add(result);

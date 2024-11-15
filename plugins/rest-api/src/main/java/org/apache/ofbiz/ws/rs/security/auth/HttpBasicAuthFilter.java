@@ -80,7 +80,7 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
     private ServletContext servletContext;
 
     private static final String REALM = "OFBiz";
-
+    private static final String PRIVATE_TENANT_HEADER = "X-PrivateTenant";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * @param requestContext
@@ -96,6 +96,7 @@ public class HttpBasicAuthFilter implements ContainerRequestFilter {
 //        }
 
         // Get request body
+        String tenantId = requestContext.getHeaderString(PRIVATE_TENANT_HEADER);
         String requestBody = getRequestBody(requestContext);
         JsonNode jsonNode = objectMapper.readTree(requestBody);
         String user = jsonNode.path("USERNAME").asText();
