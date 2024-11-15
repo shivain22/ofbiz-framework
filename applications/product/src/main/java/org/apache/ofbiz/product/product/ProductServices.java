@@ -1294,6 +1294,7 @@ public class ProductServices {
      */
     public static Map<String, Object> findProductById(DispatchContext ctx, Map<String, Object> context) {
         Delegator delegator = ctx.getDelegator();
+        LocalDispatcher dispatcher = ctx.getDispatcher();
         String idToFind = (String) context.get("idToFind");
         String goodIdentificationTypeId = (String) context.get("goodIdentificationTypeId");
         String searchProductFirstContext = (String) context.get("searchProductFirst");
@@ -1317,10 +1318,37 @@ public class ProductServices {
             // remove this productId
             productsFound.remove(0);
         }
-
         Map<String, Object> result = ServiceUtil.returnSuccess();
-        result.put("product", product);
-        result.put("productsList", productsFound);
+
+        if(product!=null){
+            //calcuating the productPrices
+            result.put("product", product);
+            result.put("productsList", productsFound);
+            Map<String, Object> productPrices= new HashMap<>();
+            try {
+                productPrices = dispatcher.runSync("calculateProductPrice", UtilMisc.toMap("product", entity, "prodCatalogId", prodCatalog, "webSiteId", "website", "productStoreId", productStoreId));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            if(productPrices==null || productPrices.isEmpty()){
+                List<GenericValue> productPrice = null;
+                try {
+                    productPrice = EntityQuery.use(delegator).from("ProductPrice").where("productId",
+                            product.get("productId")).orderBy("-fromDate").cache(true).queryList();
+                } catch (GenericEntityException e) {
+                    Debug.logError(e, MODULE);
+                }
+                //change this for product price
+                if (productPrice != null) {
+                    result.put("productPrices",productPrice);
+                }
+            }else{
+
+               result.put("productPrices",productPrices);
+
+            }
+
+        }
 
         return result;
     }

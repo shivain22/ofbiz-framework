@@ -715,9 +715,7 @@ public class FindServices {
                     result.put(fieldName,entity.getString(fieldName));
 
                     if(fieldName.equals("productId") ){
-                        if(entity.getString(fieldName).equals("PC001")){
-                            System.out.println("price");
-                        }
+
                         //calcuating the productPrices
                         Map<String, Object> productPrices= new HashMap<>();
                         try {
