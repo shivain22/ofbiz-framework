@@ -605,11 +605,19 @@ public class FindServices {
         return results;
     }
 
-    public static Map<String, Object> newPerformFind(DispatchContext dctx, Map<String, ?> context) {
+    public static Map<String, Object> newPerformFind(DispatchContext dctx, Map<String, ?> context) throws GenericServiceException {
         String entityName = (String) context.get("entityName");
         DynamicViewEntity dynamicViewEntity = (DynamicViewEntity) context.get("dynamicViewEntity");
         String orderBy = (String) context.get("orderBy");
         Map<String, ?> inputFields = checkMap(context.get("inputFields"), String.class, Object.class); // Input
+        String prodCatalog = null;
+        if(inputFields.get("prodCatalog")!=null){
+            prodCatalog = (String) inputFields.get("prodCatalog");
+        }
+        String productStoreId =null;
+        if(inputFields.get("productStoreId")!=null){
+            productStoreId = (String) inputFields.get("productStoreId");
+        }
         String noConditionFind = (String) context.get("noConditionFind");
         Map<String, ?> parameters = UtilGenerics.checkMap(context.get("parameters"), String.class, Object.class);
         String distinct = (String) context.get("distinct");
@@ -710,29 +718,44 @@ public class FindServices {
                         if(entity.getString(fieldName).equals("PC001")){
                             System.out.println("price");
                         }
-                        List<GenericValue> productPrices = null;
+                        //calcuating the productPrices
+                        Map<String, Object> productPrices= new HashMap<>();
                         try {
-                            productPrices = EntityQuery.use(delegator).from("ProductPrice").where("productId",
-                                    entity.getString(fieldName)).orderBy("-fromDate").cache(true).queryList();
-                        } catch (GenericEntityException e) {
-                            Debug.logError(e, MODULE);
+                            productPrices = dispatcher.runSync("calculateProductPrice", UtilMisc.toMap("product", entity, "prodCatalogId", prodCatalog, "webSiteId", "website", "productStoreId", productStoreId));
+                        }catch(Exception e){
+                            e.printStackTrace();
                         }
-                        //change this for product price
-                        if (productPrices != null) {
-                            for (GenericValue onePrice: productPrices) {
-                                if ("DEFAULT_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //defaultPrice
-                                    result.put("defaultPrice", String.valueOf(onePrice.getBigDecimal("price")));
-                                } else if ("WHOLESALE_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //
-                                    result.put("wholeSalePrice", String.valueOf(onePrice.getBigDecimal("price")));
-                                } else if ("LIST_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //listPrice
-                                    result.put("listPrice", String.valueOf(onePrice.getBigDecimal("price")));
-                                } else {
-                                    result.put("defaultPrice", String.valueOf(onePrice.getBigDecimal("price")));
-                                    result.put("listPrice", String.valueOf(onePrice.getBigDecimal("price")));
-                                    result.put("wholeSalePrice", String.valueOf(onePrice.getBigDecimal("price")));
+                        if(productPrices==null || productPrices.isEmpty()){
+                            List<GenericValue> productPrice = null;
+                            try {
+                                productPrice = EntityQuery.use(delegator).from("ProductPrice").where("productId",
+                                        entity.getString(fieldName)).orderBy("-fromDate").cache(true).queryList();
+                            } catch (GenericEntityException e) {
+                                Debug.logError(e, MODULE);
+                            }
+                            //change this for product price
+                            if (productPrice != null) {
+                                for (GenericValue onePrice: productPrice) {
+                                    if ("DEFAULT_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //defaultPrice
+                                        result.put("defaultPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                    } else if ("WHOLESALE_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //
+                                        result.put("wholeSalePrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                    } else if ("LIST_PRICE".equals(onePrice.getString("productPriceTypeId"))) { //listPrice
+                                        result.put("listPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                    } else {
+                                        result.put("defaultPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                        result.put("listPrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                        result.put("wholeSalePrice", String.valueOf(onePrice.getBigDecimal("price")));
+                                    }
                                 }
                             }
+                        }else{
+
+                            productPrices.forEach((key, value) -> result.put(key, String.valueOf(value)));
+
                         }
+
+
                     }
 
 //                    System.out.println(fieldName+": "+entity.getString(fieldName));
