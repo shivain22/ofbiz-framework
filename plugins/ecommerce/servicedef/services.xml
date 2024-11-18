@@ -9,6 +9,12 @@
             Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here
         </description>
     </service>
+
+    <service name="createShoppingCart" default-entity-name="shoppingCart" engine="entity-auto" invoke="create" auth="true">
+        <description>Create an Atpar Techie record</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="false"/>
+    </service>
     <service name="createcustomer" engine="java"
              location="org.apache.ofbiz.ecommerce.customer.customerEvents" invoke="registerCustomer" auth="false" action="POST" export="true">
         <description>Register new Customer to Ecommerce</description>
@@ -85,6 +91,7 @@
         <attribute mode="IN" name="mainSubmitted" type="String" optional="true"/>
         <attribute mode="IN" name="quantity" type="String" optional="true"/>
         <attribute mode="IN" name="productStoreId" type="String" optional="true"/>
+        <attribute mode="IN" name="userLoginId" type="String" optional="true"/>
         <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="true"/>
         <attribute name="response" mode="IN" type="javax.servlet.http.HttpServletResponse" optional="true"/>
         <attribute mode="OUT" name="message" type="String" optional="true"/>

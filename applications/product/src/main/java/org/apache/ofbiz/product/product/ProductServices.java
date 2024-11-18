@@ -1326,7 +1326,7 @@ public class ProductServices {
             result.put("productsList", productsFound);
             Map<String, Object> productPrices= new HashMap<>();
             try {
-                productPrices = dispatcher.runSync("calculateProductPrice", UtilMisc.toMap("product", entity, "prodCatalogId", prodCatalog, "webSiteId", "website", "productStoreId", productStoreId));
+                productPrices = dispatcher.runSync("calculateProductPrice", UtilMisc.toMap("product", product, "prodCatalogId", null, "webSiteId", "website", "productStoreId", "9000"));
             }catch(Exception e){
                 e.printStackTrace();
             }

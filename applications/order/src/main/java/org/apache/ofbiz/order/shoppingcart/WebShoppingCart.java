@@ -19,6 +19,7 @@
 package org.apache.ofbiz.order.shoppingcart;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -48,7 +49,17 @@ public class WebShoppingCart extends ShoppingCart {
                         request.getParameter("supplierPartyId") != null ? request.getParameter("supplierPartyId")
                         : request.getParameter("billFromVendorPartyId")));
 
+        Locale locale1 =ProductStoreWorker.getStoreLocale(request);
+        String currencyUom1 = ProductStoreWorker.getStoreCurrencyUomId(request);
+        String billToCustomerPartyId =  request.getParameter("billToCustomerPartyId");
+        String supplierPartyId =  request.getParameter("supplierPartyId");
+        String billFromVendorPartyId =  request.getParameter("billFromVendorPartyId");
+
         HttpSession session = request.getSession(true);
+
+        Map<?, ?> userLogin = (Map<?, ?>) session.getAttribute("userLogin");
+        Map<?, ?> autoUserLogin = (Map<?, ?>) session.getAttribute("autoUserLogin");
+        String orderPartyId = (String) session.getAttribute("orderPartyId");
         this.setUserLogin((GenericValue) session.getAttribute("userLogin"));
         this.setAutoUserLogin((GenericValue) session.getAttribute("autoUserLogin"));
         this.setOrderPartyId((String) session.getAttribute("orderPartyId"));

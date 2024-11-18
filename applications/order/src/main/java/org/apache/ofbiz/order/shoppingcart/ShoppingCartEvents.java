@@ -33,6 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.ObjectType;
 import org.apache.ofbiz.base.util.UtilDateTime;
@@ -64,6 +67,7 @@ import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.service.ModelService;
 import org.apache.ofbiz.service.ServiceUtil;
 import org.apache.ofbiz.webapp.control.RequestHandler;
+import org.jose4j.json.internal.json_simple.JSONObject;
 
 /**
  * Shopping cart events.
@@ -168,7 +172,7 @@ public class ShoppingCartEvents {
     }
 
     /** Event to add an item to the shopping cart. */
-    public static String addToCart(HttpServletRequest request, HttpServletResponse response) {
+    public static String addToCart(HttpServletRequest request, HttpServletResponse response) throws GenericEntityException, JsonProcessingException {
         Delegator delegator = (Delegator) request.getAttribute("delegator");
         LocalDispatcher dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
         ShoppingCart cart = getCartObject(request);
@@ -692,6 +696,23 @@ public class ShoppingCartEvents {
         if (controlDirective.equals(ERROR)) {
             return "error";
         }
+        String userLoginId= (String) request.getAttribute("userLoginId");
+        GenericValue userLogin = EntityQuery.use(delegator).from("UserLogin").where("userLoginId",userLoginId).queryOne();
+        System.out.println(cart);
+
+
+//        JSONObject jsonObject = new JSONObject((Map) cart);
+//        String cartJson = jsonObject.toString();
+//
+//
+//        if(userLoginId!=null){
+//           try {
+//               Map<String, Object> resultMap = dispatcher.runSync("createShoppingCart", UtilMisc.toMap("userLoginId", userLoginId, "shoppingCartJson", cartJson,"userLogin",userLogin));
+//           }catch(Exception e){
+//               e.printStackTrace();
+//           }
+//       }
+
         if (cart.viewCartOnAdd()) {
             return "viewcart";
         }

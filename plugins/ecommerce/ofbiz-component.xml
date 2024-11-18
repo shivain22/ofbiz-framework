@@ -52,6 +52,7 @@ under the License.
     
     <test-suite loader="main" location="testdef/EcommerceTest.xml"/>
     <service-resource  type="model" loader="main" location="servicedef/services.xml"/>
+    <entity-resource type="model" reader-name="main" loader="main" location="entitydef/entitymodel.xml"/>
     <webapp name="ecommerce"
         title="eCommerce"
         server="default-server"

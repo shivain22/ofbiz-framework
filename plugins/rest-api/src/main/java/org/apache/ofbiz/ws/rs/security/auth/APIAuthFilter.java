@@ -94,7 +94,7 @@ public class APIAuthFilter implements ContainerRequestFilter {
 
         }
 
-        if (!tenantId.isEmpty() && tenantId !=null) {
+        if (!tenantId.isEmpty() && !tenantId.equals(delegatorName)) {
              delegatorName = getDelegatorName(tenantId, delegator, dispatcher);
             try {
                 // after this line the delegator is replaced with the new per-tenant delegator

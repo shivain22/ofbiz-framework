@@ -1,12 +1,15 @@
 package org.apache.ofbiz.ecommerce.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilHttp;
 import org.apache.ofbiz.base.util.UtilMisc;
+import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.order.shoppingcart.ShoppingCart;
 import org.apache.ofbiz.order.shoppingcart.ShoppingCartEvents;
+import org.apache.ofbiz.order.shoppingcart.ShoppingCartItem;
 import org.apache.ofbiz.service.DispatchContext;
 import org.apache.ofbiz.service.GenericServiceException;
 import org.apache.ofbiz.service.LocalDispatcher;
@@ -17,10 +20,12 @@ import org.apache.ofbiz.webapp.control.LoginWorker;
 import org.apache.ofbiz.party.party.PartyWorker;
 import org.apache.ofbiz.ws.rs.security.auth.HttpBasicAuthFilter;
 
+import javax.mail.FetchProfile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.ForbiddenException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -246,7 +251,7 @@ public class customerEvents {
         }
     }
 
-    public static Map<String, String> addToCart(DispatchContext ctx, Map<String, ?> context) {
+    public static Map<String, String> addToCart(DispatchContext ctx, Map<String, ?> context) throws GenericEntityException, JsonProcessingException {
         LocalDispatcher dispatcher = ctx.getDispatcher();
         Locale locale = (Locale) context.get("locale");
         Delegator delegator = ctx.getDelegator();
@@ -273,10 +278,23 @@ public class customerEvents {
         if(request.getAttribute("productStoreId")==null){
             request.setAttribute("productStoreId",context.get("productStoreId"));
         }
-        Map<String, String> result=  new HashMap<>();
+        if(request.getAttribute("userLoginId")==null){
+            request.setAttribute("userLoginId",context.get("userLoginId"));
+        }
 
-        result.put("message",ShoppingCartEvents.addToCart(request,response));
+        GenericValue userLogin = EntityQuery.use(delegator).from("UserLogin").where("userLoginId", "system").queryOne();
+        request.setAttribute("userLogin",userLogin);
+        request.setAttribute("autoUserLogin",userLogin);
+
+        Map<String, String> result=  new HashMap<>();
+        String message = ShoppingCartEvents.addToCart(request,response);
+        result.put("message",message);
+        if(message.equals("success") || message.equals("viewcart")){
+            ShoppingCart cart =ShoppingCartEvents.getCartObject(request);
+            List<ShoppingCartItem> items = cart.items();
+        }
         return result;
+
     }
 
 }
