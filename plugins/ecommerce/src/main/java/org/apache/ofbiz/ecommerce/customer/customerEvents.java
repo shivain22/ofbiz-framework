@@ -292,6 +292,7 @@ public class customerEvents {
         if(message.equals("success") || message.equals("viewcart")){
             ShoppingCart cart =ShoppingCartEvents.getCartObject(request);
             List<ShoppingCartItem> items = cart.items();
+            System.out.println(items);
         }
         return result;
 

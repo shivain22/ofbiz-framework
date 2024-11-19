@@ -222,7 +222,8 @@ under the License.
         <attribute type="String" mode="IN" name="searchAllId" optional="true"/>
         <attribute type="org.apache.ofbiz.entity.GenericValue" mode="OUT" name="product" optional="true"/>
         <attribute type="List" mode="OUT" name="productsList" optional="true"/>
-        <attribute name="result" type="java.util.List" mode="OUT" optional="true"/>
+        <attribute name="productPrices" type="java.util.HashMap" mode="OUT" optional="true"/>
+
     </service>
 
     <!-- Product Association Services -->
