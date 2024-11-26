@@ -129,19 +129,18 @@ public class SecuredUpload {
      * @return
      * @throws IOException
      */
-    public static boolean isValidEncodedText(String content, List<String> allowed) throws IOException {
+    public static boolean isNotValidEncodedText(String content, List<String> allowed) throws IOException {
         try {
-            return !isValidText(String.valueOf(Base64.getDecoder().decode(content)), allowed)
-                    || !isValidText(String.valueOf(Base64.getMimeDecoder().decode(content)), allowed)
-                    || !isValidText(String.valueOf(Base64.getUrlDecoder().decode(content)), allowed);
+            return isValidText(new String(Base64.getDecoder().decode(content), StandardCharsets.UTF_8), allowed);
         } catch (IllegalArgumentException e) {
             // the encoded text isn't a Base64, allow it because there is no security risk
-            return true;
+            return false;
         }
     }
 
     // Cover method of the same name below. Historically used with 84 references when below was created
     // This is used for checking there is no web shell in an uploaded file
+    // A file containing a reverse shell, base64 encoded or not, will be rejected.
     public static boolean isValidText(String content, List<String> allowed) throws IOException {
         return isValidText(content, allowed, false);
     }
@@ -159,7 +158,7 @@ public class SecuredUpload {
             }
         }
         // This is used for checking there is no reverse shell in a query string
-        if (testEncodeContent && !isValidEncodedText(content, allowed)) {
+        if (testEncodeContent && isNotValidEncodedText(content, allowed)) {
             return false;
         } else if (testEncodeContent) {
             // e.g. split parameters of an at all non encoded  HTTP query string
