@@ -451,7 +451,7 @@ under the License.
     <input type="hidden" name="${name}_grp" value="${conditionGroup}" <@renderDisabled disabled />/>
   </#if>
   <#if opEquals?has_content>
-    <select <@renderDisabled disabled /> <#if name?has_content>name="${name}_op"</#if> class="selectBox"<#rt/>
+    <select <@renderDisabled disabled /> <#if name?has_content>name="${name}_op"</#if> class="selectBox"><#rt/>
       <option value="equals"<#if defaultOption=="equals"> selected="selected"</#if>>${opEquals}</option><#rt/>
       <option value="like"<#if defaultOption=="like"> selected="selected"</#if>>${opBeginsWith}</option><#rt/>
       <option value="contains"<#if defaultOption=="contains"> selected="selected"</#if>>${opContains}</option><#rt/>
