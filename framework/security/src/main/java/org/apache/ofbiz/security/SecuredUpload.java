@@ -39,7 +39,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -101,7 +100,7 @@ import com.lowagie.text.pdf.PdfReader;
 
 public class SecuredUpload {
 
-    // To check if a webshell is not uploaded
+    // To check if a webshell is not uploaded or a reverse shell put in the query string
 
     // This can be helpful:
     // https://en.wikipedia.org/wiki/File_format
@@ -122,52 +121,32 @@ public class SecuredUpload {
     private static final String FILENAMEVALIDCHARACTERS =
             UtilProperties.getPropertyValue("security", "fileNameValidCharacters", "[a-zA-Z0-9-_ ]");
 
-    /**
-     * For the content analyze if it's a base64 string with potential code injection
-     * @param content
-     * @param allowed
-     * @return
-     * @throws IOException
-     */
-    public static boolean isNotValidEncodedText(String content, List<String> allowed) throws IOException {
-        try {
-            return isValidText(new String(Base64.getDecoder().decode(content), StandardCharsets.UTF_8), allowed);
-        } catch (IllegalArgumentException e) {
-            // the encoded text isn't a Base64, allow it because there is no security risk
-            return false;
-        }
-    }
-
     // Cover method of the same name below. Historically used with 84 references when below was created
-    // This is used for checking there is no web shell in an uploaded file
-    // A file containing a reverse shell, base64 encoded or not, will be rejected.
+    // check there is no web shell in the uploaded file
+    // A file containing a reverse shell will be rejected.
     public static boolean isValidText(String content, List<String> allowed) throws IOException {
         return isValidText(content, allowed, false);
     }
 
-    public static boolean isValidText(String content, List<String> allowed, boolean testEncodeContent) throws IOException {
+    public static boolean isValidText(String content, List<String> allowed, boolean isQuery) throws IOException {
         if (content == null) {
             return false;
         }
-        if (!testEncodeContent) {
+        if (!isQuery) {
             String contentWithoutSpaces = content.replaceAll(" ", "");
             if ((contentWithoutSpaces.contains("\"+\"") || contentWithoutSpaces.contains("'+'"))
                     && !ALLOWSTRINGCONCATENATIONINUPLOADEDFILES) {
                 Debug.logInfo("The uploaded file contains a string concatenation. It can't be uploaded for security reason", MODULE);
                 return false;
             }
-        }
-        // This is used for checking there is no reverse shell in a query string
-        if (testEncodeContent && isNotValidEncodedText(content, allowed)) {
-            return false;
-        } else if (testEncodeContent) {
-            // e.g. split parameters of an at all non encoded  HTTP query string
+        } else {
+            // Check the query string is safe, notably no reverse shell
             List<String> queryParameters = StringUtil.split(content, "&");
-            return DENIEDWEBSHELLTOKENS.stream().allMatch(token -> isValid(queryParameters, token, allowed));
+            return DENIEDWEBSHELLTOKENS.stream().allMatch(token -> isValid(queryParameters, token.toLowerCase(), allowed));
         }
 
-        // This is used for checking there is no web shell in an uploaded file
-        return DENIEDWEBSHELLTOKENS.stream().allMatch(token -> isValid(content, token.toLowerCase(), allowed));
+        // Check there is no web shell in an uploaded file
+        return DENIEDWEBSHELLTOKENS.stream().allMatch(token -> isValid(content.toLowerCase(), token.toLowerCase(), allowed));
     }
 
     public static boolean isValidFileName(String fileToCheck, Delegator delegator) throws IOException {
@@ -872,21 +851,22 @@ public class SecuredUpload {
         return isValidText(content, allowed);
     }
 
-    // This is used for checking there is no web shell
+    // Check there is no web shell
     private static boolean isValid(String content, String string, List<String> allowed) {
-        boolean isOK = !content.toLowerCase().contains(string) || allowed.contains(string);
+        boolean isOK = !content.contains(string) || allowed.contains(string);
         if (!isOK) {
             Debug.logInfo("The uploaded file contains the string '" + string + "'. It can't be uploaded for security reason", MODULE);
         }
         return isOK;
     }
 
-    // This is used for checking there is no reverse shell
+    // Check there is no reverse shell in query string
     private static boolean isValid(List<String> queryParameters, String string, List<String> allowed) {
         boolean isOK = true;
+
         for (String parameter : queryParameters) {
-            if (!HashCrypt.cryptBytes("SHA", "OFBiz", parameter.getBytes(StandardCharsets.UTF_8)).contains(string)
-                    || allowed.contains(HashCrypt.cryptBytes("SHA", "OFBiz", parameter.getBytes(StandardCharsets.UTF_8)))) {
+            if (!parameter.contains(string)
+                    || allowed.contains(HashCrypt.cryptBytes("SHA", "OFBiz", parameter.toLowerCase().getBytes(StandardCharsets.UTF_8)))) {
                 continue;
             } else {
                 isOK = false;
