@@ -196,7 +196,7 @@ under the License.
     <select name="${name?default("")}"
       <@renderClass className alert /> <@renderDisabled disabled />
       <#if id?has_content> id="${id}"</#if>
-      <#if multiple?has_content> multiple="multiple"</#if>
+      <#if multiple> multiple="multiple"</#if>
       <#if ajaxEnabled> class="autoCompleteDropDown"</#if>
       <#if event?has_content> ${event}="${action}"</#if>
       <#if size?has_content> size="${size}"</#if>
