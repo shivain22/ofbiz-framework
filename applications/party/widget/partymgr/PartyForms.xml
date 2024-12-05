@@ -142,9 +142,8 @@ under the License.
                 <field-map field-name="partyId" from-field="partyId"/>
                 <field-map field-name="userLogin" from-field="userLogin"/>
             </service>
-            <entity-condition entity-name="PartyClassification" list="partyClassifications" use-cache="true" distinct="true">
+            <entity-condition entity-name="PartyClassification" list="partyClassifications" use-cache="true">
                 <condition-expr field-name="partyId" from-field="partyId"/>
-                <select-field field-name="partyClassificationGroupId"/>
             </entity-condition>
             <set field="partyClassificationGroupIds" value="${groovy: partyClassifications*.partyClassificationGroupId}"/>
             <service service-name="getPartyNameForDate" result-map="partyName"/>
