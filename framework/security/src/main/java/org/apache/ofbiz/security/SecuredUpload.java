@@ -111,7 +111,7 @@ public class SecuredUpload {
     private static final String MODULE = SecuredUpload.class.getName();
     private static final List<String> DENIEDFILEEXTENSIONS = getDeniedFileExtensions();
     private static final List<String> DENIEDWEBSHELLTOKENS = getDeniedWebShellTokens();
-    private static final Integer MAXLINELENGTH = UtilProperties.getPropertyAsInteger("security", "maxLineLength", 10000);
+    private static final Integer MAXLINELENGTH = UtilProperties.getPropertyAsInteger("security", "maxLineLength", 0);
     private static final Boolean ALLOWSTRINGCONCATENATIONINUPLOADEDFILES =
             UtilProperties.getPropertyAsBoolean("security", "allowStringConcatenationInUploadedFiles", false);
 
@@ -619,8 +619,12 @@ public class SecuredUpload {
         }
 
         // cf. https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html
-        try (CSVParser parser = new CSVParser(in, cvsFormat)) {
-            parser.getRecords();
+        if (!content.contains("</svg>")) {
+            try (CSVParser parser = new CSVParser(in, cvsFormat)) {
+                parser.getRecords();
+            }
+        } else {
+            Debug.logInfo("The file " + fileName + " is not a valid CSV file. For security reason it's not accepted as a such file", MODULE);
         }
         return isValidTextFile(fileName, false); // Validate content to prevent webshell
     }
@@ -899,6 +903,9 @@ public class SecuredUpload {
 
 
     private static boolean checkMaxLinesLength(String fileToCheck) {
+        if (MAXLINELENGTH == 0) {
+            return true;
+        }
         try {
             File file = new File(fileToCheck);
             List<String> lines = FileUtils.readLines(file, Charset.defaultCharset());
