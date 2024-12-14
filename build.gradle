@@ -278,8 +278,6 @@ checkstyle {
     tasks.checkstyleMain.maxErrors = 0
     // Currently there are no errors so we can show new one when they appear
     showViolations = true
-    // Specify tool version so we can keep it up-to-date
-    toolVersion = '10.20.2'
 }
 gitHooks {
     hooks = ['pre-push': 'checkstyleMain codenarcMain codenarcTest']
@@ -494,8 +492,8 @@ task createTenant(group: ofbizServer, description: 'Create a new tenant in your 
 
 // ========== Documentation tasks ==========
 tasks.withType(AsciidoctorTask) { task ->
-    executionMode = JAVA_EXEC
-        jvm {
+    inProcess = JAVA_EXEC
+        forkOptions {
             jvmArgs("--add-opens","java.base/sun.nio.ch=ALL-UNNAMED","--add-opens","java.base/java.io=ALL-UNNAMED")
         }
     outputOptions {
