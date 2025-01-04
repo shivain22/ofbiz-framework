@@ -30,8 +30,7 @@ image:https://github.com/apache/ofbiz-framework/actions/workflows/codeql-analysi
 image:https://ci2.apache.org/badges/ofbizTrunkFrameworkPlugins.svg[link=https://ci2.apache.org/#/builders?tags=%2BofbizTrunkFrameworkPlugins]
 image:https://qpkb254zxeu.montastic.io/badge[link=https://qpkb254zxeu.montastic.io]
 
-
-
+image:https://github.com/apache/ofbiz-framework/actions/workflows/scorecard.yml/badge.svg[https://github.com/apache/ofbiz-framework/actions/workflows/scorecard.yml]
 image:https://api.securityscorecards.dev/projects/github.com/apache/ofbiz-framework/badge[link=https://securityscorecards.dev/viewer/?uri=github.com/apache/ofbiz-framework]
 image:https://www.bestpractices.dev/projects/8708/badge[link=https://www.bestpractices.dev/projects/8708]
 
