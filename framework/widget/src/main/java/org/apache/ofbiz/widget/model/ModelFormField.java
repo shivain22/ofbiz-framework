@@ -5068,7 +5068,7 @@ public final class ModelFormField {
 
         } catch (CompilationFailedException e) {
             String errMsg =
-                    "Error evaluating BeanShell ignore-when condition [" + ignoreWhen + "] on the field " + this.name + " of form "
+                    "Error evaluating ignore-when condition [" + ignoreWhen + "] on the field " + this.name + " of form "
                             + this.modelForm.getName() + ": " + e.toString();
             Debug.logError(e, errMsg, MODULE);
             throw new IllegalArgumentException(errMsg);
