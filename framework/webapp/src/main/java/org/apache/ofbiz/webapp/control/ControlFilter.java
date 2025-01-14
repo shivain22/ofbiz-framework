@@ -171,20 +171,19 @@ public class ControlFilter extends HttpFilter {
                 queryString = URLDecoder.decode(queryString, "UTF-8");
                 if (UtilValidate.isUrl(queryString)
                         || !SecuredUpload.isValidText(queryString.toLowerCase(), SecuredUpload.getallowedTokens(), true)
-                        && isSolrTest()) {
+                                && isSolrTest()) {
                     Debug.logError("For security reason this URL is not accepted", MODULE);
                     throw new RuntimeException("For security reason this URL is not accepted");
                 }
             }
 
-            String initialURI = req.getRequestURI();
-            if (initialURI != null) { // Allow tests with Mockito. ControlFilterTests send null
+            if (uriWithContext != null) { // Allow tests with Mockito. ControlFilterTests send null
                 try {
-                    String uRIFiltered = new URI(initialURI)
+                    String uRIFiltered = new URI(uriWithContext)
                             .normalize().toString()
                             .replaceAll(";", "")
                             .replaceAll("(?i)%2e", "");
-                    if (!initialURI.equals(uRIFiltered)) {
+                    if (!uriWithContext.equals(uRIFiltered)) {
                         Debug.logError("For security reason this URL is not accepted", MODULE);
                         throw new RuntimeException("For security reason this URL is not accepted");
                     }
