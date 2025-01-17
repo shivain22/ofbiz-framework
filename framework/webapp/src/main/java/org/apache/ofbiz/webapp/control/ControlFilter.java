@@ -140,8 +140,41 @@ public class ControlFilter extends HttpFilter {
         return !GenericValue.getStackTraceAsString().contains("ControlFilterTests")
                 && null == System.getProperty("SolrDispatchFilter");
     }
+
+    /**
+     * Sends an HTTP response redirecting to {@code redirectPath}.
+     * @param resp The response to send
+     * @param contextPath the prefix to add to the redirection when
+     * {@code redirectPath} is a relative URI.
+     * @throws IOException when redirection has not been properly sent.
+     */
+    private void redirect(HttpServletResponse resp, String contextPath) throws IOException {
+        resp.sendRedirect(redirectPathIsUrl ? redirectPath : (contextPath + redirectPath));
+    }
+
+    private static List<String> getAllowedTokens() {
+        String allowedTokens = UtilProperties.getPropertyValue("security", "allowedTokens");
+        return UtilValidate.isNotEmpty(allowedTokens) ? StringUtil.split(allowedTokens, ",") : new ArrayList<>();
+    }
+
+    // Check there is any allowedToken in URL
+    private static boolean isAnyAllowedToken(List<String> queryParameters, List<String> allowed) {
+        boolean isOK = false;
+        for (String parameter : queryParameters) {
+            parameter = parameter.substring(0, parameter.indexOf("=") + 1);
+            if (allowed.contains(HashCrypt.cryptBytes("SHA", "OFBiz", parameter.getBytes(StandardCharsets.UTF_8)))) {
+                isOK = true;
+                break;
+            } else {
+                continue;
+            }
+        }
+        return isOK;
+    }
+
     /**
      * Makes allowed paths pass through while redirecting the others to a fix location.
+     * Reject wrong URLs
      */
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -193,7 +226,8 @@ public class ControlFilter extends HttpFilter {
             }
             boolean bypass = true;
             if (queryString != null) {
-                bypass = isAnyAllowedToken(StringUtil.split(queryString.toLowerCase(), "Y&amp;"), ALLOWEDTOKENS);
+                List<String> queryStringList = StringUtil.splitWithStringSeparator(queryString.toLowerCase(), "&amp;");
+                bypass = isAnyAllowedToken(queryStringList, ALLOWEDTOKENS);
             }
             if (uriWithContext != null && !bypass) { // "null" allows tests with Mockito. ControlFilterTests sends null.
                 try {
@@ -232,39 +266,5 @@ public class ControlFilter extends HttpFilter {
                 }
             }
         }
-    }
-
-    /**
-     * Sends an HTTP response redirecting to {@code redirectPath}.
-     * @param resp The response to send
-     * @param contextPath the prefix to add to the redirection when
-     * {@code redirectPath} is a relative URI.
-     * @throws IOException when redirection has not been properly sent.
-     */
-    private void redirect(HttpServletResponse resp, String contextPath) throws IOException {
-        resp.sendRedirect(redirectPathIsUrl ? redirectPath : (contextPath + redirectPath));
-    }
-
-    private static List<String> getAllowedTokens() {
-        String allowedTokens = UtilProperties.getPropertyValue("security", "allowedTokens");
-        return UtilValidate.isNotEmpty(allowedTokens) ? StringUtil.split(allowedTokens, ",") : new ArrayList<>();
-    }
-
-
-
-
-    // Check there is any allowedToken in URL
-    private static boolean isAnyAllowedToken(List<String> queryParameters, List<String> allowed) {
-        boolean isOK = false;
-        for (String parameter : queryParameters) {
-            parameter = parameter.substring(0, parameter.indexOf("=") + 1);
-            if (allowed.contains(HashCrypt.cryptBytes("SHA", "OFBiz", parameter.getBytes(StandardCharsets.UTF_8)))) {
-                isOK = true;
-                break;
-            } else {
-                continue;
-            }
-        }
-        return isOK;
     }
 }

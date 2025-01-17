@@ -137,6 +137,20 @@ public final class StringUtil {
     }
 
     /**
+     * Splits a String on a String Separator into a List of Strings.
+     * @param str the String to split
+     * @param separator the String Separator to split the str String
+     * @return a list of Strings or null if one of the parameters is null
+     */
+    public static List<String> splitWithStringSeparator(String str, String separator) {
+        if (str == null || separator == null) {
+            return null;
+        }
+
+        return Arrays.asList(str.split(separator));
+    }
+
+    /**
      * Creates a Map from an encoded name/value pair string
      * @param str The string to decode and format
      * @param delim the delimiter character(s) to join on (null will split on whitespace)
